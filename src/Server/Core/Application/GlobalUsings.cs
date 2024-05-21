@@ -1,0 +1,17 @@
+global using Ardalis.Specification;
+global using FluentValidation;
+global using BookStack.Application.Common.Events;
+global using BookStack.Application.Common.Exceptions;
+global using BookStack.Application.Common.FileStorage;
+global using BookStack.Application.Common.Interfaces;
+global using BookStack.Application.Common.Models;
+global using BookStack.Application.Common.Persistence;
+global using BookStack.Application.Common.Specification;
+global using BookStack.Application.Common.Validation;
+global using BookStack.Domain.Catalog;
+global using BookStack.Domain.Common;
+global using BookStack.Domain.Common.Contracts;
+global using BookStack.Shared.Notifications;
+global using MediatR;
+global using Microsoft.Extensions.Localization;
+global using Microsoft.Extensions.Logging;

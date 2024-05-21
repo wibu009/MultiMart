@@ -1,0 +1,1 @@
+﻿global using BookStack.Domain.Common.Contracts;

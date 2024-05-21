@@ -1,0 +1,6 @@
+{
+  "DatabaseSettings": {
+    "DBProvider": "mssql",
+    "ConnectionString": "Server=(localdb)\\mssqllocaldb;Database=BookStackDb;Trusted_Connection=True;MultipleActiveResultSets=true"
+  }
+}

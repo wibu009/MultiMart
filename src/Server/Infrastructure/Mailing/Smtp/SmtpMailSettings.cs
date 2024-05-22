@@ -1,6 +1,6 @@
-namespace BookStack.Infrastructure.Mailing;
+namespace BookStack.Infrastructure.Mailing.Smtp;
 
-public class MailSettings
+public class SmtpMailSettings
 {
     public string? From { get; set; }
 

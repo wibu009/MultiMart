@@ -20,17 +20,26 @@ public class SwaggerHeaderAttributeProcessor : IOperationProcessor
                 parameters.Remove(existingParam);
             }
 
+            var schema = new NJsonSchema.JsonSchema
+            {
+                Type = attribute.Type,
+                Default = attribute.DefaultValue,
+            };
+            if (attribute.Enum is not null)
+            {
+                foreach (string enumValue in attribute.Enum)
+                {
+                    schema.Enumeration.Add(enumValue);
+                }
+            }
+
             parameters.Add(new OpenApiParameter
             {
                 Name = attribute.HeaderName,
                 Kind = OpenApiParameterKind.Header,
                 Description = attribute.Description,
                 IsRequired = attribute.IsRequired,
-                Schema = new NJsonSchema.JsonSchema
-                {
-                    Type = NJsonSchema.JsonObjectType.String,
-                    Default = attribute.DefaultValue
-                }
+                Schema = schema,
             });
         }
 

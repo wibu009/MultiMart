@@ -1,11 +1,16 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using BookStack.Infrastructure.FileStorage.Cloudinary;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 
 namespace BookStack.Infrastructure.FileStorage;
 
 internal static class Startup
 {
+    internal static IServiceCollection AddFileStorage(this IServiceCollection services, IConfiguration config)
+        => services.Configure<CloudinarySettings>(config.GetSection(nameof(CloudinarySettings)));
     internal static IApplicationBuilder UseFileStorage(this IApplicationBuilder app) =>
         app.UseStaticFiles(new StaticFileOptions()
         {

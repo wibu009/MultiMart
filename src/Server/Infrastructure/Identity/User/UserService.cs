@@ -3,8 +3,10 @@ using BookStack.Application.Common.Caching;
 using BookStack.Application.Common.Events;
 using BookStack.Application.Common.Exceptions;
 using BookStack.Application.Common.FileStorage;
+using BookStack.Application.Common.FileStorage.LocalStorage;
 using BookStack.Application.Common.Interfaces;
 using BookStack.Application.Common.Mailing;
+using BookStack.Application.Common.Mailing.Smtp;
 using BookStack.Application.Common.Models;
 using BookStack.Application.Common.Specification;
 using BookStack.Application.Identity.Users;
@@ -30,10 +32,10 @@ internal partial class UserService : IUserService
     private readonly ApplicationDbContext _db;
     private readonly IStringLocalizer _t;
     private readonly IJobService _jobService;
-    private readonly IMailService _mailService;
+    private readonly ISmtpMailService _mailService;
     private readonly SecuritySettings _securitySettings;
     private readonly IEmailTemplateService _templateService;
-    private readonly IFileStorageService _fileStorage;
+    private readonly ILocalFileStorageService _localFileStorage;
     private readonly IEventPublisher _events;
     private readonly ICacheService _cache;
     private readonly ICacheKeyService _cacheKeys;
@@ -44,11 +46,11 @@ internal partial class UserService : IUserService
         UserManager<ApplicationUser> userManager,
         RoleManager<ApplicationRole> roleManager,
         ApplicationDbContext db,
-        IStringLocalizer<UserService> localizer,
+        IStringLocalizer<UserService> t,
         IJobService jobService,
-        IMailService mailService,
+        ISmtpMailService mailService,
         IEmailTemplateService templateService,
-        IFileStorageService fileStorage,
+        ILocalFileStorageService localFileStorage,
         IEventPublisher events,
         ICacheService cache,
         ICacheKeyService cacheKeys,
@@ -59,11 +61,11 @@ internal partial class UserService : IUserService
         _userManager = userManager;
         _roleManager = roleManager;
         _db = db;
-        _t = localizer;
+        _t = t;
         _jobService = jobService;
         _mailService = mailService;
         _templateService = templateService;
-        _fileStorage = fileStorage;
+        _localFileStorage = localFileStorage;
         _events = events;
         _cache = cache;
         _cacheKeys = cacheKeys;

@@ -1,4 +1,5 @@
 using BookStack.Application.Identity.Tokens;
+using BookStack.Infrastructure.Common.Extensions;
 
 namespace BookStack.Host.Controllers.Identity;
 
@@ -14,21 +15,18 @@ public sealed class TokensController : VersionNeutralApiController
     [OpenApiOperation("Request an access token using credentials.", "")]
     public Task<TokenResponse> GetTokenAsync(TokenRequest request, CancellationToken cancellationToken)
     {
-        return _tokenService.GetTokenAsync(request, GetIpAddress()!, cancellationToken);
+        return _tokenService.GetTokenAsync(request, Request.GetIpAddress(), cancellationToken);
     }
 
-    [HttpPost("refresh")]
+    [HttpGet("refresh")]
     [AllowAnonymous]
     [TenantIdHeader]
-    [OpenApiOperation("Request an access token using a refresh token.", "")]
+    [OpenApiOperation("Request an access token using sign-in code or cookie.", "")]
     [ApiConventionMethod(typeof(FSHApiConventions), nameof(FSHApiConventions.Search))]
-    public Task<TokenResponse> RefreshAsync(RefreshTokenRequest request)
+    public Task<TokenResponse> RefreshAsync([FromQuery] string? signInCode)
     {
-        return _tokenService.RefreshTokenAsync(request, GetIpAddress()!);
+        return signInCode == null
+            ? _tokenService.RefreshTokenAsync(Request.GetIpAddress())
+            : _tokenService.RefreshTokenAsync(Request.GetIpAddress(), signInCode);
     }
-
-    private string? GetIpAddress() =>
-        Request.Headers.ContainsKey("X-Forwarded-For")
-            ? Request.Headers["X-Forwarded-For"]
-            : HttpContext.Connection.RemoteIpAddress?.MapToIPv4().ToString() ?? "N/A";
 }

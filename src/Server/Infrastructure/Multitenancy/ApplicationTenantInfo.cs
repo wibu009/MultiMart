@@ -3,13 +3,13 @@ using BookStack.Shared.Multitenancy;
 
 namespace BookStack.Infrastructure.Multitenancy;
 
-public class FSHTenantInfo : ITenantInfo
+public class ApplicationTenantInfo : ITenantInfo
 {
-    public FSHTenantInfo()
+    public ApplicationTenantInfo()
     {
     }
 
-    public FSHTenantInfo(string id, string name, string? connectionString, string adminEmail, string? issuer = null)
+    public ApplicationTenantInfo(string id, string name, string? connectionString, string adminEmail, string? issuer = null)
     {
         Id = id;
         Identifier = id;

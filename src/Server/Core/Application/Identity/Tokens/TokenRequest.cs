@@ -1,12 +1,16 @@
 namespace BookStack.Application.Identity.Tokens;
 
-public record TokenRequest(string Email, string Password);
+public class TokenRequest
+{
+    public string UserNameOrEmail { get; set; }
+    public string Password { get; set; }
+}
 
 public class TokenRequestValidator : CustomValidator<TokenRequest>
 {
     public TokenRequestValidator(IStringLocalizer<TokenRequestValidator> T)
     {
-        RuleFor(p => p.Email).Cascade(CascadeMode.Stop)
+        RuleFor(p => p.UserNameOrEmail).Cascade(CascadeMode.Stop)
             .NotEmpty()
             .EmailAddress()
                 .WithMessage(T["Invalid Email Address."]);

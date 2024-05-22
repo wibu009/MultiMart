@@ -2,7 +2,7 @@ using System.Linq.Expressions;
 using BookStack.Application.Common.Interfaces;
 using Hangfire;
 
-namespace BookStack.Infrastructure.BackgroundJobs;
+namespace BookStack.Infrastructure.BackgroundJobs.Hangfire;
 
 public class HangfireService : IJobService
 {

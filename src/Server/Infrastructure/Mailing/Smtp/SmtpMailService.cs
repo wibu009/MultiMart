@@ -1,18 +1,19 @@
 using BookStack.Application.Common.Mailing;
+using BookStack.Application.Common.Mailing.Smtp;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MimeKit;
 
-namespace BookStack.Infrastructure.Mailing;
+namespace BookStack.Infrastructure.Mailing.Smtp;
 
-public class SmtpMailService : IMailService
+public class SmtpMailService : ISmtpMailService
 {
-    private readonly MailSettings _settings;
+    private readonly SmtpMailSettings _settings;
     private readonly ILogger<SmtpMailService> _logger;
 
-    public SmtpMailService(IOptions<MailSettings> settings, ILogger<SmtpMailService> logger)
+    public SmtpMailService(IOptions<SmtpMailSettings> settings, ILogger<SmtpMailService> logger)
     {
         _settings = settings.Value;
         _logger = logger;

@@ -26,6 +26,7 @@ internal static class Startup
                 policy.AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials()
+                    .WithExposedHeaders("WWW-Authenticate", "Pagination", "Accept-Language")
                     .WithOrigins(origins.ToArray())));
     }
 

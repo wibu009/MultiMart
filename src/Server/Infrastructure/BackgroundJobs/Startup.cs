@@ -1,3 +1,4 @@
+using BookStack.Infrastructure.BackgroundJobs.Hangfire;
 using BookStack.Infrastructure.Common;
 using Hangfire;
 using Hangfire.Console;

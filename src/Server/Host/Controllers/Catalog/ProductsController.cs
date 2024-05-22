@@ -2,9 +2,11 @@
 
 namespace BookStack.Host.Controllers.Catalog;
 
+[ApiVersion(VersionName.V1)]
 public class ProductsController : VersionedApiController
 {
     [HttpPost("search")]
+    [AcceptLanguageHeader]
     [MustHavePermission(ApplicationAction.Search, ApplicationResource.Products)]
     [OpenApiOperation("Search products using available filters.", "")]
     public Task<PaginationResponse<ProductDto>> SearchAsync(SearchProductsRequest request)
@@ -13,6 +15,7 @@ public class ProductsController : VersionedApiController
     }
 
     [HttpGet("{id:guid}")]
+    [AcceptLanguageHeader]
     [MustHavePermission(ApplicationAction.View, ApplicationResource.Products)]
     [OpenApiOperation("Get product details.", "")]
     public Task<ProductDetailsDto> GetAsync(Guid id)
@@ -21,6 +24,7 @@ public class ProductsController : VersionedApiController
     }
 
     [HttpGet("dapper")]
+    [AcceptLanguageHeader]
     [MustHavePermission(ApplicationAction.View, ApplicationResource.Products)]
     [OpenApiOperation("Get product details via dapper.", "")]
     public Task<ProductDto> GetDapperAsync(Guid id)
@@ -29,6 +33,7 @@ public class ProductsController : VersionedApiController
     }
 
     [HttpPost]
+    [AcceptLanguageHeader]
     [MustHavePermission(ApplicationAction.Create, ApplicationResource.Products)]
     [OpenApiOperation("Create a new product.", "")]
     public Task<Guid> CreateAsync(CreateProductRequest request)
@@ -37,6 +42,7 @@ public class ProductsController : VersionedApiController
     }
 
     [HttpPut("{id:guid}")]
+    [AcceptLanguageHeader]
     [MustHavePermission(ApplicationAction.Update, ApplicationResource.Products)]
     [OpenApiOperation("Update a product.", "")]
     public async Task<ActionResult<Guid>> UpdateAsync(UpdateProductRequest request, Guid id)
@@ -47,6 +53,7 @@ public class ProductsController : VersionedApiController
     }
 
     [HttpDelete("{id:guid}")]
+    [AcceptLanguageHeader]
     [MustHavePermission(ApplicationAction.Delete, ApplicationResource.Products)]
     [OpenApiOperation("Delete a product.", "")]
     public Task<Guid> DeleteAsync(Guid id)
@@ -55,6 +62,7 @@ public class ProductsController : VersionedApiController
     }
 
     [HttpPost("export")]
+    [AcceptLanguageHeader]
     [MustHavePermission(ApplicationAction.Export, ApplicationResource.Products)]
     [OpenApiOperation("Export a products.", "")]
     public async Task<FileResult> ExportAsync(ExportProductsRequest filter)

@@ -1,3 +1,11 @@
 namespace BookStack.Application.Identity.Tokens;
 
-public record TokenResponse(string Token, string RefreshToken, DateTime RefreshTokenExpiryTime);
+public class TokenResponse
+{
+    public string Token { get; set; }
+
+    public TokenResponse(string token)
+    {
+        Token = token;
+    }
+}

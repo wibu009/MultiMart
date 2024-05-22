@@ -13,7 +13,9 @@
       "it-IT",
       "pt",
       "nl",
-      "nl-NL"
+      "nl-NL",
+      "vi",
+      "vi-VN",
     ],
     "DefaultRequestCulture": "en",
     "FallbackToParent": true

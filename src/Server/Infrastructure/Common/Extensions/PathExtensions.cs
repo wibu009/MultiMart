@@ -45,9 +45,9 @@ public class PathExtensions
     {
         string result = path;
 
-        for (int i = 0; i < others.Length; i++)
+        foreach (string t in others)
         {
-            result = Combine(result, others[i]);
+            result = Combine(result, t);
         }
 
         return result;
@@ -113,9 +113,8 @@ public class PathExtensions
         }
 
         var builder = new StringBuilder();
-        for (int i = 0; i < pathSegments.Count; i++)
+        foreach (var segment in pathSegments)
         {
-            var segment = pathSegments[i];
             builder.Append('/');
             builder.Append(segment.Buffer, segment.Offset, segment.Length);
         }

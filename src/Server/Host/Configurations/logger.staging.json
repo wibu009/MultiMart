@@ -1,7 +1,0 @@
-{
-  "LoggerSettings": {
-    "AppName": "BookStack",
-    "WriteToFile": false,
-    "StructuredConsoleLogging": true
-  }
-}

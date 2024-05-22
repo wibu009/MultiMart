@@ -16,7 +16,7 @@ internal static class Startup
             AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(s => s.GetTypes())
                 .Where(t => interfaceType.IsAssignableFrom(t)
-                            && t.IsClass && !t.IsAbstract)
+                            && t is { IsClass: true, IsAbstract: false })
                 .Select(t => new
                 {
                     Service = t.GetInterfaces().FirstOrDefault(),
@@ -33,7 +33,7 @@ internal static class Startup
         return services;
     }
 
-    internal static IServiceCollection AddService(this IServiceCollection services, Type serviceType, Type implementationType, ServiceLifetime lifetime) =>
+    private static IServiceCollection AddService(this IServiceCollection services, Type serviceType, Type implementationType, ServiceLifetime lifetime) =>
         lifetime switch
         {
             ServiceLifetime.Transient => services.AddTransient(serviceType, implementationType),

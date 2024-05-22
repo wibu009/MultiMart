@@ -1,6 +1,7 @@
 ﻿using Finbuckle.MultiTenant.EntityFrameworkCore;
 using BookStack.Infrastructure.Identity;
 using BookStack.Infrastructure.Identity.Role;
+using BookStack.Infrastructure.Identity.Token;
 using BookStack.Infrastructure.Identity.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -69,4 +70,23 @@ public class IdentityUserTokenConfig : IEntityTypeConfiguration<IdentityUserToke
         builder
             .ToTable("UserTokens", SchemaNames.Identity)
             .IsMultiTenant();
+}
+
+public class ApplicationUserRefreshTokenConfig : IEntityTypeConfiguration<ApplicationUserRefreshToken>
+{
+    public void Configure(EntityTypeBuilder<ApplicationUserRefreshToken> builder)
+    {
+        builder
+            .ToTable("UserRefreshTokens", SchemaNames.Identity)
+            .IsMultiTenant();
+
+        builder
+            .Property(t => t.Token)
+                .HasMaxLength(256);
+
+        builder.HasOne(t => t.ApplicationUser)
+            .WithMany(u => u.RefreshTokens)
+            .HasForeignKey(t => t.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+    }
 }

@@ -1,3 +1,4 @@
+using BookStack.Application.Common.FileStorage.LocalStorage;
 using BookStack.Domain.Common.Events;
 
 namespace BookStack.Application.Catalog.Products;
@@ -17,10 +18,10 @@ public class UpdateProductRequestHandler : IRequestHandler<UpdateProductRequest,
 {
     private readonly IRepository<Product> _repository;
     private readonly IStringLocalizer _t;
-    private readonly IFileStorageService _file;
+    private readonly ILocalFileStorageService _localFile;
 
-    public UpdateProductRequestHandler(IRepository<Product> repository, IStringLocalizer<UpdateProductRequestHandler> localizer, IFileStorageService file) =>
-        (_repository, _t, _file) = (repository, localizer, file);
+    public UpdateProductRequestHandler(IRepository<Product> repository, IStringLocalizer<UpdateProductRequestHandler> localizer, ILocalFileStorageService localFile) =>
+        (_repository, _t, _localFile) = (repository, localizer, localFile);
 
     public async Task<Guid> Handle(UpdateProductRequest request, CancellationToken cancellationToken)
     {
@@ -35,14 +36,14 @@ public class UpdateProductRequestHandler : IRequestHandler<UpdateProductRequest,
             if (!string.IsNullOrEmpty(currentProductImagePath))
             {
                 string root = Directory.GetCurrentDirectory();
-                _file.Remove(Path.Combine(root, currentProductImagePath));
+                await _localFile.RemoveAsync(Path.Combine(root, currentProductImagePath), cancellationToken);
             }
 
             product = product.ClearImagePath();
         }
 
         string? productImagePath = request.Image is not null
-            ? await _file.UploadAsync<Product>(request.Image, FileType.Image, cancellationToken)
+            ? await _localFile.UploadAsync<Product>(request.Image, FileType.Image, cancellationToken)
             : null;
 
         var updatedProduct = product.Update(request.Name, request.Description, request.Rate, request.BrandId, productImagePath);

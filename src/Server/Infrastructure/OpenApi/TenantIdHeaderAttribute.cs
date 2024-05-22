@@ -1,4 +1,5 @@
 ﻿using BookStack.Shared.Multitenancy;
+using NJsonSchema;
 
 namespace BookStack.Infrastructure.OpenApi;
 
@@ -9,6 +10,7 @@ public class TenantIdHeaderAttribute : SwaggerHeaderAttribute
             MultitenancyConstants.TenantIdName,
             "Input your tenant Id to access this API",
             string.Empty,
+            JsonObjectType.String,
             true)
     {
     }

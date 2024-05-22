@@ -4,7 +4,7 @@ using Hangfire.Server;
 using Hangfire.States;
 using Hangfire.Storage;
 
-namespace BookStack.Infrastructure.BackgroundJobs;
+namespace BookStack.Infrastructure.BackgroundJobs.Hangfire;
 
 public class LogJobFilter : IClientFilter, IServerFilter, IElectStateFilter, IApplyStateFilter
 {

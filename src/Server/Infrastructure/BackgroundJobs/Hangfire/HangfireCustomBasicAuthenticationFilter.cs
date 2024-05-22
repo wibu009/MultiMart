@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Primitives;
 
-namespace BookStack.Infrastructure.BackgroundJobs;
+namespace BookStack.Infrastructure.BackgroundJobs.Hangfire;
 
 public class HangfireCustomBasicAuthenticationFilter : IDashboardAuthorizationFilter
 {

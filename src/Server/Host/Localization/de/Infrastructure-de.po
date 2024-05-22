@@ -222,12 +222,7 @@ msgstr "Registrierung bestätigen"
 #. _ = user ?? throw new NotFoundException(_t["User Not Found."]);
 #. _ = user ?? throw new NotFoundException(_t["User Not Found."]);
 #. _ = user ?? throw new NotFoundException(_t["User Not Found."]);
-#: Infrastructure\Identity\UserService.CreateUpdate.cs:153
-#: Infrastructure\Identity\UserService.cs:132
-#: Infrastructure\Identity\UserService.cs:141
-#: Infrastructure\Identity\UserService.Password.cs:54
-#: Infrastructure\Identity\UserService.Permissions.cs:14
-#: Infrastructure\Identity\UserService.Roles.cs:38
+\
 msgctxt "BookStack.Infrastructure.Identity.UserService"
 msgid "User Not Found."
 msgstr "Benutzer nicht gefunden."

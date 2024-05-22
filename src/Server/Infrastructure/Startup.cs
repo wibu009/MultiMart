@@ -1,11 +1,13 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using BookStack.Infrastructure.ApiVersioning;
 using BookStack.Infrastructure.Auth;
 using BookStack.Infrastructure.BackgroundJobs;
 using BookStack.Infrastructure.Caching;
 using BookStack.Infrastructure.Common;
 using BookStack.Infrastructure.Cors;
 using BookStack.Infrastructure.FileStorage;
+using BookStack.Infrastructure.Identity;
 using BookStack.Infrastructure.Localization;
 using BookStack.Infrastructure.Mailing;
 using BookStack.Infrastructure.Mapping;
@@ -19,7 +21,6 @@ using BookStack.Infrastructure.Security.SecurityHeaders;
 using BookStack.Infrastructure.Validations;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,7 +36,8 @@ public static class Startup
         var applicationAssembly = typeof(BookStack.Application.Startup).GetTypeInfo().Assembly;
         MapsterSettings.Configure();
         return services
-            .AddApiVersioning()
+            .AddHttpContextAccessor()
+            .AddApiVersion()
             .AddAuth(config)
             .AddBackgroundJobs(config)
             .AddCaching(config)
@@ -44,6 +46,7 @@ public static class Startup
             .AddBehaviours(applicationAssembly)
             .AddHealthCheck()
             .AddPoLocalization(config)
+            .AddFileStorage(config)
             .AddMailing(config)
             .AddMediatR(Assembly.GetExecutingAssembly())
             .AddMultitenancy()
@@ -54,14 +57,6 @@ public static class Startup
             .AddRouting(options => options.LowercaseUrls = true)
             .AddServices();
     }
-
-    private static IServiceCollection AddApiVersioning(this IServiceCollection services) =>
-        services.AddApiVersioning(config =>
-        {
-            config.DefaultApiVersion = new ApiVersion(1, 0);
-            config.AssumeDefaultVersionWhenUnspecified = true;
-            config.ReportApiVersions = true;
-        });
 
     private static IServiceCollection AddHealthCheck(this IServiceCollection services) =>
         services.AddHealthChecks().AddCheck<TenantHealthCheck>("Tenant").Services;

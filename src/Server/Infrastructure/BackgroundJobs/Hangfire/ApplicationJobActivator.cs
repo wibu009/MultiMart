@@ -1,13 +1,13 @@
-﻿using Finbuckle.MultiTenant;
-using BookStack.Infrastructure.Auth;
+﻿using BookStack.Infrastructure.Auth;
 using BookStack.Infrastructure.Common;
 using BookStack.Infrastructure.Multitenancy;
 using BookStack.Shared.Multitenancy;
+using Finbuckle.MultiTenant;
 using Hangfire;
 using Hangfire.Server;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace BookStack.Infrastructure.BackgroundJobs;
+namespace BookStack.Infrastructure.BackgroundJobs.Hangfire;
 
 public class ApplicationJobActivator : JobActivator
 {
@@ -34,11 +34,11 @@ public class ApplicationJobActivator : JobActivator
 
         private void ReceiveParameters()
         {
-            var tenantInfo = _context.GetJobParameter<FSHTenantInfo>(MultitenancyConstants.TenantIdName);
+            var tenantInfo = _context.GetJobParameter<ApplicationTenantInfo>(MultitenancyConstants.TenantIdName);
             if (tenantInfo is not null)
             {
                 _scope.ServiceProvider.GetRequiredService<IMultiTenantContextAccessor>()
-                    .MultiTenantContext = new MultiTenantContext<FSHTenantInfo>
+                    .MultiTenantContext = new MultiTenantContext<ApplicationTenantInfo>
                     {
                         TenantInfo = tenantInfo
                     };

@@ -1,22 +1,23 @@
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using BookStack.Application.Common.FileStorage;
+using BookStack.Application.Common.FileStorage.LocalStorage;
 using BookStack.Domain.Common;
 using BookStack.Infrastructure.Common.Extensions;
 
-namespace BookStack.Infrastructure.FileStorage;
+namespace BookStack.Infrastructure.FileStorage.LocalStorage;
 
-public class LocalFileStorageService : IFileStorageService
+public class LocalFileStorageService : ILocalFileStorageService
 {
     public async Task<string> UploadAsync<T>(FileUploadRequest? request, FileType supportedFileType, CancellationToken cancellationToken = default)
     where T : class
     {
-        if (request == null || request.Data == null)
+        if (request?.Data == null)
         {
             return string.Empty;
         }
 
-        if (request.Extension is null || !supportedFileType.GetDescriptionList().Contains(request.Extension.ToLower()))
+        if (request.Extension is null || !supportedFileType.GetDescriptionList().Contains(request.Extension.ToLower(System.Globalization.CultureInfo.CurrentCulture)))
             throw new InvalidOperationException("File Format Not Supported.");
         if (request.Name is null)
             throw new InvalidOperationException("Name is required.");
@@ -52,30 +53,34 @@ public class LocalFileStorageService : IFileStorageService
                 fullPath = NextAvailableFilename(fullPath);
             }
 
-            using var stream = new FileStream(fullPath, FileMode.Create);
+            await using var stream = new FileStream(fullPath, FileMode.Create);
             await streamData.CopyToAsync(stream, cancellationToken);
             return dbPath.Replace("\\", "/");
         }
-        else
+
+        return string.Empty;
+    }
+
+    public async Task RemoveAsync(string path, CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrEmpty(path))
         {
-            return string.Empty;
+            return;
         }
-    }
 
-    public static string RemoveSpecialCharacters(string str)
-    {
-        return Regex.Replace(str, "[^a-zA-Z0-9_.]+", string.Empty, RegexOptions.Compiled);
-    }
-
-    public void Remove(string? path)
-    {
-        if (File.Exists(path))
+        string fullPath = Path.Combine(Directory.GetCurrentDirectory(), path);
+        if (File.Exists(fullPath))
         {
-            File.Delete(path);
+            await Task.Run(() => File.Delete(fullPath), cancellationToken);
         }
     }
 
     private const string NumberPattern = "-{0}";
+
+    private static string RemoveSpecialCharacters(string str)
+    {
+        return Regex.Replace(str, "[^a-zA-Z0-9_.]+", string.Empty, RegexOptions.Compiled);
+    }
 
     private static string NextAvailableFilename(string path)
     {

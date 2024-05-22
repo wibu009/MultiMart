@@ -2,15 +2,19 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using BookStack.Application.Common.Caching;
 using BookStack.Application.Common.Exceptions;
 using BookStack.Application.Identity.Tokens;
 using BookStack.Infrastructure.Auth;
 using BookStack.Infrastructure.Auth.Jwt;
+using BookStack.Infrastructure.Common.Extensions;
 using BookStack.Infrastructure.Identity.User;
 using BookStack.Infrastructure.Multitenancy;
 using BookStack.Shared.Authorization;
 using BookStack.Shared.Multitenancy;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -23,27 +27,36 @@ internal class TokenService : ITokenService
     private readonly IStringLocalizer _t;
     private readonly SecuritySettings _securitySettings;
     private readonly JwtSettings _jwtSettings;
-    private readonly FSHTenantInfo? _currentTenant;
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly ICacheService _cacheService;
+    private readonly ApplicationTenantInfo? _currentTenant;
 
     public TokenService(
         UserManager<ApplicationUser> userManager,
         IOptions<JwtSettings> jwtSettings,
-        IStringLocalizer<TokenService> localizer,
-        FSHTenantInfo? currentTenant,
-        IOptions<SecuritySettings> securitySettings)
+        IStringLocalizer<TokenService> t,
+        ApplicationTenantInfo? currentTenant,
+        IOptions<SecuritySettings> securitySettings,
+        IHttpContextAccessor httpContextAccessor,
+        ICacheService cacheService)
     {
         _userManager = userManager;
-        _t = localizer;
+        _t = t;
         _jwtSettings = jwtSettings.Value;
         _currentTenant = currentTenant;
+        _httpContextAccessor = httpContextAccessor;
+        _cacheService = cacheService;
         _securitySettings = securitySettings.Value;
     }
 
-    public async Task<TokenResponse> GetTokenAsync(TokenRequest request, string ipAddress, CancellationToken cancellationToken)
+    public async Task<TokenResponse> GetTokenAsync(TokenRequest request, string ipAddress,
+        CancellationToken cancellationToken)
     {
-        if (string.IsNullOrWhiteSpace(_currentTenant?.Id)
-            || await _userManager.FindByEmailAsync(request.Email.Trim().Normalize()) is not { } user
-            || !await _userManager.CheckPasswordAsync(user, request.Password))
+        var user = await _userManager.FindByEmailAsync(request.UserNameOrEmail?.Trim().Normalize())
+                   ?? await _userManager.FindByNameAsync(request.UserNameOrEmail?.Trim().Normalize());
+
+        if (string.IsNullOrWhiteSpace(_currentTenant?.Id) || user == null ||
+            !await _userManager.CheckPasswordAsync(user, request.Password))
         {
             throw new UnauthorizedException(_t["Authentication Failed."]);
         }
@@ -62,33 +75,75 @@ internal class TokenService : ITokenService
         {
             if (!_currentTenant.IsActive)
             {
-                throw new UnauthorizedException(_t["Tenant is not Active. Please contact the Application Administrator."]);
+                throw new UnauthorizedException(
+                    _t["Tenant is not Active. Please contact the Application Administrator."]);
             }
 
             if (DateTime.UtcNow > _currentTenant.ValidUpto)
             {
-                throw new UnauthorizedException(_t["Tenant Validity Has Expired. Please contact the Application Administrator."]);
+                throw new UnauthorizedException(
+                    _t["Tenant Validity Has Expired. Please contact the Application Administrator."]);
             }
         }
 
         return await GenerateTokensAndUpdateUser(user, ipAddress);
     }
 
-    public async Task<TokenResponse> RefreshTokenAsync(RefreshTokenRequest request, string ipAddress)
+    public async Task<TokenResponse> RefreshTokenAsync(string ipAddress)
     {
-        var userPrincipal = GetPrincipalFromExpiredToken(request.Token);
-        string? userEmail = userPrincipal.GetEmail();
-        var user = await _userManager.FindByEmailAsync(userEmail!);
-        if (user is null)
+        if (_currentTenant == null || string.IsNullOrWhiteSpace(_currentTenant.Id))
         {
             throw new UnauthorizedException(_t["Authentication Failed."]);
         }
 
-        if (user.RefreshToken != request.RefreshToken || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
+        string? refreshToken = _httpContextAccessor.HttpContext?.Request.Cookies["refreshToken"];
+
+        if (string.IsNullOrEmpty(refreshToken))
         {
             throw new UnauthorizedException(_t["Invalid Refresh Token."]);
         }
 
+        var user = await _userManager
+            .Users.Include(x => x.RefreshTokens)
+            .SingleOrDefaultAsync(x => x.RefreshTokens.Any(y => y.Token == refreshToken));
+
+        if (user == null)
+            throw new UnauthorizedException(_t["Invalid Refresh Token."]);
+
+        var oldRefreshToken = user.RefreshTokens.Single(x => x.Token == refreshToken);
+        if (!oldRefreshToken.IsActive)
+            throw new UnauthorizedException(_t["Invalid Refresh Token."]);
+        oldRefreshToken.Revoked = DateTime.UtcNow;
+        await _userManager.UpdateAsync(user);
+
+        return await GenerateTokensAndUpdateUser(user, ipAddress);
+    }
+
+    public async Task<TokenResponse> RefreshTokenAsync(string ipAddress, string? signInCode)
+    {
+        if (_currentTenant == null || string.IsNullOrWhiteSpace(_currentTenant.Id))
+        {
+            throw new UnauthorizedException(_t["Authentication Failed."]);
+        }
+        (var userId, string clientIp) = _cacheService.Get<Tuple<Guid, string>>(signInCode ?? throw new ArgumentNullException(nameof(signInCode))) ?? throw new InvalidOperationException();
+
+        if (userId == Guid.Empty || clientIp.IsNullOrEmpty())
+        {
+            throw new UnauthorizedException(_t["Invalid Sign In Code."]);
+        }
+
+        await _cacheService.RemoveAsync(signInCode!);
+
+        if (clientIp != _httpContextAccessor.HttpContext!.GetIpAddress())
+        {
+            throw new UnauthorizedException(_t["Invalid Sign In Code."]);
+        }
+
+        var user = await _userManager.FindByIdAsync(userId.ToString());
+        if (user == null)
+        {
+            throw new UnauthorizedException(_t["Invalid Sign In Code."]);
+        }
         return await GenerateTokensAndUpdateUser(user, ipAddress);
     }
 
@@ -96,12 +151,9 @@ internal class TokenService : ITokenService
     {
         string token = GenerateJwt(user, ipAddress);
 
-        user.RefreshToken = GenerateRefreshToken();
-        user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenExpirationInDays);
+        await SetRefreshToken(user, ipAddress);
 
-        await _userManager.UpdateAsync(user);
-
-        return new TokenResponse(token, user.RefreshToken, user.RefreshTokenExpiryTime);
+        return await Task.FromResult(new TokenResponse(token));
     }
 
     private string GenerateJwt(ApplicationUser user, string ipAddress) =>
@@ -156,7 +208,7 @@ internal class TokenService : ITokenService
         if (securityToken is not JwtSecurityToken jwtSecurityToken ||
             !jwtSecurityToken.Header.Alg.Equals(
                 SecurityAlgorithms.HmacSha256,
-                StringComparison.InvariantCultureIgnoreCase))
+                StringComparison.OrdinalIgnoreCase))
         {
             throw new UnauthorizedException(_t["Invalid Token."]);
         }
@@ -168,5 +220,23 @@ internal class TokenService : ITokenService
     {
         byte[] secret = Encoding.UTF8.GetBytes(_jwtSettings.Key);
         return new SigningCredentials(new SymmetricSecurityKey(secret), SecurityAlgorithms.HmacSha256);
+    }
+
+    private async Task SetRefreshToken(ApplicationUser user, string ipAddress)
+    {
+        string refreshToken = TokenGenerator.GenerateToken();
+        user.RefreshTokens.Add(new ApplicationUserRefreshToken
+        {
+            Token = refreshToken,
+            Expires = DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenExpirationInDays),
+        });
+        await _userManager.UpdateAsync(user);
+
+        var cookieOptions = new CookieOptions
+        {
+            HttpOnly = true,
+            Expires = DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenExpirationInDays),
+        };
+        _httpContextAccessor.HttpContext?.Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
     }
 }

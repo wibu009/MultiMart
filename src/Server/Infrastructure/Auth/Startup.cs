@@ -1,6 +1,7 @@
 using BookStack.Application.Common.Interfaces;
 using BookStack.Infrastructure.Auth.AzureAd;
 using BookStack.Infrastructure.Auth.Jwt;
+using BookStack.Infrastructure.Auth.OAuth2;
 using BookStack.Infrastructure.Auth.Permissions;
 using BookStack.Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
@@ -17,7 +18,8 @@ internal static class Startup
         services
             .AddCurrentUser()
             .AddPermissions()
-            .AddIdentity();
+            .AddIdentity()
+            .AddOAuth2();
         services.Configure<SecuritySettings>(config.GetSection(nameof(SecuritySettings)));
         return config["SecuritySettings:Provider"]!.Equals("AzureAd", StringComparison.OrdinalIgnoreCase)
             ? services.AddAzureAdAuth(config)

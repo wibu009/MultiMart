@@ -2,14 +2,15 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using BookStack.Application.Common.Caching;
 using BookStack.Application.Common.Exceptions;
 using BookStack.Application.Identity.Tokens;
 using BookStack.Infrastructure.Auth;
 using BookStack.Infrastructure.Auth.Jwt;
+using BookStack.Infrastructure.Auth.OAuth2;
 using BookStack.Infrastructure.Common.Extensions;
 using BookStack.Infrastructure.Identity.User;
 using BookStack.Infrastructure.Multitenancy;
+using BookStack.Infrastructure.Security.Encrypt;
 using BookStack.Shared.Authorization;
 using BookStack.Shared.Multitenancy;
 using Microsoft.AspNetCore.Http;
@@ -28,8 +29,8 @@ internal class TokenService : ITokenService
     private readonly SecuritySettings _securitySettings;
     private readonly JwtSettings _jwtSettings;
     private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly ICacheService _cacheService;
     private readonly ApplicationTenantInfo? _currentTenant;
+    private readonly EncryptionSettings _encryptionSettings;
 
     public TokenService(
         UserManager<ApplicationUser> userManager,
@@ -38,15 +39,15 @@ internal class TokenService : ITokenService
         ApplicationTenantInfo? currentTenant,
         IOptions<SecuritySettings> securitySettings,
         IHttpContextAccessor httpContextAccessor,
-        ICacheService cacheService)
+        IOptions<EncryptionSettings> encryptionSettings)
     {
         _userManager = userManager;
         _t = t;
         _jwtSettings = jwtSettings.Value;
         _currentTenant = currentTenant;
         _httpContextAccessor = httpContextAccessor;
-        _cacheService = cacheService;
         _securitySettings = securitySettings.Value;
+        _encryptionSettings = encryptionSettings.Value;
     }
 
     public async Task<TokenResponse> GetTokenAsync(TokenRequest request, string ipAddress,
@@ -96,11 +97,14 @@ internal class TokenService : ITokenService
             throw new UnauthorizedException(_t["Authentication Failed."]);
         }
 
-        string? refreshToken = _httpContextAccessor.HttpContext?.Request.Cookies["refreshToken"];
+        // Decrypt the cookie name before using it
+        string cookieName = $"refreshToken-{_currentTenant.Id}";
+        string encryptedCookieName = EncryptCookieName(cookieName);
+        string? refreshToken = _httpContextAccessor.HttpContext?.Request.Cookies[encryptedCookieName];
 
         if (string.IsNullOrEmpty(refreshToken))
         {
-            throw new UnauthorizedException(_t["Invalid Refresh Token."]);
+            throw new UnauthorizedException(_t["Authentication Failed."]);
         }
 
         var user = await _userManager
@@ -108,42 +112,61 @@ internal class TokenService : ITokenService
             .SingleOrDefaultAsync(x => x.RefreshTokens.Any(y => y.Token == refreshToken));
 
         if (user == null)
-            throw new UnauthorizedException(_t["Invalid Refresh Token."]);
+            throw new UnauthorizedException(_t["Authentication Failed."]);
 
         var oldRefreshToken = user.RefreshTokens.Single(x => x.Token == refreshToken);
         if (!oldRefreshToken.IsActive)
-            throw new UnauthorizedException(_t["Invalid Refresh Token."]);
+            throw new UnauthorizedException(_t["Authentication Failed."]);
         oldRefreshToken.Revoked = DateTime.UtcNow;
         await _userManager.UpdateAsync(user);
 
         return await GenerateTokensAndUpdateUser(user, ipAddress);
     }
 
-    public async Task<TokenResponse> RefreshTokenAsync(string ipAddress, string? signInCode)
+    public async Task<TokenResponse> RefreshTokenAsync(string ipAddress, string? state)
     {
         if (_currentTenant == null || string.IsNullOrWhiteSpace(_currentTenant.Id))
         {
             throw new UnauthorizedException(_t["Authentication Failed."]);
         }
-        (var userId, string clientIp) = _cacheService.Get<Tuple<Guid, string>>(signInCode ?? throw new ArgumentNullException(nameof(signInCode))) ?? throw new InvalidOperationException();
 
-        if (userId == Guid.Empty || clientIp.IsNullOrEmpty())
+        var stateData = state?.Decrypt<StateData<CallbackStateData>>(_encryptionSettings.Key, _encryptionSettings.IV);
+        string tenantId = stateData.TenantId;
+        var expireAt = stateData.ExpireAt;
+        string clientIp = stateData.Data.ClientIp;
+        string userId = stateData.Data.UserId;
+
+        if (clientIp.IsNullOrEmpty())
         {
-            throw new UnauthorizedException(_t["Invalid Sign In Code."]);
+            throw new UnauthorizedException(_t["Authentication Failed."]);
         }
 
-        await _cacheService.RemoveAsync(signInCode!);
-
-        if (clientIp != _httpContextAccessor.HttpContext!.GetIpAddress())
+        if (clientIp != ipAddress)
         {
-            throw new UnauthorizedException(_t["Invalid Sign In Code."]);
+            throw new UnauthorizedException(_t["Authentication Failed."]);
         }
 
-        var user = await _userManager.FindByIdAsync(userId.ToString());
+        if (string.IsNullOrWhiteSpace(userId))
+        {
+            throw new UnauthorizedException(_t["Authentication Failed."]);
+        }
+
+        if(tenantId != _currentTenant.Id)
+        {
+            throw new UnauthorizedException(_t["Authentication Failed."]);
+        }
+
+        if (expireAt < DateTimeOffset.UtcNow)
+        {
+            throw new UnauthorizedException(_t["Authentication Failed."]);
+        }
+
+        var user = await _userManager.FindByIdAsync(userId);
         if (user == null)
         {
-            throw new UnauthorizedException(_t["Invalid Sign In Code."]);
+            throw new UnauthorizedException(_t["Authentication Failed."]);
         }
+
         return await GenerateTokensAndUpdateUser(user, ipAddress);
     }
 
@@ -151,7 +174,7 @@ internal class TokenService : ITokenService
     {
         string token = GenerateJwt(user, ipAddress);
 
-        await SetRefreshToken(user, ipAddress);
+        await SetRefreshToken(user);
 
         return await Task.FromResult(new TokenResponse(token));
     }
@@ -173,14 +196,6 @@ internal class TokenService : ITokenService
             new(ClaimTypes.MobilePhone, user.PhoneNumber ?? string.Empty)
         };
 
-    private static string GenerateRefreshToken()
-    {
-        byte[] randomNumber = new byte[32];
-        using var rng = RandomNumberGenerator.Create();
-        rng.GetBytes(randomNumber);
-        return Convert.ToBase64String(randomNumber);
-    }
-
     private string GenerateEncryptedToken(SigningCredentials signingCredentials, IEnumerable<Claim> claims)
     {
         var token = new JwtSecurityToken(
@@ -191,38 +206,13 @@ internal class TokenService : ITokenService
         return tokenHandler.WriteToken(token);
     }
 
-    private ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
-    {
-        var tokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key)),
-            ValidateIssuer = false,
-            ValidateAudience = false,
-            RoleClaimType = ClaimTypes.Role,
-            ClockSkew = TimeSpan.Zero,
-            ValidateLifetime = false
-        };
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out var securityToken);
-        if (securityToken is not JwtSecurityToken jwtSecurityToken ||
-            !jwtSecurityToken.Header.Alg.Equals(
-                SecurityAlgorithms.HmacSha256,
-                StringComparison.OrdinalIgnoreCase))
-        {
-            throw new UnauthorizedException(_t["Invalid Token."]);
-        }
-
-        return principal;
-    }
-
     private SigningCredentials GetSigningCredentials()
     {
         byte[] secret = Encoding.UTF8.GetBytes(_jwtSettings.Key);
         return new SigningCredentials(new SymmetricSecurityKey(secret), SecurityAlgorithms.HmacSha256);
     }
 
-    private async Task SetRefreshToken(ApplicationUser user, string ipAddress)
+    private async Task SetRefreshToken(ApplicationUser user)
     {
         string refreshToken = TokenGenerator.GenerateToken();
         user.RefreshTokens.Add(new ApplicationUserRefreshToken
@@ -237,6 +227,33 @@ internal class TokenService : ITokenService
             HttpOnly = true,
             Expires = DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenExpirationInDays),
         };
-        _httpContextAccessor.HttpContext?.Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
+        string cookieName = $"refreshToken-{_currentTenant.Id}";
+        string encryptedCookieName = EncryptCookieName(cookieName);
+        _httpContextAccessor.HttpContext?.Response.Cookies.Append(encryptedCookieName, refreshToken, cookieOptions);
+    }
+
+    private string EncryptCookieName(string cookieName)
+    {
+        string key = _jwtSettings.RefreshTokenSecretKey;
+
+        using var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(key));
+        byte[] cookieNameBytes = Encoding.UTF8.GetBytes(cookieName);
+        byte[] hashedCookieName = hmac.ComputeHash(cookieNameBytes);
+
+        return Convert.ToBase64String(hashedCookieName).Replace('+', '-').Replace('/', '_').TrimEnd('=');
+    }
+
+    private string DecryptCookieName(string encryptedCookieName)
+    {
+        string key = _jwtSettings.RefreshTokenSecretKey;
+
+        // Replace '-' with '+', '_' with '/', and add the correct number of padding characters
+        encryptedCookieName = encryptedCookieName.Replace('-', '+').Replace('_', '/') + new string('=', (4 - (encryptedCookieName.Length % 4)) % 4);
+
+        using var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(key));
+        byte[] encryptedCookieNameBytes = Convert.FromBase64String(encryptedCookieName);
+        byte[] decryptedCookieNameBytes = hmac.ComputeHash(encryptedCookieNameBytes);
+
+        return Encoding.UTF8.GetString(decryptedCookieNameBytes);
     }
 }

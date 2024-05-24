@@ -35,7 +35,6 @@ public class ApplicationTenantInfo : ITenantInfo
 
     public string Name { get; set; } = default!;
     public string ConnectionString { get; set; } = default!;
-
     public string AdminEmail { get; private set; } = default!;
     public bool IsActive { get; private set; }
     public DateTime ValidUpto { get; private set; }

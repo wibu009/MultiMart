@@ -3,9 +3,19 @@
     "Provider": "Jwt",
     "RequireConfirmedAccount":true,
     "JwtSettings": {
-      "key": "S0M3RAN0MS3CR3T!1!MAG1C!1!",
+      "key": "2yogejg0Ef0oL1W5sTF8OcqiSyyy//0Ez1ffE/Ziw3EF3DoO9Jr/AIT/V6NzXcJM",
       "tokenExpirationInMinutes": 60,
       "refreshTokenExpirationInDays": 7
+    },
+    "FaceBookSettings": {
+      "AppId": "your-app-id",
+      "AppSecret": "your-app-secret",
+      "CallBackPath": "/api/oauth/external-auth-callback/facebook"
+    },
+    "GoogleSettings": {
+      "ClientId": "your-client-id",
+      "ClientSecret": "your-client-secret",
+      "CallBackPath": "/api/oauth/external-auth-callback/google"
     },
     "AzureAd": {
       "Instance": "https://login.microsoftonline.com/",
@@ -32,5 +42,9 @@
       "SameSite": "",
       "XXSS-Protection": "1; mode=block"
     }
+  },
+  "EncryptionSettings": {
+    "Key": "K1oNzOeJMmk+a20sygJVleEIxtSzoNkl9/X3KHiS4RE=",
+    "IV": "goprQ1n4n1d4BTvi9gU9Xw=="
   }
 }

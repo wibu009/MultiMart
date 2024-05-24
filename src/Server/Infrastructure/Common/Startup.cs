@@ -1,10 +1,19 @@
 ﻿using BookStack.Application.Common.Interfaces;
+using BookStack.Infrastructure.Security.Encrypt;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BookStack.Infrastructure.Common;
 
 internal static class Startup
 {
+    internal static IServiceCollection AddSettings(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.Configure<EncryptionSettings>(configuration.GetSection(nameof(EncryptionSettings)));
+
+        return services;
+    }
+
     internal static IServiceCollection AddServices(this IServiceCollection services) =>
         services
             .AddServices(typeof(ITransientService), ServiceLifetime.Transient)

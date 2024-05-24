@@ -21,12 +21,12 @@ public sealed class TokensController : VersionNeutralApiController
     [HttpGet("refresh")]
     [AllowAnonymous]
     [TenantIdHeader]
-    [OpenApiOperation("Request an access token using sign-in code or cookie.", "")]
-    [ApiConventionMethod(typeof(FSHApiConventions), nameof(FSHApiConventions.Search))]
-    public Task<TokenResponse> RefreshAsync([FromQuery] string? signInCode)
+    [OpenApiOperation("Request an access token using a refresh token.", "")]
+    [ApiConventionMethod(typeof(ApplicationApiConventions), nameof(ApplicationApiConventions.Search))]
+    public Task<TokenResponse> RefreshAsync([FromQuery] string? state)
     {
-        return signInCode == null
+        return state == null
             ? _tokenService.RefreshTokenAsync(Request.GetIpAddress())
-            : _tokenService.RefreshTokenAsync(Request.GetIpAddress(), signInCode);
+            : _tokenService.RefreshTokenAsync(Request.GetIpAddress(), state);
     }
 }

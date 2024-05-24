@@ -1,5 +1,8 @@
 using BookStack.Application.Multitenancy;
+using BookStack.Infrastructure.Auth.OAuth2;
+using BookStack.Infrastructure.Common.Extensions;
 using BookStack.Infrastructure.Persistence;
+using BookStack.Infrastructure.Security.Encrypt;
 using BookStack.Shared.Authorization;
 using BookStack.Shared.Multitenancy;
 using Microsoft.AspNetCore.Builder;
@@ -13,7 +16,7 @@ namespace BookStack.Infrastructure.Multitenancy;
 
 internal static class Startup
 {
-    internal static IServiceCollection AddMultitenancy(this IServiceCollection services)
+    internal static IServiceCollection AddMultitenancy(this IServiceCollection services, IConfiguration configuration)
     {
         return services
             .AddDbContext<TenantDbContext>((p, m) =>
@@ -26,6 +29,7 @@ internal static class Startup
                 .WithClaimStrategy(ApplicationClaims.Tenant)
                 .WithHeaderStrategy(MultitenancyConstants.TenantIdName)
                 .WithQueryStringStrategy(MultitenancyConstants.TenantIdName)
+                .WithOAuthStateStrategy(configuration)
                 .WithEFCoreStore<TenantDbContext, ApplicationTenantInfo>()
                 .Services
             .AddScoped<ITenantService, TenantService>();
@@ -46,4 +50,26 @@ internal static class Startup
 
             return Task.FromResult((string?)tenantIdParam.ToString());
         });
+
+    private static FinbuckleMultiTenantBuilder<ApplicationTenantInfo> WithOAuthStateStrategy(
+        this FinbuckleMultiTenantBuilder<ApplicationTenantInfo> builder, IConfiguration configuration)
+    {
+        return builder.WithDelegateStrategy(context =>
+        {
+            if (context is not HttpContext httpContext)
+            {
+                return Task.FromResult((string?)null);
+            }
+
+            string? state = httpContext.Request.Query["state"];
+            if (string.IsNullOrEmpty(state))
+            {
+                return Task.FromResult((string?)null);
+            }
+
+            var encryptionSettings = configuration.GetSection(nameof(EncryptionSettings)).Get<EncryptionSettings>();
+            var stateData = state.Decrypt<StateData<AuthStateData>>(encryptionSettings.Key, encryptionSettings.IV);
+            return Task.FromResult(stateData?.TenantId);
+        });
+    }
 }

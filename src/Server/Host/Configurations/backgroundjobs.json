@@ -21,7 +21,7 @@
     },
     "Storage": {
       "StorageProvider": "mssql",
-      "ConnectionString": "Server=(localdb)\\mssqllocaldb;Database=BookStackDb;Trusted_Connection=True;MultipleActiveResultSets=true",
+      "ConnectionString": "Server=(localdb)\\mssqllocaldb;Database=BookStackRootDb;Trusted_Connection=True;MultipleActiveResultSets=true",
       "Options": {
         "CommandBatchMaxTimeout": "00:05:00",
         "QueuePollInterval": "00:00:01",

@@ -2,7 +2,7 @@
 
 namespace BookStack.Infrastructure.Common.Extensions;
 
-public static class ObjectExtension
+public static class ObjectExtensions
 {
     public static T SetPropertyValue<T>(this T obj, string propertyName, object value)
         where T : class

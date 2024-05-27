@@ -68,7 +68,7 @@ internal static class Startup
             }
 
             var encryptionSettings = configuration.GetSection(nameof(EncryptionSettings)).Get<EncryptionSettings>();
-            var stateData = state.Decrypt<StateData<AuthStateData>>(encryptionSettings.Key, encryptionSettings.IV);
+            var stateData = state.Decrypt<StateData<string>>(encryptionSettings.Key, encryptionSettings.IV);
             return Task.FromResult(stateData?.TenantId);
         });
     }

@@ -1,5 +1,4 @@
-﻿using System.Text;
-using BookStack.Application.Common.Caching;
+﻿using BookStack.Application.Common.Caching;
 using BookStack.Infrastructure.Auth.OAuth2.Facebook;
 using BookStack.Infrastructure.Auth.OAuth2.Google;
 using BookStack.Infrastructure.Common.Extensions;
@@ -8,13 +7,10 @@ using BookStack.Infrastructure.Identity.User;
 using BookStack.Infrastructure.Multitenancy;
 using BookStack.Infrastructure.Security.Encrypt;
 using BookStack.Shared.Authorization;
-using BookStack.Shared.Multitenancy;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
 using SendGrid.Helpers.Errors.Model;
 
 namespace BookStack.Infrastructure.Auth.OAuth2;
@@ -28,6 +24,7 @@ public class OAuth2Service
     private readonly IStringLocalizer _t;
     private readonly ApplicationTenantInfo _currentTenant;
     private readonly EncryptionSettings _encryptionSettings;
+    private readonly ICacheService _cacheService;
 
     public OAuth2Service(
         IHttpContextAccessor httpContextAccessor,
@@ -36,12 +33,14 @@ public class OAuth2Service
         UserManager<ApplicationUser> userManager,
         IStringLocalizer<OAuth2Service> t,
         ApplicationTenantInfo currentTenant,
-        IOptions<EncryptionSettings> encryptionSettings)
+        IOptions<EncryptionSettings> encryptionSettings,
+        ICacheService cacheService)
     {
         _httpContextAccessor = httpContextAccessor;
         _userManager = userManager;
         _t = t;
         _currentTenant = currentTenant;
+        _cacheService = cacheService;
         _googleOAuth2Service = new GoogleOAuth2Service(
             googleSettings.Value,
             $"{httpContextAccessor.HttpContext!.Request.Scheme}://{httpContextAccessor.HttpContext!.Request.Host}{googleSettings.Value.CallBackPath}");
@@ -54,13 +53,17 @@ public class OAuth2Service
 
     public async Task<string> ExternalAuthAsync(string provider)
     {
-        var stateData = new StateData<AuthStateData>(
+        string cacheKey = TokenGenerator.GenerateToken();
+        await _cacheService.SetAsync(
+            cacheKey,
+            Tuple.Create(
+                _httpContextAccessor.HttpContext.Request.GetUrlFromRequest(),
+                _httpContextAccessor.HttpContext.GetIpAddress()),
+            TimeSpan.FromMinutes(2));
+
+        var stateData = new StateData<string>(
             _currentTenant.Id,
-            new AuthStateData
-            {
-                ClientUrl = _httpContextAccessor.HttpContext.Request.GetUrlFromRequest(),
-                ClientIp = _httpContextAccessor.HttpContext.GetIpAddress(),
-            },
+            cacheKey,
             DateTimeOffset.UtcNow.AddMinutes(2));
         string state = stateData.Encrypt(_encryptionSettings.Key, _encryptionSettings.IV);
 
@@ -87,23 +90,30 @@ public class OAuth2Service
             throw new BadRequestException(_t["External auth has failed."]);
         }
 
-        var authStateData = (state ?? throw new ArgumentNullException(nameof(state))).Decrypt<StateData<AuthStateData>>(_encryptionSettings.Key, _encryptionSettings.IV);
-        string tenantId = authStateData.TenantId;
-        string clientIp = authStateData.Data.ClientIp;
-        string clientUrl = authStateData.Data.ClientUrl;
+        var stateData = state == null ? throw new BadRequestException(_t["Invalid state."]) : state.Decrypt<StateData<string>>(_encryptionSettings.Key, _encryptionSettings.IV);
+        string tenantId = stateData.TenantId;
+        (string clientUrl, string clientIp) = await _cacheService.GetAsync<Tuple<string, string>>(stateData.Data) ?? throw new BadRequestException(_t["Invalid state."]);
+        await _cacheService.RemoveAsync(stateData.Data);
 
         dynamic? userExist = await _userManager.FindByEmailAsync(user.Email);
-        string callBackStateData;
+        string signInToken;
+        string signInTokenCacheKey = TokenGenerator.GenerateToken();
         if (userExist != null)
         {
-            callBackStateData = new StateData<CallbackStateData>(
+            await _cacheService.SetAsync(
+                signInTokenCacheKey,
+                Tuple.Create(userExist.Id, clientIp),
+                TimeSpan.FromMinutes(2));
+
+            signInToken = new StateData<string>(
                 tenantId,
-                new CallbackStateData { ClientIp = clientIp, UserId = userExist.Id, },
-                DateTimeOffset.UtcNow.AddMinutes(2)).ToBase64String();
-            return clientUrl.AddQueryParam("state", callBackStateData);
+                signInTokenCacheKey,
+                DateTimeOffset.UtcNow.AddMinutes(2))
+                .Encrypt(_encryptionSettings.Key, _encryptionSettings.IV);
+            return clientUrl.AddQueryParam("sign_in_token", signInToken);
         }
 
-        dynamic? nameParts = user.Name.Split(" ");
+        string[] nameParts = user.Name.Split(" ");
         var appUser = new ApplicationUser
         {
             Id = Guid.NewGuid().ToString(),
@@ -117,11 +127,17 @@ public class OAuth2Service
 
         await _userManager.CreateAsync(appUser);
         await _userManager.AddToRoleAsync(appUser, ApplicationRoles.Basic);
-        callBackStateData = new StateData<CallbackStateData>(
+
+        await _cacheService.SetAsync(
+            signInTokenCacheKey,
+            Tuple.Create(appUser.Id, clientIp),
+            TimeSpan.FromMinutes(2));
+        signInToken = new StateData<string>(
             tenantId,
-            new CallbackStateData { ClientIp = clientIp, UserId = appUser.Id, },
+            signInTokenCacheKey,
             DateTimeOffset.UtcNow.AddMinutes(2))
-            .ToBase64String();
-        return clientUrl.AddQueryParam("state", callBackStateData);
+            .Encrypt(_encryptionSettings.Key, _encryptionSettings.IV);
+
+        return clientUrl.AddQueryParam("sign_token", signInToken);
     }
 }

@@ -35,15 +35,3 @@ public class StateData<T>
         return JsonConvert.DeserializeObject<StateData<T>>(json) ?? throw new InvalidOperationException();
     }
 }
-
-public class AuthStateData
-{
-    public string ClientUrl { get; set; }
-    public string ClientIp { get; set; }
-}
-
-public class CallbackStateData
-{
-    public string ClientIp { get; set; }
-    public string UserId { get; set; }
-}

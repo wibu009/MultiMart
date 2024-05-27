@@ -1,8 +1,10 @@
 using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using BookStack.Application.Common.Exceptions;
+using BookStack.Application.Common.Caching;
+using BookStack.Application.Common.Interfaces;
 using BookStack.Application.Identity.Tokens;
 using BookStack.Infrastructure.Auth;
 using BookStack.Infrastructure.Auth.Jwt;
@@ -19,6 +21,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using SendGrid.Helpers.Errors.Model;
+using UnauthorizedException = BookStack.Application.Common.Exceptions.UnauthorizedException;
 
 namespace BookStack.Infrastructure.Identity.Token;
 
@@ -31,6 +35,8 @@ internal class TokenService : ITokenService
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly ApplicationTenantInfo? _currentTenant;
     private readonly EncryptionSettings _encryptionSettings;
+    private  readonly ICurrentUser _currentUser;
+    private readonly ICacheService _cacheService;
 
     public TokenService(
         UserManager<ApplicationUser> userManager,
@@ -39,13 +45,17 @@ internal class TokenService : ITokenService
         ApplicationTenantInfo? currentTenant,
         IOptions<SecuritySettings> securitySettings,
         IHttpContextAccessor httpContextAccessor,
-        IOptions<EncryptionSettings> encryptionSettings)
+        IOptions<EncryptionSettings> encryptionSettings,
+        ICacheService cacheService,
+        ICurrentUser currentUser)
     {
         _userManager = userManager;
         _t = t;
         _jwtSettings = jwtSettings.Value;
         _currentTenant = currentTenant;
         _httpContextAccessor = httpContextAccessor;
+        _cacheService = cacheService;
+        _currentUser = currentUser;
         _securitySettings = securitySettings.Value;
         _encryptionSettings = encryptionSettings.Value;
     }
@@ -90,51 +100,23 @@ internal class TokenService : ITokenService
         return await GenerateTokensAndUpdateUser(user, ipAddress);
     }
 
-    public async Task<TokenResponse> RefreshTokenAsync(string ipAddress)
+    public async Task<TokenResponse> GetTokenAsync(string? signInToken, string ipAddress, CancellationToken cancellationToken)
     {
         if (_currentTenant == null || string.IsNullOrWhiteSpace(_currentTenant.Id))
         {
             throw new UnauthorizedException(_t["Authentication Failed."]);
         }
 
-        // Decrypt the cookie name before using it
-        string cookieName = $"refreshToken-{_currentTenant.Id}";
-        string encryptedCookieName = EncryptCookieName(cookieName);
-        string? refreshToken = _httpContextAccessor.HttpContext?.Request.Cookies[encryptedCookieName];
-
-        if (string.IsNullOrEmpty(refreshToken))
-        {
-            throw new UnauthorizedException(_t["Authentication Failed."]);
-        }
-
-        var user = await _userManager
-            .Users.Include(x => x.RefreshTokens)
-            .SingleOrDefaultAsync(x => x.RefreshTokens.Any(y => y.Token == refreshToken));
-
-        if (user == null)
-            throw new UnauthorizedException(_t["Authentication Failed."]);
-
-        var oldRefreshToken = user.RefreshTokens.Single(x => x.Token == refreshToken);
-        if (!oldRefreshToken.IsActive)
-            throw new UnauthorizedException(_t["Authentication Failed."]);
-        oldRefreshToken.Revoked = DateTime.UtcNow;
-        await _userManager.UpdateAsync(user);
-
-        return await GenerateTokensAndUpdateUser(user, ipAddress);
-    }
-
-    public async Task<TokenResponse> RefreshTokenAsync(string ipAddress, string? state)
-    {
-        if (_currentTenant == null || string.IsNullOrWhiteSpace(_currentTenant.Id))
-        {
-            throw new UnauthorizedException(_t["Authentication Failed."]);
-        }
-
-        var stateData = state?.Decrypt<StateData<CallbackStateData>>(_encryptionSettings.Key, _encryptionSettings.IV);
+        string? decodedState = WebUtility.UrlDecode(signInToken);
+        var stateData = decodedState.Contains("#/_=_")
+            ? decodedState.Replace("#/_=_", string.Empty).Decrypt<StateData<string>>(_encryptionSettings.Key, _encryptionSettings.IV)
+            : decodedState.Decrypt<StateData<string>>(_encryptionSettings.Key, _encryptionSettings.IV);
         string tenantId = stateData.TenantId;
         var expireAt = stateData.ExpireAt;
-        string clientIp = stateData.Data.ClientIp;
-        string userId = stateData.Data.UserId;
+        string cacheKey = stateData.Data;
+        (string userId, string clientIp) = await _cacheService.GetAsync<Tuple<string, string>>(cacheKey, cancellationToken) ??
+                                           throw new UnauthorizedException(_t["Authentication Failed."]);
+        await _cacheService.RemoveAsync(cacheKey, cancellationToken);
 
         if (clientIp.IsNullOrEmpty())
         {
@@ -168,6 +150,68 @@ internal class TokenService : ITokenService
         }
 
         return await GenerateTokensAndUpdateUser(user, ipAddress);
+    }
+
+    public async Task<TokenResponse> RefreshTokenAsync(string ipAddress)
+    {
+        if (_currentTenant == null || string.IsNullOrWhiteSpace(_currentTenant.Id))
+        {
+            throw new UnauthorizedException(_t["Authentication Failed."]);
+        }
+
+        string cookieName = $"refreshToken-{_currentTenant.Id}";
+        string encryptedCookieName = cookieName.Encrypt(_encryptionSettings.Key, _encryptionSettings.IV);
+        string? refreshToken = _httpContextAccessor.HttpContext?.Request.Cookies[encryptedCookieName];
+
+        if (string.IsNullOrEmpty(refreshToken))
+        {
+            throw new UnauthorizedException(_t["Authentication Failed."]);
+        }
+
+        var user = await _userManager
+            .Users.Include(x => x.RefreshTokens)
+            .SingleOrDefaultAsync(x => x.RefreshTokens.Any(y => y.Token == refreshToken));
+
+        if (user == null)
+            throw new UnauthorizedException(_t["Authentication Failed."]);
+
+        var oldRefreshToken = user.RefreshTokens.Single(x => x.Token == refreshToken);
+        if (!oldRefreshToken.IsActive)
+            throw new UnauthorizedException(_t["Authentication Failed."]);
+        oldRefreshToken.Revoked = DateTime.UtcNow;
+        await _userManager.UpdateAsync(user);
+
+        return await GenerateTokensAndUpdateUser(user, ipAddress);
+    }
+
+    public async Task<string> RevokeRefreshTokenAsync()
+    {
+        string userId = _currentUser.GetUserId().ToString();
+
+        var user = await _userManager.Users
+            .Include(x => x.RefreshTokens)
+            .SingleOrDefaultAsync(x => x.Id == userId);
+        if (user == null)
+        {
+            throw new NotFoundException(_t["User not found."]);
+        }
+
+        // Delete the refresh token cookie
+        string cookieName = $"refreshToken-{_currentTenant.Id}";
+        string encryptedCookieName = cookieName.Encrypt(_encryptionSettings.Key, _encryptionSettings.IV);
+        if (_httpContextAccessor.HttpContext.Request.Cookies.ContainsKey(encryptedCookieName))
+        {
+            var refreshToken = user.RefreshTokens.Single(x => x.Token == _httpContextAccessor.HttpContext?.Request.Cookies[encryptedCookieName]);
+            if (refreshToken.IsActive)
+            {
+                refreshToken.Revoked = DateTime.UtcNow;
+                await _userManager.UpdateAsync(user);
+            }
+
+            _httpContextAccessor.HttpContext.Response.Cookies.Delete(encryptedCookieName);
+        }
+
+        return _httpContextAccessor.HttpContext.Request.GetBaseUrl();
     }
 
     private async Task<TokenResponse> GenerateTokensAndUpdateUser(ApplicationUser user, string ipAddress)
@@ -228,32 +272,7 @@ internal class TokenService : ITokenService
             Expires = DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenExpirationInDays),
         };
         string cookieName = $"refreshToken-{_currentTenant.Id}";
-        string encryptedCookieName = EncryptCookieName(cookieName);
+        string encryptedCookieName = cookieName.Encrypt(_encryptionSettings.Key, _encryptionSettings.IV);
         _httpContextAccessor.HttpContext?.Response.Cookies.Append(encryptedCookieName, refreshToken, cookieOptions);
-    }
-
-    private string EncryptCookieName(string cookieName)
-    {
-        string key = _jwtSettings.RefreshTokenSecretKey;
-
-        using var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(key));
-        byte[] cookieNameBytes = Encoding.UTF8.GetBytes(cookieName);
-        byte[] hashedCookieName = hmac.ComputeHash(cookieNameBytes);
-
-        return Convert.ToBase64String(hashedCookieName).Replace('+', '-').Replace('/', '_').TrimEnd('=');
-    }
-
-    private string DecryptCookieName(string encryptedCookieName)
-    {
-        string key = _jwtSettings.RefreshTokenSecretKey;
-
-        // Replace '-' with '+', '_' with '/', and add the correct number of padding characters
-        encryptedCookieName = encryptedCookieName.Replace('-', '+').Replace('_', '/') + new string('=', (4 - (encryptedCookieName.Length % 4)) % 4);
-
-        using var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(key));
-        byte[] encryptedCookieNameBytes = Convert.FromBase64String(encryptedCookieName);
-        byte[] decryptedCookieNameBytes = hmac.ComputeHash(encryptedCookieNameBytes);
-
-        return Encoding.UTF8.GetString(decryptedCookieNameBytes);
     }
 }

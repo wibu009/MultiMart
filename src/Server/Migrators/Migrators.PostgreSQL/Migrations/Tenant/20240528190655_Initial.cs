@@ -12,11 +12,11 @@ namespace Migrators.PostgreSQL.Migrations.Tenant
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
-                name: "MultiTenancy");
+                name: "multitenancy");
 
             migrationBuilder.CreateTable(
                 name: "Tenants",
-                schema: "MultiTenancy",
+                schema: "multitenancy",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
@@ -35,7 +35,7 @@ namespace Migrators.PostgreSQL.Migrations.Tenant
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tenants_Identifier",
-                schema: "MultiTenancy",
+                schema: "multitenancy",
                 table: "Tenants",
                 column: "Identifier",
                 unique: true);
@@ -46,7 +46,7 @@ namespace Migrators.PostgreSQL.Migrations.Tenant
         {
             migrationBuilder.DropTable(
                 name: "Tenants",
-                schema: "MultiTenancy");
+                schema: "multitenancy");
         }
     }
 }

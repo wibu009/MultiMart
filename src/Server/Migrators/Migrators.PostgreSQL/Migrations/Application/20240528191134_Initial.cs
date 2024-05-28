@@ -13,17 +13,17 @@ namespace Migrators.PostgreSQL.Migrations.Application
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
-                name: "Auditing");
+                name: "auditing");
 
             migrationBuilder.EnsureSchema(
-                name: "Catalog");
+                name: "catalog");
 
             migrationBuilder.EnsureSchema(
-                name: "Identity");
+                name: "identity");
 
             migrationBuilder.CreateTable(
                 name: "AuditTrails",
-                schema: "Auditing",
+                schema: "auditing",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -44,7 +44,7 @@ namespace Migrators.PostgreSQL.Migrations.Application
 
             migrationBuilder.CreateTable(
                 name: "Brands",
-                schema: "Catalog",
+                schema: "catalog",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -65,7 +65,7 @@ namespace Migrators.PostgreSQL.Migrations.Application
 
             migrationBuilder.CreateTable(
                 name: "Roles",
-                schema: "Identity",
+                schema: "identity",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
@@ -82,7 +82,7 @@ namespace Migrators.PostgreSQL.Migrations.Application
 
             migrationBuilder.CreateTable(
                 name: "Users",
-                schema: "Identity",
+                schema: "identity",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
@@ -90,8 +90,6 @@ namespace Migrators.PostgreSQL.Migrations.Application
                     LastName = table.Column<string>(type: "text", nullable: true),
                     ImageUrl = table.Column<string>(type: "text", nullable: true),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false),
-                    RefreshToken = table.Column<string>(type: "text", nullable: true),
-                    RefreshTokenExpiryTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     ObjectId = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     TenantId = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -116,7 +114,7 @@ namespace Migrators.PostgreSQL.Migrations.Application
 
             migrationBuilder.CreateTable(
                 name: "Products",
-                schema: "Catalog",
+                schema: "catalog",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -139,7 +137,7 @@ namespace Migrators.PostgreSQL.Migrations.Application
                     table.ForeignKey(
                         name: "FK_Products_Brands_BrandId",
                         column: x => x.BrandId,
-                        principalSchema: "Catalog",
+                        principalSchema: "catalog",
                         principalTable: "Brands",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -147,7 +145,7 @@ namespace Migrators.PostgreSQL.Migrations.Application
 
             migrationBuilder.CreateTable(
                 name: "RoleClaims",
-                schema: "Identity",
+                schema: "identity",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -165,7 +163,7 @@ namespace Migrators.PostgreSQL.Migrations.Application
                     table.ForeignKey(
                         name: "FK_RoleClaims_Roles_RoleId",
                         column: x => x.RoleId,
-                        principalSchema: "Identity",
+                        principalSchema: "identity",
                         principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -173,7 +171,7 @@ namespace Migrators.PostgreSQL.Migrations.Application
 
             migrationBuilder.CreateTable(
                 name: "UserClaims",
-                schema: "Identity",
+                schema: "identity",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -189,7 +187,7 @@ namespace Migrators.PostgreSQL.Migrations.Application
                     table.ForeignKey(
                         name: "FK_UserClaims_Users_UserId",
                         column: x => x.UserId,
-                        principalSchema: "Identity",
+                        principalSchema: "identity",
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -197,7 +195,7 @@ namespace Migrators.PostgreSQL.Migrations.Application
 
             migrationBuilder.CreateTable(
                 name: "UserLogins",
-                schema: "Identity",
+                schema: "identity",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
@@ -213,7 +211,7 @@ namespace Migrators.PostgreSQL.Migrations.Application
                     table.ForeignKey(
                         name: "FK_UserLogins_Users_UserId",
                         column: x => x.UserId,
-                        principalSchema: "Identity",
+                        principalSchema: "identity",
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -221,7 +219,7 @@ namespace Migrators.PostgreSQL.Migrations.Application
 
             migrationBuilder.CreateTable(
                 name: "UserRefreshTokens",
-                schema: "Identity",
+                schema: "identity",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -238,7 +236,7 @@ namespace Migrators.PostgreSQL.Migrations.Application
                     table.ForeignKey(
                         name: "FK_UserRefreshTokens_Users_UserId",
                         column: x => x.UserId,
-                        principalSchema: "Identity",
+                        principalSchema: "identity",
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -246,7 +244,7 @@ namespace Migrators.PostgreSQL.Migrations.Application
 
             migrationBuilder.CreateTable(
                 name: "UserRoles",
-                schema: "Identity",
+                schema: "identity",
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "text", nullable: false),
@@ -259,14 +257,14 @@ namespace Migrators.PostgreSQL.Migrations.Application
                     table.ForeignKey(
                         name: "FK_UserRoles_Roles_RoleId",
                         column: x => x.RoleId,
-                        principalSchema: "Identity",
+                        principalSchema: "identity",
                         principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_UserRoles_Users_UserId",
                         column: x => x.UserId,
-                        principalSchema: "Identity",
+                        principalSchema: "identity",
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -274,7 +272,7 @@ namespace Migrators.PostgreSQL.Migrations.Application
 
             migrationBuilder.CreateTable(
                 name: "UserTokens",
-                schema: "Identity",
+                schema: "identity",
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "text", nullable: false),
@@ -289,7 +287,7 @@ namespace Migrators.PostgreSQL.Migrations.Application
                     table.ForeignKey(
                         name: "FK_UserTokens_Users_UserId",
                         column: x => x.UserId,
-                        principalSchema: "Identity",
+                        principalSchema: "identity",
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -297,63 +295,63 @@ namespace Migrators.PostgreSQL.Migrations.Application
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_BrandId",
-                schema: "Catalog",
+                schema: "catalog",
                 table: "Products",
                 column: "BrandId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RoleClaims_RoleId",
-                schema: "Identity",
+                schema: "identity",
                 table: "RoleClaims",
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
-                schema: "Identity",
+                schema: "identity",
                 table: "Roles",
                 columns: new[] { "NormalizedName", "TenantId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserClaims_UserId",
-                schema: "Identity",
+                schema: "identity",
                 table: "UserClaims",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserLogins_LoginProvider_ProviderKey_TenantId",
-                schema: "Identity",
+                schema: "identity",
                 table: "UserLogins",
                 columns: new[] { "LoginProvider", "ProviderKey", "TenantId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserLogins_UserId",
-                schema: "Identity",
+                schema: "identity",
                 table: "UserLogins",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserRefreshTokens_UserId",
-                schema: "Identity",
+                schema: "identity",
                 table: "UserRefreshTokens",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserRoles_RoleId",
-                schema: "Identity",
+                schema: "identity",
                 table: "UserRoles",
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",
-                schema: "Identity",
+                schema: "identity",
                 table: "Users",
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
-                schema: "Identity",
+                schema: "identity",
                 table: "Users",
                 columns: new[] { "NormalizedUserName", "TenantId" },
                 unique: true);
@@ -364,47 +362,47 @@ namespace Migrators.PostgreSQL.Migrations.Application
         {
             migrationBuilder.DropTable(
                 name: "AuditTrails",
-                schema: "Auditing");
+                schema: "auditing");
 
             migrationBuilder.DropTable(
                 name: "Products",
-                schema: "Catalog");
+                schema: "catalog");
 
             migrationBuilder.DropTable(
                 name: "RoleClaims",
-                schema: "Identity");
+                schema: "identity");
 
             migrationBuilder.DropTable(
                 name: "UserClaims",
-                schema: "Identity");
+                schema: "identity");
 
             migrationBuilder.DropTable(
                 name: "UserLogins",
-                schema: "Identity");
+                schema: "identity");
 
             migrationBuilder.DropTable(
                 name: "UserRefreshTokens",
-                schema: "Identity");
+                schema: "identity");
 
             migrationBuilder.DropTable(
                 name: "UserRoles",
-                schema: "Identity");
+                schema: "identity");
 
             migrationBuilder.DropTable(
                 name: "UserTokens",
-                schema: "Identity");
+                schema: "identity");
 
             migrationBuilder.DropTable(
                 name: "Brands",
-                schema: "Catalog");
+                schema: "catalog");
 
             migrationBuilder.DropTable(
                 name: "Roles",
-                schema: "Identity");
+                schema: "identity");
 
             migrationBuilder.DropTable(
                 name: "Users",
-                schema: "Identity");
+                schema: "identity");
         }
     }
 }

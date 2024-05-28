@@ -1,9 +1,9 @@
-using BookStack.Application.Common.Interfaces;
+using MultiMart.Application.Common.Interfaces;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 
-namespace BookStack.Infrastructure.Common.Services;
+namespace MultiMart.Infrastructure.Common.Services;
 
 public class NewtonSoftService : ISerializerService
 {

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 
-namespace BookStack.Infrastructure.Auth.Permissions;
+namespace MultiMart.Infrastructure.Auth.Permissions;
 
 internal class PermissionRequirement : IAuthorizationRequirement
 {

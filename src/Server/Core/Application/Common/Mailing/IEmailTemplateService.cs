@@ -1,4 +1,6 @@
-namespace BookStack.Application.Common.Mailing;
+using MultiMart.Application.Common.Interfaces;
+
+namespace MultiMart.Application.Common.Mailing;
 
 public interface IEmailTemplateService : ITransientService
 {

@@ -1,12 +1,12 @@
-using BookStack.Application.Common.Mailing;
-using BookStack.Application.Common.Mailing.Smtp;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MimeKit;
+using MultiMart.Application.Common.Mailing;
+using MultiMart.Application.Common.Mailing.Smtp;
 
-namespace BookStack.Infrastructure.Mailing.Smtp;
+namespace MultiMart.Infrastructure.Mailing.Smtp;
 
 public class SmtpMailService : ISmtpMailService
 {

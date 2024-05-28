@@ -1,4 +1,4 @@
-namespace BookStack.Application.Common.Caching;
+namespace MultiMart.Application.Common.Caching;
 
 public static class CacheServiceExtensions
 {

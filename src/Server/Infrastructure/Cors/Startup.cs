@@ -1,9 +1,8 @@
-﻿using BookStack.Infrastructure.Common.Settings;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace BookStack.Infrastructure.Cors;
+namespace MultiMart.Infrastructure.Cors;
 
 internal static class Startup
 {

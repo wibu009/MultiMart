@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace BookStack.Infrastructure.Middleware;
+namespace MultiMart.Infrastructure.Middleware;
 
 internal static class Startup
 {

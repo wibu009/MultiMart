@@ -1,4 +1,6 @@
-﻿namespace BookStack.Application.Catalog.Brands;
+﻿using MultiMart.Application.Common.Interfaces;
+
+namespace MultiMart.Application.Catalog.Brands;
 
 public class DeleteRandomBrandRequest : IRequest<string>
 {

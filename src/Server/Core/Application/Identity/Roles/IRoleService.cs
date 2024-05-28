@@ -1,4 +1,6 @@
-namespace BookStack.Application.Identity.Roles;
+using MultiMart.Application.Common.Interfaces;
+
+namespace MultiMart.Application.Identity.Roles;
 
 public interface IRoleService : ITransientService
 {

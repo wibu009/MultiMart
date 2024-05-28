@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace BookStack.Infrastructure.Common.Extensions;
+namespace MultiMart.Infrastructure.Common.Extensions;
 
 public static class TypeExtensions
 {

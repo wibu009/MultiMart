@@ -1,4 +1,6 @@
-namespace BookStack.Application.Common.FileStorage;
+using MultiMart.Application.Common.Validation;
+
+namespace MultiMart.Application.Common.FileStorage;
 
 public class FileUploadRequest
 {

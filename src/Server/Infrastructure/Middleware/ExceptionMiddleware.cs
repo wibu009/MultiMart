@@ -1,12 +1,12 @@
 using System.Net;
-using BookStack.Application.Common.Exceptions;
-using BookStack.Application.Common.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Localization;
+using MultiMart.Application.Common.Exceptions;
+using MultiMart.Application.Common.Interfaces;
 using Serilog;
 using Serilog.Context;
 
-namespace BookStack.Infrastructure.Middleware;
+namespace MultiMart.Infrastructure.Middleware;
 
 internal class ExceptionMiddleware : IMiddleware
 {

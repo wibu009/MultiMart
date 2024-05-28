@@ -1,4 +1,4 @@
-namespace BookStack.Infrastructure.OpenApi;
+namespace MultiMart.Infrastructure.OpenApi;
 
 public class SwaggerSettings
 {

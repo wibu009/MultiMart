@@ -1,9 +1,9 @@
-using BookStack.Application.Common.Events;
-using BookStack.Shared.Events;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using MultiMart.Application.Common.Events;
+using MultiMart.Shared.Events;
 
-namespace BookStack.Infrastructure.Common.Services;
+namespace MultiMart.Infrastructure.Common.Services;
 
 public class EventPublisher : IEventPublisher
 {

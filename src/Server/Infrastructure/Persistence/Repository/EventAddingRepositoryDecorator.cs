@@ -1,9 +1,9 @@
 ﻿using Ardalis.Specification;
-using BookStack.Application.Common.Persistence;
-using BookStack.Domain.Common.Contracts;
-using BookStack.Domain.Common.Events;
+using MultiMart.Application.Common.Persistence;
+using MultiMart.Domain.Common.Contracts;
+using MultiMart.Domain.Common.Events;
 
-namespace BookStack.Infrastructure.Persistence.Repository;
+namespace MultiMart.Infrastructure.Persistence.Repository;
 
 /// <summary>
 /// The repository that implements IRepositoryWithEvents.

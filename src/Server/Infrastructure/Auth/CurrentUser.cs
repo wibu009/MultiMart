@@ -1,8 +1,8 @@
 using System.Security.Claims;
-using BookStack.Application.Common.Interfaces;
-using BookStack.Shared.Authorization;
+using MultiMart.Application.Common.Interfaces;
+using MultiMart.Shared.Authorization;
 
-namespace BookStack.Infrastructure.Auth;
+namespace MultiMart.Infrastructure.Auth;
 
 public class CurrentUser : ICurrentUser, ICurrentUserInitializer
 {

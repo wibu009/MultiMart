@@ -1,6 +1,8 @@
-using BookStack.Application.Dashboard;
+using MultiMart.Application.Dashboard;
+using MultiMart.Infrastructure.Auth.Permissions;
+using MultiMart.Shared.Authorization;
 
-namespace BookStack.Host.Controllers.Dashboard;
+namespace MultiMart.Host.Controllers.Dashboard;
 
 public class DashboardController : VersionedApiController
 {

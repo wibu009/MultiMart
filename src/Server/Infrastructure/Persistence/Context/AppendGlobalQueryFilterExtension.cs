@@ -2,7 +2,7 @@ using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 
-namespace BookStack.Infrastructure.Persistence.Context;
+namespace MultiMart.Infrastructure.Persistence.Context;
 
 internal static class ModelBuilderExtensions
 {

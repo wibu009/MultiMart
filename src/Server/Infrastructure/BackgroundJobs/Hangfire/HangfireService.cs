@@ -1,8 +1,8 @@
 using System.Linq.Expressions;
-using BookStack.Application.Common.Interfaces;
 using Hangfire;
+using MultiMart.Application.Common.Interfaces;
 
-namespace BookStack.Infrastructure.BackgroundJobs.Hangfire;
+namespace MultiMart.Infrastructure.BackgroundJobs.Hangfire;
 
 public class HangfireService : IJobService
 {

@@ -1,4 +1,4 @@
-namespace BookStack.Application.Multitenancy;
+namespace MultiMart.Application.Multitenancy;
 
 public class CreateTenantRequest : IRequest<string>
 {

@@ -4,7 +4,7 @@ using Google.Apis.Oauth2.v2;
 using Google.Apis.Oauth2.v2.Data;
 using Google.Apis.Services;
 
-namespace BookStack.Infrastructure.Auth.OAuth2.Google;
+namespace MultiMart.Infrastructure.Auth.OAuth2.Google;
 
 public class GoogleOAuth2Service
 {

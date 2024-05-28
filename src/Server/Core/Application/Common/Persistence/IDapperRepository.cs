@@ -1,6 +1,8 @@
 using System.Data;
+using MultiMart.Application.Common.Interfaces;
+using MultiMart.Domain.Common.Contracts;
 
-namespace BookStack.Application.Common.Persistence;
+namespace MultiMart.Application.Common.Persistence;
 
 public interface IDapperRepository : ITransientService
 {

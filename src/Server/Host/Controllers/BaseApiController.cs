@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace BookStack.Host.Controllers;
+namespace MultiMart.Host.Controllers;
 
 [ApiController]
 public class BaseApiController : ControllerBase

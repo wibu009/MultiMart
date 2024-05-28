@@ -1,4 +1,6 @@
-namespace BookStack.Application.Identity.Users;
+using MultiMart.Application.Common.FileStorage;
+
+namespace MultiMart.Application.Identity.Users;
 
 public class UpdateUserRequest
 {

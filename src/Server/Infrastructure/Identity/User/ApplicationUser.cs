@@ -1,7 +1,7 @@
-using BookStack.Infrastructure.Identity.Token;
 using Microsoft.AspNetCore.Identity;
+using MultiMart.Infrastructure.Identity.Token;
 
-namespace BookStack.Infrastructure.Identity.User;
+namespace MultiMart.Infrastructure.Identity.User;
 
 public class ApplicationUser : IdentityUser
 {

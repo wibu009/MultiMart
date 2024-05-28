@@ -1,11 +1,11 @@
 using System.Data;
 using Dapper;
 using Finbuckle.MultiTenant.EntityFrameworkCore;
-using BookStack.Application.Common.Persistence;
-using BookStack.Domain.Common.Contracts;
-using BookStack.Infrastructure.Persistence.Context;
+using MultiMart.Application.Common.Persistence;
+using MultiMart.Domain.Common.Contracts;
+using MultiMart.Infrastructure.Persistence.Context;
 
-namespace BookStack.Infrastructure.Persistence.Repository;
+namespace MultiMart.Infrastructure.Persistence.Repository;
 
 public class DapperRepository : IDapperRepository
 {

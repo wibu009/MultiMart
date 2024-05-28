@@ -1,7 +1,9 @@
-using BookStack.Application.Identity.Roles;
-using BookStack.Infrastructure.Common.Extensions;
+using MultiMart.Application.Identity.Roles;
+using MultiMart.Infrastructure.Auth.Permissions;
+using MultiMart.Infrastructure.Common.Extensions;
+using MultiMart.Shared.Authorization;
 
-namespace BookStack.Host.Controllers.Identity;
+namespace MultiMart.Host.Controllers.Identity;
 
 public class RolesController : VersionNeutralApiController
 {

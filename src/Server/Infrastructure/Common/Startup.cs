@@ -1,9 +1,9 @@
-﻿using BookStack.Application.Common.Interfaces;
-using BookStack.Infrastructure.Security.Encrypt;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MultiMart.Application.Common.Interfaces;
+using MultiMart.Infrastructure.Common.Settings;
 
-namespace BookStack.Infrastructure.Common;
+namespace MultiMart.Infrastructure.Common;
 
 internal static class Startup
 {

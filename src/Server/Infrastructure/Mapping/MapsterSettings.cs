@@ -1,4 +1,4 @@
-﻿namespace BookStack.Infrastructure.Mapping;
+﻿namespace MultiMart.Infrastructure.Mapping;
 
 public class MapsterSettings
 {

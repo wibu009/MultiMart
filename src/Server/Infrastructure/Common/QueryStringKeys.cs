@@ -1,4 +1,4 @@
-﻿namespace BookStack.Infrastructure.Common;
+﻿namespace MultiMart.Infrastructure.Common;
 
 public static class QueryStringKeys
 {

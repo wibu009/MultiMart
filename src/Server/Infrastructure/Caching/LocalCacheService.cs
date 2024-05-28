@@ -1,8 +1,8 @@
-using BookStack.Application.Common.Caching;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
+using MultiMart.Application.Common.Caching;
 
-namespace BookStack.Infrastructure.Caching;
+namespace MultiMart.Infrastructure.Caching;
 
 public class LocalCacheService : ICacheService
 {

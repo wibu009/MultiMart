@@ -1,6 +1,6 @@
-using BookStack.Shared.Events;
+using MultiMart.Shared.Events;
 
-namespace BookStack.Application.Common.Events;
+namespace MultiMart.Application.Common.Events;
 
 public class EventNotification<TEvent> : INotification
     where TEvent : IEvent

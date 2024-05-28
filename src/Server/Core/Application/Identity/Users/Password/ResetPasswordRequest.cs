@@ -1,4 +1,4 @@
-namespace BookStack.Application.Identity.Users.Password;
+namespace MultiMart.Application.Identity.Users.Password;
 
 public class ResetPasswordRequest
 {

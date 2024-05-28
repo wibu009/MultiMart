@@ -1,9 +1,9 @@
-using BookStack.Application.Auditing;
-using BookStack.Infrastructure.Persistence.Context;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
+using MultiMart.Application.Auditing;
+using MultiMart.Infrastructure.Persistence.Context;
 
-namespace BookStack.Infrastructure.Auditing;
+namespace MultiMart.Infrastructure.Auditing;
 
 public class AuditService : IAuditService
 {

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace BookStack.Infrastructure.Identity.Role;
+namespace MultiMart.Infrastructure.Identity.Role;
 
 public class ApplicationRoleClaim : IdentityRoleClaim<string>
 {

@@ -1,7 +1,7 @@
-namespace BookStack.Infrastructure.Security.SecurityHeaders;
+namespace MultiMart.Infrastructure.Security.SecurityHeaders;
 
 public class SecurityHeaderSettings
 {
     public bool Enable { get; set; }
-    public SecurityHeaders Headers { get; set; } = default!;
+    public MultiMart.Infrastructure.Security.SecurityHeaders.SecurityHeaders Headers { get; set; } = default!;
 }

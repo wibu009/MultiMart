@@ -1,17 +1,17 @@
 ﻿using Ardalis.Specification;
-using BookStack.Application.Catalog.Brands;
-using BookStack.Application.Common.Interfaces;
-using BookStack.Application.Common.Persistence;
-using BookStack.Domain.Catalog;
-using BookStack.Shared.Notifications;
 using Hangfire;
 using Hangfire.Console.Extensions;
 using Hangfire.Console.Progress;
 using Hangfire.Server;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using MultiMart.Application.Catalog.Brands;
+using MultiMart.Application.Common.Interfaces;
+using MultiMart.Application.Common.Persistence;
+using MultiMart.Domain.Catalog;
+using MultiMart.Shared.Notifications;
 
-namespace BookStack.Infrastructure.Catalog;
+namespace MultiMart.Infrastructure.Catalog;
 
 public class BrandGeneratorJob : IBrandGeneratorJob
 {

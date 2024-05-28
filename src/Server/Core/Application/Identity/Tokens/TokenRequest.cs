@@ -1,4 +1,6 @@
-namespace BookStack.Application.Identity.Tokens;
+using MultiMart.Application.Common.Validation;
+
+namespace MultiMart.Application.Identity.Tokens;
 
 public class TokenRequest
 {

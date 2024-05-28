@@ -1,4 +1,4 @@
-namespace BookStack.Application.Auditing;
+namespace MultiMart.Application.Auditing;
 
 public class AuditDto
 {

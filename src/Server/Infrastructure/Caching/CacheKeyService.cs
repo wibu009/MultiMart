@@ -1,7 +1,7 @@
 ﻿using Finbuckle.MultiTenant;
-using BookStack.Application.Common.Caching;
+using MultiMart.Application.Common.Caching;
 
-namespace BookStack.Infrastructure.Caching;
+namespace MultiMart.Infrastructure.Caching;
 
 public class CacheKeyService : ICacheKeyService
 {

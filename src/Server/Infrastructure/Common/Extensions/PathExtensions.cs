@@ -1,7 +1,7 @@
 using System.Text;
 using Microsoft.Extensions.Primitives;
 
-namespace BookStack.Infrastructure.Common.Extensions;
+namespace MultiMart.Infrastructure.Common.Extensions;
 
 public class PathExtensions
 {

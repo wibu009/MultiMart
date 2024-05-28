@@ -1,7 +1,7 @@
-using BookStack.Application.Common.Interfaces;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using MultiMart.Application.Common.Interfaces;
 
-namespace BookStack.Infrastructure.Auditing;
+namespace MultiMart.Infrastructure.Auditing;
 
 public class AuditTrail
 {

@@ -1,4 +1,4 @@
-namespace BookStack.Infrastructure.Caching;
+namespace MultiMart.Infrastructure.Caching;
 
 public class CacheSettings
 {

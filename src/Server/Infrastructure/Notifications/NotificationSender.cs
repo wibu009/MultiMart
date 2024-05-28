@@ -1,10 +1,10 @@
 ﻿using Finbuckle.MultiTenant;
-using BookStack.Application.Common.Interfaces;
-using BookStack.Shared.Notifications;
 using Microsoft.AspNetCore.SignalR;
-using static BookStack.Shared.Notifications.NotificationConstants;
+using MultiMart.Application.Common.Interfaces;
+using MultiMart.Shared.Notifications;
+using static MultiMart.Shared.Notifications.NotificationConstants;
 
-namespace BookStack.Infrastructure.Notifications;
+namespace MultiMart.Infrastructure.Notifications;
 
 public class NotificationSender : INotificationSender
 {

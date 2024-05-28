@@ -1,4 +1,4 @@
-namespace BookStack.Application.Identity.Roles;
+namespace MultiMart.Application.Identity.Roles;
 
 public class RoleDto
 {

@@ -1,4 +1,6 @@
-namespace BookStack.Application.Auditing;
+using MultiMart.Application.Common.Interfaces;
+
+namespace MultiMart.Application.Auditing;
 
 public interface IAuditService : ITransientService
 {

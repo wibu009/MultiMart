@@ -1,6 +1,7 @@
-using BookStack.Application.Catalog.Brands;
+using MultiMart.Application.Catalog.Brands;
+using MultiMart.Application.Common.Interfaces;
 
-namespace BookStack.Application.Catalog.Products;
+namespace MultiMart.Application.Catalog.Products;
 
 public class ProductDetailsDto : IDto
 {

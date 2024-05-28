@@ -1,21 +1,21 @@
-﻿using BookStack.Application.Common.Caching;
-using BookStack.Application.Common.Events;
-using BookStack.Domain.Identity;
-using BookStack.Infrastructure.Auth.OAuth2.Facebook;
-using BookStack.Infrastructure.Auth.OAuth2.Google;
-using BookStack.Infrastructure.Common.Extensions;
-using BookStack.Infrastructure.Identity.Token;
-using BookStack.Infrastructure.Identity.User;
-using BookStack.Infrastructure.Multitenancy;
-using BookStack.Infrastructure.Security.Encrypt;
-using BookStack.Shared.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
+using MultiMart.Application.Common.Caching;
+using MultiMart.Application.Common.Events;
+using MultiMart.Domain.Identity;
+using MultiMart.Infrastructure.Auth.OAuth2.Facebook;
+using MultiMart.Infrastructure.Auth.OAuth2.Google;
+using MultiMart.Infrastructure.Common.Extensions;
+using MultiMart.Infrastructure.Common.Settings;
+using MultiMart.Infrastructure.Identity.Token;
+using MultiMart.Infrastructure.Identity.User;
+using MultiMart.Infrastructure.Multitenancy;
+using MultiMart.Shared.Authorization;
 using SendGrid.Helpers.Errors.Model;
 
-namespace BookStack.Infrastructure.Auth.OAuth2;
+namespace MultiMart.Infrastructure.Auth.OAuth2;
 
 public class OAuth2Service
 {

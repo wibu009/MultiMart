@@ -1,9 +1,9 @@
-﻿using BookStack.Infrastructure.Mailing.SendGrid;
-using BookStack.Infrastructure.Mailing.Smtp;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MultiMart.Infrastructure.Mailing.SendGrid;
+using MultiMart.Infrastructure.Mailing.Smtp;
 
-namespace BookStack.Infrastructure.Mailing;
+namespace MultiMart.Infrastructure.Mailing;
 
 internal static class Startup
 {

@@ -1,8 +1,8 @@
-﻿using BookStack.Infrastructure.Auth.OAuth2.Facebook;
-using BookStack.Infrastructure.Auth.OAuth2.Google;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using MultiMart.Infrastructure.Auth.OAuth2.Facebook;
+using MultiMart.Infrastructure.Auth.OAuth2.Google;
 
-namespace BookStack.Infrastructure.Auth.OAuth2;
+namespace MultiMart.Infrastructure.Auth.OAuth2;
 
 public static class Startup
 {

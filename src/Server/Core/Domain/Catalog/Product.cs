@@ -1,4 +1,6 @@
-namespace BookStack.Domain.Catalog;
+using MultiMart.Domain.Common.Contracts;
+
+namespace MultiMart.Domain.Catalog;
 
 public class Product : AuditableEntity, IAggregateRoot
 {

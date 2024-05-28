@@ -1,28 +1,27 @@
 using Ardalis.Specification.EntityFrameworkCore;
-using BookStack.Application.Common.Caching;
-using BookStack.Application.Common.Events;
-using BookStack.Application.Common.Exceptions;
-using BookStack.Application.Common.FileStorage;
-using BookStack.Application.Common.FileStorage.LocalStorage;
-using BookStack.Application.Common.Interfaces;
-using BookStack.Application.Common.Mailing;
-using BookStack.Application.Common.Mailing.Smtp;
-using BookStack.Application.Common.Models;
-using BookStack.Application.Common.Specification;
-using BookStack.Application.Identity.Users;
-using BookStack.Domain.Identity;
-using BookStack.Infrastructure.Auth;
-using BookStack.Infrastructure.Identity.Role;
-using BookStack.Infrastructure.Persistence.Context;
-using BookStack.Shared.Authorization;
 using Finbuckle.MultiTenant;
 using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
+using MultiMart.Application.Common.Caching;
+using MultiMart.Application.Common.Events;
+using MultiMart.Application.Common.Exceptions;
+using MultiMart.Application.Common.FileStorage.LocalStorage;
+using MultiMart.Application.Common.Interfaces;
+using MultiMart.Application.Common.Mailing;
+using MultiMart.Application.Common.Mailing.Smtp;
+using MultiMart.Application.Common.Models;
+using MultiMart.Application.Common.Specification;
+using MultiMart.Application.Identity.Users;
+using MultiMart.Domain.Identity;
+using MultiMart.Infrastructure.Auth;
+using MultiMart.Infrastructure.Identity.Role;
+using MultiMart.Infrastructure.Persistence.Context;
+using MultiMart.Shared.Authorization;
 
-namespace BookStack.Infrastructure.Identity.User;
+namespace MultiMart.Infrastructure.Identity.User;
 
 internal partial class UserService : IUserService
 {

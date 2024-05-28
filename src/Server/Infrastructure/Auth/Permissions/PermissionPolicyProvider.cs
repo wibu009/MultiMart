@@ -1,8 +1,8 @@
-using BookStack.Shared.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
+using MultiMart.Shared.Authorization;
 
-namespace BookStack.Infrastructure.Auth.Permissions;
+namespace MultiMart.Infrastructure.Auth.Permissions;
 
 internal class PermissionPolicyProvider : IAuthorizationPolicyProvider
 {

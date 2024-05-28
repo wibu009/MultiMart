@@ -1,6 +1,6 @@
-using BookStack.Domain.Common.Contracts;
+using MultiMart.Domain.Common.Contracts;
 
-namespace BookStack.Infrastructure.Auditing;
+namespace MultiMart.Infrastructure.Auditing;
 
 public class Trail : BaseEntity
 {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace BookStack.Infrastructure.Persistence.Initialization;
+namespace MultiMart.Infrastructure.Persistence.Initialization;
 
 internal class CustomSeederRunner
 {

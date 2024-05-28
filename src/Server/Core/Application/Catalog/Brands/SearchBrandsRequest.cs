@@ -1,4 +1,9 @@
-namespace BookStack.Application.Catalog.Brands;
+using MultiMart.Application.Common.Models;
+using MultiMart.Application.Common.Persistence;
+using MultiMart.Application.Common.Specification;
+using MultiMart.Domain.Catalog;
+
+namespace MultiMart.Application.Catalog.Brands;
 
 public class SearchBrandsRequest : PaginationFilter, IRequest<PaginationResponse<BrandDto>>
 {

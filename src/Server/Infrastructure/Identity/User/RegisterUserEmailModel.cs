@@ -1,4 +1,4 @@
-﻿namespace BookStack.Infrastructure.Identity.User;
+﻿namespace MultiMart.Infrastructure.Identity.User;
 
 public class RegisterUserEmailModel
 {

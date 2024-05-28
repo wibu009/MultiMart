@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OrchardCore.Localization;
 
-namespace BookStack.Infrastructure.Localization;
+namespace MultiMart.Infrastructure.Localization;
 
 internal static class Startup
 {

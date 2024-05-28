@@ -1,39 +1,38 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using BookStack.Infrastructure.ApiVersioning;
-using BookStack.Infrastructure.Auth;
-using BookStack.Infrastructure.BackgroundJobs;
-using BookStack.Infrastructure.Caching;
-using BookStack.Infrastructure.Common;
-using BookStack.Infrastructure.Cors;
-using BookStack.Infrastructure.FileStorage;
-using BookStack.Infrastructure.Identity;
-using BookStack.Infrastructure.Localization;
-using BookStack.Infrastructure.Mailing;
-using BookStack.Infrastructure.Mapping;
-using BookStack.Infrastructure.Middleware;
-using BookStack.Infrastructure.Multitenancy;
-using BookStack.Infrastructure.Notifications;
-using BookStack.Infrastructure.OpenApi;
-using BookStack.Infrastructure.Persistence;
-using BookStack.Infrastructure.Persistence.Initialization;
-using BookStack.Infrastructure.Security.SecurityHeaders;
-using BookStack.Infrastructure.Validations;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MultiMart.Infrastructure.ApiVersioning;
+using MultiMart.Infrastructure.Auth;
+using MultiMart.Infrastructure.BackgroundJobs;
+using MultiMart.Infrastructure.Caching;
+using MultiMart.Infrastructure.Common;
+using MultiMart.Infrastructure.Cors;
+using MultiMart.Infrastructure.FileStorage;
+using MultiMart.Infrastructure.Localization;
+using MultiMart.Infrastructure.Mailing;
+using MultiMart.Infrastructure.Mapping;
+using MultiMart.Infrastructure.Middleware;
+using MultiMart.Infrastructure.Multitenancy;
+using MultiMart.Infrastructure.Notifications;
+using MultiMart.Infrastructure.OpenApi;
+using MultiMart.Infrastructure.Persistence;
+using MultiMart.Infrastructure.Persistence.Initialization;
+using MultiMart.Infrastructure.Security.SecurityHeaders;
+using MultiMart.Infrastructure.Validations;
 
 [assembly: InternalsVisibleTo("Infrastructure.Test")]
 
-namespace BookStack.Infrastructure;
+namespace MultiMart.Infrastructure;
 
 public static class Startup
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration config)
     {
-        var applicationAssembly = typeof(BookStack.Application.Startup).GetTypeInfo().Assembly;
+        var applicationAssembly = typeof(MultiMart.Application.Startup).GetTypeInfo().Assembly;
         MapsterSettings.Configure();
         return services
             .AddHttpContextAccessor()

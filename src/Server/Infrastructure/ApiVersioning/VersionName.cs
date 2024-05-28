@@ -1,4 +1,4 @@
-﻿namespace BookStack.Infrastructure.ApiVersioning;
+﻿namespace MultiMart.Infrastructure.ApiVersioning;
 
 public static class VersionName
 {

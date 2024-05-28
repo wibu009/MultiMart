@@ -1,7 +1,11 @@
-using BookStack.Application.Common.FileStorage.LocalStorage;
-using BookStack.Domain.Common.Events;
+using MultiMart.Application.Common.Exceptions;
+using MultiMart.Application.Common.FileStorage;
+using MultiMart.Application.Common.FileStorage.LocalStorage;
+using MultiMart.Application.Common.Persistence;
+using MultiMart.Domain.Catalog;
+using MultiMart.Domain.Common.Events;
 
-namespace BookStack.Application.Catalog.Products;
+namespace MultiMart.Application.Catalog.Products;
 
 public class UpdateProductRequest : IRequest<Guid>
 {

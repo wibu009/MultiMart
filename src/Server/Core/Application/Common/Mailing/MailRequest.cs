@@ -1,4 +1,4 @@
-namespace BookStack.Application.Common.Mailing;
+namespace MultiMart.Application.Common.Mailing;
 
 public class MailRequest
 {

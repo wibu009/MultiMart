@@ -1,7 +1,7 @@
-﻿using BookStack.Shared.Multitenancy;
+﻿using MultiMart.Shared.Multitenancy;
 using NJsonSchema;
 
-namespace BookStack.Infrastructure.OpenApi;
+namespace MultiMart.Infrastructure.OpenApi;
 
 public class TenantIdHeaderAttribute : SwaggerHeaderAttribute
 {

@@ -1,6 +1,9 @@
-﻿using BookStack.Application.Catalog.Products;
+﻿using MultiMart.Application.Catalog.Products;
+using MultiMart.Application.Common.Exceptions;
+using MultiMart.Application.Common.Persistence;
+using MultiMart.Domain.Catalog;
 
-namespace BookStack.Application.Catalog.Brands;
+namespace MultiMart.Application.Catalog.Brands;
 
 public class DeleteBrandRequest : IRequest<Guid>
 {

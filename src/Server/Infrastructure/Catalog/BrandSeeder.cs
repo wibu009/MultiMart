@@ -1,11 +1,11 @@
 using System.Reflection;
-using BookStack.Application.Common.Interfaces;
-using BookStack.Domain.Catalog;
-using BookStack.Infrastructure.Persistence.Context;
-using BookStack.Infrastructure.Persistence.Initialization;
 using Microsoft.Extensions.Logging;
+using MultiMart.Application.Common.Interfaces;
+using MultiMart.Domain.Catalog;
+using MultiMart.Infrastructure.Persistence.Context;
+using MultiMart.Infrastructure.Persistence.Initialization;
 
-namespace BookStack.Infrastructure.Catalog;
+namespace MultiMart.Infrastructure.Catalog;
 
 public class BrandSeeder : ICustomSeeder
 {

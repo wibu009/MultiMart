@@ -1,8 +1,8 @@
 ﻿using Finbuckle.MultiTenant.Stores;
-using BookStack.Infrastructure.Persistence.Configuration;
 using Microsoft.EntityFrameworkCore;
+using MultiMart.Infrastructure.Persistence.Configuration;
 
-namespace BookStack.Infrastructure.Multitenancy;
+namespace MultiMart.Infrastructure.Multitenancy;
 
 public class TenantDbContext : EFCoreStoreDbContext<ApplicationTenantInfo>
 {

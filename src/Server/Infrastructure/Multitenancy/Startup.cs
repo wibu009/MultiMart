@@ -1,18 +1,18 @@
-using BookStack.Application.Multitenancy;
-using BookStack.Infrastructure.Auth.OAuth2;
-using BookStack.Infrastructure.Common.Extensions;
-using BookStack.Infrastructure.Persistence;
-using BookStack.Infrastructure.Security.Encrypt;
-using BookStack.Shared.Authorization;
-using BookStack.Shared.Multitenancy;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
+using MultiMart.Application.Multitenancy;
+using MultiMart.Infrastructure.Auth.OAuth2;
+using MultiMart.Infrastructure.Common.Extensions;
+using MultiMart.Infrastructure.Common.Settings;
+using MultiMart.Infrastructure.Persistence;
+using MultiMart.Shared.Authorization;
+using MultiMart.Shared.Multitenancy;
 
-namespace BookStack.Infrastructure.Multitenancy;
+namespace MultiMart.Infrastructure.Multitenancy;
 
 internal static class Startup
 {

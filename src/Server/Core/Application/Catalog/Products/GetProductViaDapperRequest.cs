@@ -1,6 +1,8 @@
-﻿using Mapster;
+﻿using MultiMart.Application.Common.Exceptions;
+using MultiMart.Application.Common.Persistence;
+using MultiMart.Domain.Catalog;
 
-namespace BookStack.Application.Catalog.Products;
+namespace MultiMart.Application.Catalog.Products;
 
 public class GetProductViaDapperRequest : IRequest<ProductDto>
 {

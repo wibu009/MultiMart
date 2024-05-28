@@ -1,8 +1,12 @@
-using BookStack.Domain.Common.Events;
-using BookStack.Domain.Identity;
-using BookStack.Shared.Events;
+using MultiMart.Application.Common.Events;
+using MultiMart.Application.Common.Interfaces;
+using MultiMart.Domain.Catalog;
+using MultiMart.Domain.Common.Events;
+using MultiMart.Domain.Identity;
+using MultiMart.Shared.Events;
+using MultiMart.Shared.Notifications;
 
-namespace BookStack.Application.Dashboard;
+namespace MultiMart.Application.Dashboard;
 
 public class SendStatsChangedNotificationHandler :
     IEventNotificationHandler<EntityCreatedEvent<Brand>>,

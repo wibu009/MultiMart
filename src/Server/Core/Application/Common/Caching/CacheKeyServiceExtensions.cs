@@ -1,4 +1,6 @@
-﻿namespace BookStack.Application.Common.Caching;
+﻿using MultiMart.Domain.Common.Contracts;
+
+namespace MultiMart.Application.Common.Caching;
 
 public static class CacheKeyServiceExtensions
 {

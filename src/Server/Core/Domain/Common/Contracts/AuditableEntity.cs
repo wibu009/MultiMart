@@ -1,4 +1,4 @@
-namespace BookStack.Domain.Common.Contracts;
+namespace MultiMart.Domain.Common.Contracts;
 
 public abstract class AuditableEntity : AuditableEntity<DefaultIdType>
 {

@@ -1,4 +1,4 @@
-namespace BookStack.Infrastructure.Middleware;
+namespace MultiMart.Infrastructure.Middleware;
 
 public class MiddlewareSettings
 {

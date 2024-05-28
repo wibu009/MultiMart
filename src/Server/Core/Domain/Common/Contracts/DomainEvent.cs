@@ -1,6 +1,6 @@
-using BookStack.Shared.Events;
+using MultiMart.Shared.Events;
 
-namespace BookStack.Domain.Common.Contracts;
+namespace MultiMart.Domain.Common.Contracts;
 
 public abstract class DomainEvent : IEvent
 {

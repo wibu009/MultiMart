@@ -1,6 +1,8 @@
-using BookStack.Domain.Common.Events;
+using MultiMart.Application.Common.Events;
+using MultiMart.Domain.Catalog;
+using MultiMart.Domain.Common.Events;
 
-namespace BookStack.Application.Catalog.Products.EventHandlers;
+namespace MultiMart.Application.Catalog.Products.EventHandlers;
 
 public class ProductCreatedEventHandler : EventNotificationHandler<EntityCreatedEvent<Product>>
 {

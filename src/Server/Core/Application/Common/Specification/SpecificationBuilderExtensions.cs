@@ -1,8 +1,10 @@
 ﻿using System.Linq.Expressions;
 using System.Reflection;
 using System.Text.Json;
+using MultiMart.Application.Common.Exceptions;
+using MultiMart.Application.Common.Models;
 
-namespace BookStack.Application.Common.Specification;
+namespace MultiMart.Application.Common.Specification;
 
 // See https://github.com/ardalis/Specification/issues/53
 public static class SpecificationBuilderExtensions

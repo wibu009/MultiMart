@@ -1,4 +1,4 @@
-namespace BookStack.Application.Dashboard;
+namespace MultiMart.Application.Dashboard;
 
 public class StatsDto
 {

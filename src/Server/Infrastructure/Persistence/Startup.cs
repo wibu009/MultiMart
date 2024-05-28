@@ -1,18 +1,17 @@
-using BookStack.Application.Common.Persistence;
-using BookStack.Domain.Common.Contracts;
-using BookStack.Infrastructure.Common;
-using BookStack.Infrastructure.Persistence.ConnectionString;
-using BookStack.Infrastructure.Persistence.Context;
-using BookStack.Infrastructure.Persistence.Initialization;
-using BookStack.Infrastructure.Persistence.Repository;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using MultiMart.Application.Common.Persistence;
+using MultiMart.Domain.Common.Contracts;
+using MultiMart.Infrastructure.Common;
+using MultiMart.Infrastructure.Persistence.ConnectionString;
+using MultiMart.Infrastructure.Persistence.Context;
+using MultiMart.Infrastructure.Persistence.Initialization;
+using MultiMart.Infrastructure.Persistence.Repository;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Serilog;
 
-namespace BookStack.Infrastructure.Persistence;
+namespace MultiMart.Infrastructure.Persistence;
 
 internal static class Startup
 {

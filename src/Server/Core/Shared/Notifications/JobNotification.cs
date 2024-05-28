@@ -1,4 +1,4 @@
-﻿namespace BookStack.Shared.Notifications;
+﻿namespace MultiMart.Shared.Notifications;
 
 public class JobNotification : INotificationMessage
 {

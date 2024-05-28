@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Serilog;
 using Serilog.Context;
 
-namespace BookStack.Infrastructure.Middleware;
+namespace MultiMart.Infrastructure.Middleware;
 
 public class RequestLoggingMiddleware : IMiddleware
 {

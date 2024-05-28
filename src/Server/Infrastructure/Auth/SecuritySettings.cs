@@ -1,4 +1,4 @@
-namespace BookStack.Infrastructure.Auth;
+namespace MultiMart.Infrastructure.Auth;
 
 public class SecuritySettings
 {

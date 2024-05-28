@@ -1,9 +1,9 @@
 using Finbuckle.MultiTenant;
-using BookStack.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using MultiMart.Infrastructure.Persistence.Context;
 
-namespace BookStack.Infrastructure.Persistence.Initialization;
+namespace MultiMart.Infrastructure.Persistence.Initialization;
 
 internal class ApplicationDbInitializer
 {

@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using BookStack.Infrastructure.Persistence;
+using MultiMart.Infrastructure.Persistence;
 using Xunit;
 
 namespace Infrastructure.Test;

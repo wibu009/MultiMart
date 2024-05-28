@@ -1,4 +1,6 @@
-namespace BookStack.Application.Identity.Users;
+using MultiMart.Application.Common.Validation;
+
+namespace MultiMart.Application.Identity.Users;
 
 public class CreateUserRequestValidator : CustomValidator<CreateUserRequest>
 {

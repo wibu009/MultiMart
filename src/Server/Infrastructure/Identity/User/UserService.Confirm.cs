@@ -1,11 +1,11 @@
 using System.Text;
-using BookStack.Application.Common.Exceptions;
-using BookStack.Infrastructure.Common;
-using BookStack.Shared.Multitenancy;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
+using MultiMart.Application.Common.Exceptions;
+using MultiMart.Infrastructure.Common;
+using MultiMart.Shared.Multitenancy;
 
-namespace BookStack.Infrastructure.Identity.User;
+namespace MultiMart.Infrastructure.Identity.User;
 
 internal partial class UserService
 {

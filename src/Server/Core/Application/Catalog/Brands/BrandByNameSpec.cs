@@ -1,4 +1,6 @@
-﻿namespace BookStack.Application.Catalog.Brands;
+﻿using MultiMart.Domain.Catalog;
+
+namespace MultiMart.Application.Catalog.Brands;
 
 public class BrandByNameSpec : Specification<Brand>, ISingleResultSpecification
 {

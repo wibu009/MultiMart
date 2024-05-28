@@ -1,4 +1,6 @@
-namespace BookStack.Application.Common.Models;
+using MultiMart.Application.Common.Interfaces;
+
+namespace MultiMart.Application.Common.Models;
 
 public static class PaginationResponseExtensions
 {

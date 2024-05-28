@@ -1,7 +1,7 @@
-﻿using BookStack.Infrastructure.Auth.OAuth2;
-using Google.Apis.Oauth2.v2;
+﻿using MultiMart.Infrastructure.Auth.OAuth2;
+using MultiMart.Infrastructure.OpenApi;
 
-namespace BookStack.Host.Controllers.OAuth2;
+namespace MultiMart.Host.Controllers.OAuth2;
 
 public class OAuth2Controller : VersionNeutralApiController
 {

@@ -6,7 +6,7 @@ using NSwag.Generation.AspNetCore;
 using NSwag.Generation.Processors;
 using NSwag.Generation.Processors.Contexts;
 
-namespace BookStack.Infrastructure.OpenApi;
+namespace MultiMart.Infrastructure.OpenApi;
 
 internal static class ObjectExtensions
 {

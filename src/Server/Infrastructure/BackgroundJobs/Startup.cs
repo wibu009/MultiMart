@@ -1,5 +1,4 @@
-using BookStack.Infrastructure.BackgroundJobs.Hangfire;
-using BookStack.Infrastructure.Common;
+using MultiMart.Infrastructure.Common;
 using Hangfire;
 using Hangfire.Console;
 using Hangfire.Console.Extensions;
@@ -10,9 +9,11 @@ using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MultiMart.Infrastructure.BackgroundJobs.Hangfire;
+using MultiMart.Infrastructure.Common;
 using Serilog;
 
-namespace BookStack.Infrastructure.BackgroundJobs;
+namespace MultiMart.Infrastructure.BackgroundJobs;
 
 internal static class Startup
 {

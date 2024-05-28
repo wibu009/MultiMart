@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using System.Text.RegularExpressions;
 
-namespace BookStack.Infrastructure.Common.Extensions;
+namespace MultiMart.Infrastructure.Common.Extensions;
 
 public static class EnumExtensions
 {

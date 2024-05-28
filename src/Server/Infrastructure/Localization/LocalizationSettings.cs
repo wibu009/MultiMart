@@ -1,4 +1,4 @@
-﻿namespace BookStack.Infrastructure.Localization;
+﻿namespace MultiMart.Infrastructure.Localization;
 
 public class LocalizationSettings
 {

@@ -1,4 +1,9 @@
-namespace BookStack.Application.Catalog.Brands;
+using MultiMart.Application.Common.Exceptions;
+using MultiMart.Application.Common.Persistence;
+using MultiMart.Application.Common.Validation;
+using MultiMart.Domain.Catalog;
+
+namespace MultiMart.Application.Catalog.Brands;
 
 public class UpdateBrandRequest : IRequest<Guid>
 {

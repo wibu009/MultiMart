@@ -1,8 +1,8 @@
-﻿using BookStack.Application.Common.Caching;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MultiMart.Application.Common.Caching;
 
-namespace BookStack.Infrastructure.Caching;
+namespace MultiMart.Infrastructure.Caching;
 
 internal static class Startup
 {

@@ -1,4 +1,6 @@
-﻿namespace BookStack.Application.Common.Specification;
+﻿using MultiMart.Application.Common.Models;
+
+namespace MultiMart.Application.Common.Specification;
 
 public class EntitiesByPaginationFilterSpec<T, TResult> : EntitiesByBaseFilterSpec<T, TResult>
 {

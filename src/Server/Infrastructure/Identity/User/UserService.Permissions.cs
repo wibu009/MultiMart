@@ -1,9 +1,9 @@
-﻿using BookStack.Application.Common.Caching;
-using BookStack.Application.Common.Exceptions;
-using BookStack.Shared.Authorization;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using MultiMart.Application.Common.Caching;
+using MultiMart.Application.Common.Exceptions;
+using MultiMart.Shared.Authorization;
 
-namespace BookStack.Infrastructure.Identity.User;
+namespace MultiMart.Infrastructure.Identity.User;
 
 internal partial class UserService
 {

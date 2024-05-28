@@ -1,6 +1,6 @@
-using BookStack.Infrastructure.Auth.AzureAd;
+using System.Security.Claims;
 
-namespace System.Security.Claims;
+namespace MultiMart.Infrastructure.Auth.AzureAd;
 
 public static class GetIssuerExtension
 {

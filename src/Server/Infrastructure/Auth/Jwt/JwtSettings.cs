@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace BookStack.Infrastructure.Auth.Jwt;
+namespace MultiMart.Infrastructure.Auth.Jwt;
 
 public class JwtSettings : IValidatableObject
 {

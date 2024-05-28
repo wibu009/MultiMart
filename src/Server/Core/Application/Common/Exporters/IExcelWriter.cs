@@ -1,4 +1,6 @@
-﻿namespace BookStack.Application.Common.Exporters;
+﻿using MultiMart.Application.Common.Interfaces;
+
+namespace MultiMart.Application.Common.Exporters;
 
 public interface IExcelWriter : ITransientService
 {

@@ -1,18 +1,16 @@
 using System.Data;
 using Finbuckle.MultiTenant;
-using BookStack.Application.Common.Events;
-using BookStack.Application.Common.Interfaces;
-using BookStack.Domain.Common.Contracts;
-using BookStack.Infrastructure.Auditing;
-using BookStack.Infrastructure.Identity;
-using BookStack.Infrastructure.Identity.Role;
-using BookStack.Infrastructure.Identity.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Options;
+using MultiMart.Application.Common.Events;
+using MultiMart.Application.Common.Interfaces;
+using MultiMart.Domain.Common.Contracts;
+using MultiMart.Infrastructure.Auditing;
+using MultiMart.Infrastructure.Identity.Role;
+using MultiMart.Infrastructure.Identity.User;
 
-namespace BookStack.Infrastructure.Persistence.Context;
+namespace MultiMart.Infrastructure.Persistence.Context;
 
 public abstract class BaseDbContext : MultiTenantIdentityDbContext<ApplicationUser, ApplicationRole, string, IdentityUserClaim<string>, IdentityUserRole<string>, IdentityUserLogin<string>, ApplicationRoleClaim, IdentityUserToken<string>>
 {

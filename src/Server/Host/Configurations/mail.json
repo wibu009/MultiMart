@@ -9,7 +9,7 @@
   },
   "SendGridSettings": {
     "ApiKey": "your_sendgrid_api_key",
-    "FromEmail": "noreply@bookstack.com",
-    "DisplayName": "BookStack"
+    "FromEmail": "noreply@multimart.com",
+    "DisplayName": "MultiMart"
   }
 }

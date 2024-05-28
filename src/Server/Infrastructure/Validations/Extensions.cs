@@ -1,9 +1,8 @@
 ﻿using System.Reflection;
-using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace BookStack.Infrastructure.Validations;
+namespace MultiMart.Infrastructure.Validations;
 public static class Extensions
 {
     public static IServiceCollection AddBehaviours(this IServiceCollection services, Assembly assemblyContainingValidators)

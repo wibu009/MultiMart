@@ -1,7 +1,9 @@
 using System.Security.Claims;
-using BookStack.Application.Identity.Users.Password;
+using MultiMart.Application.Common.Interfaces;
+using MultiMart.Application.Common.Models;
+using MultiMart.Application.Identity.Users.Password;
 
-namespace BookStack.Application.Identity.Users;
+namespace MultiMart.Application.Identity.Users;
 
 public interface IUserService : ITransientService
 {

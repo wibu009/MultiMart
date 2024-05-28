@@ -1,9 +1,9 @@
-﻿using BookStack.Application.Common.Exceptions;
-using BookStack.Application.Common.Mailing;
-using BookStack.Application.Identity.Users.Password;
-using Microsoft.AspNetCore.WebUtilities;
+﻿using Microsoft.AspNetCore.WebUtilities;
+using MultiMart.Application.Common.Exceptions;
+using MultiMart.Application.Common.Mailing;
+using MultiMart.Application.Identity.Users.Password;
 
-namespace BookStack.Infrastructure.Identity.User;
+namespace MultiMart.Infrastructure.Identity.User;
 
 internal partial class UserService
 {

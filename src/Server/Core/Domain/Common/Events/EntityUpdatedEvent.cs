@@ -1,4 +1,6 @@
-namespace BookStack.Domain.Common.Events;
+using MultiMart.Domain.Common.Contracts;
+
+namespace MultiMart.Domain.Common.Events;
 
 public static class EntityUpdatedEvent
 {

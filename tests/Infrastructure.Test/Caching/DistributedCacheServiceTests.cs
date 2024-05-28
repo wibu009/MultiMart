@@ -1,4 +1,4 @@
-﻿using BookStack.Infrastructure.Caching;
+﻿using MultiMart.Infrastructure.Caching;
 
 namespace Infrastructure.Test.Caching;
 

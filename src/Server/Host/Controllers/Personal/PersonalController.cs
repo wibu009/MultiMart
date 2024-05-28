@@ -1,9 +1,9 @@
-using System.Security.Claims;
-using BookStack.Application.Auditing;
-using BookStack.Application.Identity.Users;
-using BookStack.Application.Identity.Users.Password;
+using MultiMart.Application.Auditing;
+using MultiMart.Application.Identity.Users;
+using MultiMart.Application.Identity.Users.Password;
+using MultiMart.Shared.Authorization;
 
-namespace BookStack.Host.Controllers.Identity;
+namespace MultiMart.Host.Controllers.Personal;
 
 public class PersonalController : VersionNeutralApiController
 {

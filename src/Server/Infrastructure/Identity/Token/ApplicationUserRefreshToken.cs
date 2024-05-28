@@ -1,6 +1,6 @@
-﻿using BookStack.Infrastructure.Identity.User;
+﻿using MultiMart.Infrastructure.Identity.User;
 
-namespace BookStack.Infrastructure.Identity.Token;
+namespace MultiMart.Infrastructure.Identity.Token;
 
 public class ApplicationUserRefreshToken
 {

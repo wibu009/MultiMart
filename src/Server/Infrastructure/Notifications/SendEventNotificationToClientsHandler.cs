@@ -1,9 +1,9 @@
-﻿using BookStack.Application.Common.Events;
-using BookStack.Application.Common.Interfaces;
-using BookStack.Shared.Notifications;
-using MediatR;
+﻿using MediatR;
+using MultiMart.Application.Common.Events;
+using MultiMart.Application.Common.Interfaces;
+using MultiMart.Shared.Notifications;
 
-namespace BookStack.Infrastructure.Notifications;
+namespace MultiMart.Infrastructure.Notifications;
 
 // Sends all events that are also an INotificationMessage to all clients
 // Note: for this to work, the Event/NotificationMessage class needs to be in the

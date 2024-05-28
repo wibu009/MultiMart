@@ -1,5 +1,5 @@
 using FluentAssertions;
-using BookStack.Application.Common.Caching;
+using MultiMart.Application.Common.Caching;
 using Xunit;
 
 namespace Infrastructure.Test.Caching;

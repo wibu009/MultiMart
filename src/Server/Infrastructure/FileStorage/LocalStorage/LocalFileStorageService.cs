@@ -1,11 +1,11 @@
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
-using BookStack.Application.Common.FileStorage;
-using BookStack.Application.Common.FileStorage.LocalStorage;
-using BookStack.Domain.Common;
-using BookStack.Infrastructure.Common.Extensions;
+using MultiMart.Domain.Common;
+using MultiMart.Application.Common.FileStorage;
+using MultiMart.Application.Common.FileStorage.LocalStorage;
+using MultiMart.Infrastructure.Common.Extensions;
 
-namespace BookStack.Infrastructure.FileStorage.LocalStorage;
+namespace MultiMart.Infrastructure.FileStorage.LocalStorage;
 
 public class LocalFileStorageService : ILocalFileStorageService
 {

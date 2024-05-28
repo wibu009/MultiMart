@@ -1,4 +1,4 @@
-﻿namespace BookStack.Shared.Events;
+﻿namespace MultiMart.Shared.Events;
 
 public interface IEvent
 {

@@ -1,13 +1,14 @@
-﻿using BookStack.Infrastructure.Common;
-using BookStack.Shared.Authorization;
-using BookStack.Shared.Multitenancy;
+﻿using MultiMart.Infrastructure.Common;
 using Finbuckle.MultiTenant;
 using Hangfire.Client;
 using Hangfire.Logging;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using MultiMart.Infrastructure.Common;
+using MultiMart.Shared.Authorization;
+using MultiMart.Shared.Multitenancy;
 
-namespace BookStack.Infrastructure.BackgroundJobs.Hangfire;
+namespace MultiMart.Infrastructure.BackgroundJobs.Hangfire;
 
 public class ApplicationJobFilter : IClientFilter
 {

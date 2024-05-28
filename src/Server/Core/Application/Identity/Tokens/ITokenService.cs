@@ -1,4 +1,6 @@
-namespace BookStack.Application.Identity.Tokens;
+using MultiMart.Application.Common.Interfaces;
+
+namespace MultiMart.Application.Identity.Tokens;
 
 public interface ITokenService : ITransientService
 {

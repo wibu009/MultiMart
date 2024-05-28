@@ -1,7 +1,7 @@
-﻿using BookStack.Infrastructure.Middleware;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
+﻿using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using MultiMart.Infrastructure.Middleware;
 
-namespace BookStack.Host.Controllers;
+namespace MultiMart.Host.Controllers;
 
 #nullable disable
 #pragma warning disable RCS1163, IDE0060

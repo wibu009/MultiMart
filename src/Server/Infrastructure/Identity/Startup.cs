@@ -1,10 +1,10 @@
-using BookStack.Infrastructure.Identity.Role;
-using BookStack.Infrastructure.Identity.User;
-using BookStack.Infrastructure.Persistence.Context;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using MultiMart.Infrastructure.Identity.Role;
+using MultiMart.Infrastructure.Identity.User;
+using MultiMart.Infrastructure.Persistence.Context;
 
-namespace BookStack.Infrastructure.Identity;
+namespace MultiMart.Infrastructure.Identity;
 
 internal static class Startup
 {

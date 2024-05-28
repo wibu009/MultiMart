@@ -1,4 +1,6 @@
-﻿namespace BookStack.Application.Multitenancy;
+﻿using MultiMart.Application.Common.Validation;
+
+namespace MultiMart.Application.Multitenancy;
 
 public class GetTenantRequest : IRequest<TenantDto>
 {

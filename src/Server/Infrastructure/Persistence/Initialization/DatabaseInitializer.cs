@@ -1,11 +1,11 @@
 ﻿using Finbuckle.MultiTenant;
-using BookStack.Infrastructure.Multitenancy;
-using BookStack.Shared.Multitenancy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using MultiMart.Infrastructure.Multitenancy;
+using MultiMart.Shared.Multitenancy;
 
-namespace BookStack.Infrastructure.Persistence.Initialization;
+namespace MultiMart.Infrastructure.Persistence.Initialization;
 
 internal class DatabaseInitializer : IDatabaseInitializer
 {

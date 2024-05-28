@@ -1,4 +1,4 @@
-﻿namespace BookStack.Infrastructure.Auth.AzureAd;
+﻿namespace MultiMart.Infrastructure.Auth.AzureAd;
 
 internal static class AzureADClaimTypes
 {

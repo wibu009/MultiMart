@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 
-namespace BookStack.Infrastructure.Identity.Token;
+namespace MultiMart.Infrastructure.Identity.Token;
 
 public static class TokenGenerator
 {

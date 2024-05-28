@@ -1,10 +1,10 @@
 using System.Text;
-using BookStack.Application.Common.Caching;
-using BookStack.Application.Common.Interfaces;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
+using MultiMart.Application.Common.Caching;
+using MultiMart.Application.Common.Interfaces;
 
-namespace BookStack.Infrastructure.Caching;
+namespace MultiMart.Infrastructure.Caching;
 
 #pragma warning disable CA2254
 public class DistributedCacheService : ICacheService

@@ -1,9 +1,9 @@
-﻿using BookStack.Application.Common.Events;
-using BookStack.Application.Identity.Users;
-using BookStack.Domain.Identity;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
+using MultiMart.Application.Common.Events;
+using MultiMart.Application.Identity.Users;
+using MultiMart.Domain.Identity;
 
-namespace BookStack.Infrastructure.Identity.User;
+namespace MultiMart.Infrastructure.Identity.User;
 
 internal class InvalidateUserPermissionCacheHandler :
     IEventNotificationHandler<ApplicationUserUpdatedEvent>,

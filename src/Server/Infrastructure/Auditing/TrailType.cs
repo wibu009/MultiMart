@@ -1,4 +1,4 @@
-namespace BookStack.Infrastructure.Auditing;
+namespace MultiMart.Infrastructure.Auditing;
 
 public enum TrailType : byte
 {

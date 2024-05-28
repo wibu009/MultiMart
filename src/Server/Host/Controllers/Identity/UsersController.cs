@@ -1,7 +1,10 @@
-using BookStack.Application.Identity.Users;
-using BookStack.Application.Identity.Users.Password;
+using MultiMart.Application.Identity.Users;
+using MultiMart.Application.Identity.Users.Password;
+using MultiMart.Infrastructure.Auth.Permissions;
+using MultiMart.Infrastructure.OpenApi;
+using MultiMart.Shared.Authorization;
 
-namespace BookStack.Host.Controllers.Identity;
+namespace MultiMart.Host.Controllers.Identity;
 
 public class UsersController : VersionNeutralApiController
 {

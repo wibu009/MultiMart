@@ -1,4 +1,4 @@
-﻿namespace BookStack.Host.Controllers;
+﻿namespace MultiMart.Host.Controllers;
 
 [Route("api/[controller]")]
 [ApiVersionNeutral]

@@ -1,4 +1,4 @@
-﻿namespace BookStack.Infrastructure.Security.Encrypt;
+﻿namespace MultiMart.Infrastructure.Common.Settings;
 
 public class EncryptionSettings
 {

@@ -14,7 +14,7 @@
             </References>
             <Imports>
                 <Import>
-                    <Namespace>BookStack.Domain.Common.Events</Namespace>
+                    <Namespace>MultiMart.Domain.Common.Events</Namespace>
                 </Import>
             </Imports>
             <Declarations>
@@ -36,7 +36,7 @@
                 </Object>
             </Declarations>
             <Code Language="CSharp">
-                <![CDATA[ 
+                <![CDATA[
 public class Update$classname$Request : IRequest<Guid>
 {
     public Guid Id { get; set; }
@@ -64,7 +64,7 @@ public class Update$classname$RequestHandler : IRequestHandler<Update$classname$
 
         return request.Id;
     }
-} 
+}
 ]]>
             </Code>
         </Snippet>

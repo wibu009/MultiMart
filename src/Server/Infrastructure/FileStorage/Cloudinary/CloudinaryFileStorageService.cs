@@ -1,13 +1,13 @@
 ﻿using System.Text.RegularExpressions;
-using BookStack.Application.Common.FileStorage;
-using BookStack.Application.Common.FileStorage.Cloudinary;
-using BookStack.Domain.Common;
-using BookStack.Infrastructure.Common.Extensions;
+using MultiMart.Domain.Common;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 using Microsoft.Extensions.Options;
+using MultiMart.Application.Common.FileStorage;
+using MultiMart.Application.Common.FileStorage.Cloudinary;
+using MultiMart.Infrastructure.Common.Extensions;
 
-namespace BookStack.Infrastructure.FileStorage.Cloudinary;
+namespace MultiMart.Infrastructure.FileStorage.Cloudinary;
 
 public class CloudinaryFileStorageService : ICloudinaryFileStorageService
 {

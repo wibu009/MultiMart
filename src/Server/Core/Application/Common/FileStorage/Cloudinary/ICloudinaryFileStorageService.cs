@@ -1,4 +1,6 @@
-﻿namespace BookStack.Application.Common.FileStorage.Cloudinary;
+﻿using MultiMart.Application.Common.Interfaces;
+
+namespace MultiMart.Application.Common.FileStorage.Cloudinary;
 
 public interface ICloudinaryFileStorageService : ITransientService
 {

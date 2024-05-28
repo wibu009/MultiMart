@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace BookStack.Infrastructure.ApiVersioning;
+namespace MultiMart.Infrastructure.ApiVersioning;
 
 public static class Startup
 {

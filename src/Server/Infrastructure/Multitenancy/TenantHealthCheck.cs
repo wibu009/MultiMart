@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
-namespace BookStack.Infrastructure.Multitenancy;
+namespace MultiMart.Infrastructure.Multitenancy;
 
 public class TenantHealthCheck : IHealthCheck
 {

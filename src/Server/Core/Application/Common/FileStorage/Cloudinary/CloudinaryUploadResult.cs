@@ -1,4 +1,4 @@
-﻿namespace BookStack.Application.Common.FileStorage.Cloudinary;
+﻿namespace MultiMart.Application.Common.FileStorage.Cloudinary;
 
 public class CloudinaryUploadResult
 {

@@ -1,4 +1,6 @@
-namespace BookStack.Application.Common.FileStorage.LocalStorage;
+using MultiMart.Application.Common.Interfaces;
+
+namespace MultiMart.Application.Common.FileStorage.LocalStorage;
 
 public interface ILocalFileStorageService : ITransientService
 {

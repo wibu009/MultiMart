@@ -1,15 +1,15 @@
 ﻿using System.Security.Claims;
-using BookStack.Application.Common.Exceptions;
-using BookStack.Application.Common.Mailing;
-using BookStack.Application.Identity.Users;
-using BookStack.Domain.Common;
-using BookStack.Domain.Identity;
-using BookStack.Shared.Authorization;
+using MultiMart.Domain.Common;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
+using MultiMart.Application.Common.Exceptions;
+using MultiMart.Application.Common.Mailing;
+using MultiMart.Application.Identity.Users;
+using MultiMart.Domain.Identity;
+using MultiMart.Shared.Authorization;
 
-namespace BookStack.Infrastructure.Identity.User;
+namespace MultiMart.Infrastructure.Identity.User;
 
 internal partial class UserService
 {

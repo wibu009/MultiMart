@@ -9,8 +9,9 @@ using NSwag;
 using NSwag.AspNetCore;
 using NSwag.Generation.Processors.Security;
 using ZymLabs.NSwag.FluentValidation;
+using SwaggerSettings = MultiMart.Infrastructure.OpenApi.SwaggerSettings;
 
-namespace BookStack.Infrastructure.OpenApi;
+namespace MultiMart.Infrastructure.OpenApi;
 
 internal static class Startup
 {
@@ -129,7 +130,7 @@ internal static class Startup
                     {
                         options.OAuth2Client = new OAuth2ClientSettings
                         {
-                            AppName = "BookStack Api Client",
+                            AppName = "MultiMart Api Client",
                             ClientId = config["SecuritySettings:Swagger:OpenIdClientId"],
                             ClientSecret = string.Empty,
                             UsePkceWithAuthorizationCodeGrant = true,

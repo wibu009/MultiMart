@@ -1,15 +1,15 @@
-using BookStack.Application.Common.Interfaces;
-using BookStack.Infrastructure.Auth.AzureAd;
-using BookStack.Infrastructure.Auth.Jwt;
-using BookStack.Infrastructure.Auth.OAuth2;
-using BookStack.Infrastructure.Auth.Permissions;
-using BookStack.Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MultiMart.Application.Common.Interfaces;
+using MultiMart.Infrastructure.Auth.AzureAd;
+using MultiMart.Infrastructure.Auth.Jwt;
+using MultiMart.Infrastructure.Auth.OAuth2;
+using MultiMart.Infrastructure.Auth.Permissions;
+using MultiMart.Infrastructure.Identity;
 
-namespace BookStack.Infrastructure.Auth;
+namespace MultiMart.Infrastructure.Auth;
 
 internal static class Startup
 {

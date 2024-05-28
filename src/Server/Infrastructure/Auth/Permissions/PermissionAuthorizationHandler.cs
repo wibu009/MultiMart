@@ -1,9 +1,8 @@
-using System.Security.Claims;
-using BookStack.Application.Identity.Users;
-using BookStack.Shared.Authorization;
 using Microsoft.AspNetCore.Authorization;
+using MultiMart.Application.Identity.Users;
+using MultiMart.Shared.Authorization;
 
-namespace BookStack.Infrastructure.Auth.Permissions;
+namespace MultiMart.Infrastructure.Auth.Permissions;
 
 internal class PermissionAuthorizationHandler : AuthorizationHandler<PermissionRequirement>
 {

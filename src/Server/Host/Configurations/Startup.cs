@@ -1,4 +1,4 @@
-namespace BookStack.Host.Configurations;
+namespace MultiMart.Host.Configurations;
 
 internal static class Startup
 {

@@ -1,4 +1,4 @@
-namespace BookStack.Infrastructure.Mailing.Smtp;
+namespace MultiMart.Infrastructure.Mailing.Smtp;
 
 public class SmtpMailSettings
 {

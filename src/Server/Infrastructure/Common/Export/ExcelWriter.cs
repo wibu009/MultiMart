@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel;
 using System.Data;
 using ClosedXML.Excel;
-using BookStack.Application.Common.Exporters;
+using MultiMart.Application.Common.Exporters;
 
-namespace BookStack.Infrastructure.Common.Export;
+namespace MultiMart.Infrastructure.Common.Export;
 
 public class ExcelWriter : IExcelWriter
 {

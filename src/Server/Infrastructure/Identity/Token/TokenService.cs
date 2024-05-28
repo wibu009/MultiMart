@@ -1,30 +1,29 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Text;
-using BookStack.Application.Common.Caching;
-using BookStack.Application.Common.Interfaces;
-using BookStack.Application.Identity.Tokens;
-using BookStack.Infrastructure.Auth;
-using BookStack.Infrastructure.Auth.Jwt;
-using BookStack.Infrastructure.Auth.OAuth2;
-using BookStack.Infrastructure.Common.Extensions;
-using BookStack.Infrastructure.Identity.User;
-using BookStack.Infrastructure.Multitenancy;
-using BookStack.Infrastructure.Security.Encrypt;
-using BookStack.Shared.Authorization;
-using BookStack.Shared.Multitenancy;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using MultiMart.Application.Common.Caching;
+using MultiMart.Application.Common.Interfaces;
+using MultiMart.Application.Identity.Tokens;
+using MultiMart.Infrastructure.Auth;
+using MultiMart.Infrastructure.Auth.Jwt;
+using MultiMart.Infrastructure.Auth.OAuth2;
+using MultiMart.Infrastructure.Common.Extensions;
+using MultiMart.Infrastructure.Common.Settings;
+using MultiMart.Infrastructure.Identity.User;
+using MultiMart.Infrastructure.Multitenancy;
+using MultiMart.Shared.Authorization;
+using MultiMart.Shared.Multitenancy;
 using SendGrid.Helpers.Errors.Model;
-using UnauthorizedException = BookStack.Application.Common.Exceptions.UnauthorizedException;
+using UnauthorizedException = MultiMart.Application.Common.Exceptions.UnauthorizedException;
 
-namespace BookStack.Infrastructure.Identity.Token;
+namespace MultiMart.Infrastructure.Identity.Token;
 
 internal class TokenService : ITokenService
 {

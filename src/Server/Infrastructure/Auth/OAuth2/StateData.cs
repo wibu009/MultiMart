@@ -1,8 +1,7 @@
-﻿using System.Security.Cryptography;
-using System.Text;
+﻿using System.Text;
 using Newtonsoft.Json;
 
-namespace BookStack.Infrastructure.Auth.OAuth2;
+namespace MultiMart.Infrastructure.Auth.OAuth2;
 
 public class StateData<T>
 {

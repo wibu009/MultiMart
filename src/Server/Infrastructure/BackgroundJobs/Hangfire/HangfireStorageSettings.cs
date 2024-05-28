@@ -1,4 +1,4 @@
-namespace BookStack.Infrastructure.BackgroundJobs.Hangfire;
+namespace MultiMart.Infrastructure.BackgroundJobs.Hangfire;
 
 public class HangfireStorageSettings
 {

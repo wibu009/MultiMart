@@ -1,6 +1,7 @@
-using BookStack.Shared.Events;
+using MultiMart.Application.Common.Interfaces;
+using MultiMart.Shared.Events;
 
-namespace BookStack.Application.Common.Events;
+namespace MultiMart.Application.Common.Events;
 
 public interface IEventPublisher : ITransientService
 {

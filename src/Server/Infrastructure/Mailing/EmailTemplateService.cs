@@ -1,8 +1,8 @@
 using System.Text;
-using BookStack.Application.Common.Mailing;
+using MultiMart.Application.Common.Mailing;
 using RazorEngineCore;
 
-namespace BookStack.Infrastructure.Mailing;
+namespace MultiMart.Infrastructure.Mailing;
 
 public class EmailTemplateService : IEmailTemplateService
 {

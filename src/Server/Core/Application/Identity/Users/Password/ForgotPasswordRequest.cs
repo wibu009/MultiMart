@@ -1,4 +1,6 @@
-namespace BookStack.Application.Identity.Users.Password;
+using MultiMart.Application.Common.Validation;
+
+namespace MultiMart.Application.Identity.Users.Password;
 
 public class ForgotPasswordRequest
 {

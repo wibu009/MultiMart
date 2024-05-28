@@ -1,6 +1,6 @@
-﻿using BookStack.Infrastructure.Multitenancy;
+﻿using MultiMart.Infrastructure.Multitenancy;
 
-namespace BookStack.Infrastructure.Persistence.Initialization;
+namespace MultiMart.Infrastructure.Persistence.Initialization;
 
 internal interface IDatabaseInitializer
 {

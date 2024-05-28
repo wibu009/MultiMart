@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>net7.0</TargetFramework>
-        <RootNamespace>BookStack.Infrastructure</RootNamespace>
-        <AssemblyName>BookStack.Infrastructure</AssemblyName>
+        <RootNamespace>MultiMart.Infrastructure</RootNamespace>
+        <AssemblyName>MultiMart.Infrastructure</AssemblyName>
     </PropertyGroup>
     <ItemGroup>
         <FrameworkReference Include="Microsoft.AspNetCore.App"/>

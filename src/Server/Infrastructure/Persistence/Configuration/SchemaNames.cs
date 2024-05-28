@@ -1,4 +1,4 @@
-﻿namespace BookStack.Infrastructure.Persistence.Configuration;
+﻿namespace MultiMart.Infrastructure.Persistence.Configuration;
 
 internal static class SchemaNames
 {

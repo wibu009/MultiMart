@@ -1,4 +1,6 @@
-﻿namespace BookStack.Application.Common.Persistence;
+﻿using MultiMart.Domain.Common.Contracts;
+
+namespace MultiMart.Application.Common.Persistence;
 
 // The Repository for the Application Db
 // I(Read)RepositoryBase<T> is from Ardalis.Specification

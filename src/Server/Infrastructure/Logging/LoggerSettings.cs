@@ -1,4 +1,4 @@
-namespace BookStack.Infrastructure.Logging;
+namespace MultiMart.Infrastructure.Logging;
 
 public class LoggerSettings
 {

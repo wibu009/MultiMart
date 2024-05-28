@@ -1,15 +1,16 @@
-using BookStack.Application;
-using BookStack.Host.Configurations;
-using BookStack.Host.Controllers;
-using BookStack.Infrastructure;
-using BookStack.Infrastructure.Common;
-using BookStack.Infrastructure.Logging.Serilog;
+using MultiMart.Infrastructure.Common;
+using MultiMart.Application;
+using MultiMart.Host.Configurations;
+using MultiMart.Host.Controllers;
+using MultiMart.Infrastructure;
+using MultiMart.Infrastructure.Logging.Serilog;
 using Serilog;
-using Serilog.Formatting.Compact;
 
 [assembly: ApiConventionType(typeof(ApplicationApiConventions))]
 
-internal class Program
+namespace MultiMart.Host;
+
+internal static class Program
 {
     public static async Task Main(string[] args)
     {

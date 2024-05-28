@@ -1,4 +1,4 @@
-﻿namespace BookStack.Infrastructure.Common;
+﻿namespace MultiMart.Infrastructure.Common;
 
 internal class DbProviderKeys
 {

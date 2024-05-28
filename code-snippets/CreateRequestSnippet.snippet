@@ -1,42 +1,42 @@
-<?xml version="1.0" encoding="utf-8"?>  
-<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">  
-    <CodeSnippet Format="1.0.0">  
-    <Header>  
-        <Title>Create Request</Title>  
-        <Author>FSH</Author>  
-        <Description>Adds boilerplate code for create request</Description>  
-        <Shortcut>createrequest</Shortcut>  
-    </Header>  
-    <Snippet>  
-        <References>  
-        <Reference>  
-        </Reference>  
-        </References>  
-        <Imports>  
-        <Import>  
-            <Namespace>BookStack.Domain.Common.Events</Namespace>  
-        </Import>  
-        </Imports>  
-        <Declarations>  
-        <Literal>  
-            <ID>classname</ID>  
-            <ToolTip>Replace with specified name</ToolTip>  
-            <Default>Entity</Default>  
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+    <CodeSnippet Format="1.0.0">
+    <Header>
+        <Title>Create Request</Title>
+        <Author>FSH</Author>
+        <Description>Adds boilerplate code for create request</Description>
+        <Shortcut>createrequest</Shortcut>
+    </Header>
+    <Snippet>
+        <References>
+        <Reference>
+        </Reference>
+        </References>
+        <Imports>
+        <Import>
+            <Namespace>MultiMart.Domain.Common.Events</Namespace>
+        </Import>
+        </Imports>
+        <Declarations>
+        <Literal>
+            <ID>classname</ID>
+            <ToolTip>Replace with specified name</ToolTip>
+            <Default>Entity</Default>
         </Literal>
         <Literal>
             <ID>entityclassname</ID>
             <ToolTip>Replace with specified name</ToolTip>
             <Default>Entity</Default>
         </Literal>
-        <Object>  
-            <ID>Object</ID>  
-            <Type>System.Object</Type>  
-            <ToolTip>Replace with a object in your application.</ToolTip>  
-            <Default>myObject</Default>  
-        </Object>  
-        </Declarations>  
-        <Code Language="CSharp">  
-        <![CDATA[ 
+        <Object>
+            <ID>Object</ID>
+            <Type>System.Object</Type>
+            <ToolTip>Replace with a object in your application.</ToolTip>
+            <Default>myObject</Default>
+        </Object>
+        </Declarations>
+        <Code Language="CSharp">
+        <![CDATA[
 public class Create$classname$Request : IRequest<Guid>{
 
 }
@@ -56,9 +56,9 @@ public class Create$classname$RequestHandler : IRequestHandler<Create$classname$
 
         return entity.Id;
     }
-} 
-]]>  
-        </Code>  
-    </Snippet>  
-    </CodeSnippet>  
+}
+]]>
+        </Code>
+    </Snippet>
+    </CodeSnippet>
 </CodeSnippets>

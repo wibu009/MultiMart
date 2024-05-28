@@ -1,4 +1,4 @@
-﻿namespace BookStack.Infrastructure.Security.SecurityHeaders;
+﻿namespace MultiMart.Infrastructure.Security.SecurityHeaders;
 
 internal class HeaderNames
 {

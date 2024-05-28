@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace BookStack.Infrastructure.Auth;
+namespace MultiMart.Infrastructure.Auth;
 
 public interface ICurrentUserInitializer
 {

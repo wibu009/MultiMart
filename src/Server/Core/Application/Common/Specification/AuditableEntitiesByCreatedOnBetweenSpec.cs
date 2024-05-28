@@ -1,4 +1,6 @@
-﻿namespace BookStack.Application.Common.Specification;
+﻿using MultiMart.Domain.Common.Contracts;
+
+namespace MultiMart.Application.Common.Specification;
 
 public class AuditableEntitiesByCreatedOnBetweenSpec<T> : Specification<T>
     where T : AuditableEntity

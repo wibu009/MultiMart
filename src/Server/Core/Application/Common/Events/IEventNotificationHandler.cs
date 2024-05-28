@@ -1,6 +1,6 @@
-﻿using BookStack.Shared.Events;
+﻿using MultiMart.Shared.Events;
 
-namespace BookStack.Application.Common.Events;
+namespace MultiMart.Application.Common.Events;
 
 // This is just a shorthand to make it a bit easier to create event handlers for specific events.
 public interface IEventNotificationHandler<TEvent> : INotificationHandler<EventNotification<TEvent>>

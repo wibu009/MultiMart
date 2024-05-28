@@ -1,19 +1,19 @@
-using BookStack.Application.Common.Events;
-using BookStack.Application.Common.Exceptions;
-using BookStack.Application.Common.Interfaces;
-using BookStack.Application.Identity.Roles;
-using BookStack.Domain.Identity;
-using BookStack.Infrastructure.Identity.User;
-using BookStack.Infrastructure.Persistence.Context;
-using BookStack.Shared.Authorization;
-using BookStack.Shared.Multitenancy;
 using Finbuckle.MultiTenant;
 using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
+using MultiMart.Application.Common.Events;
+using MultiMart.Application.Common.Exceptions;
+using MultiMart.Application.Common.Interfaces;
+using MultiMart.Application.Identity.Roles;
+using MultiMart.Domain.Identity;
+using MultiMart.Infrastructure.Identity.User;
+using MultiMart.Infrastructure.Persistence.Context;
+using MultiMart.Shared.Authorization;
+using MultiMart.Shared.Multitenancy;
 
-namespace BookStack.Infrastructure.Identity.Role;
+namespace MultiMart.Infrastructure.Identity.Role;
 
 internal class RoleService : IRoleService
 {

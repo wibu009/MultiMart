@@ -1,4 +1,4 @@
-﻿using BookStack.Application.Common.Persistence;
+﻿using MultiMart.Application.Common.Persistence;
 using Xunit;
 
 namespace Infrastructure.Test.Persistence;

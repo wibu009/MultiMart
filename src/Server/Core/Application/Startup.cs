@@ -1,7 +1,7 @@
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace BookStack.Application;
+namespace MultiMart.Application;
 
 public static class Startup
 {

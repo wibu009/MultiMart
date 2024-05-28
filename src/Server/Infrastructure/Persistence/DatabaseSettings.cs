@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace BookStack.Infrastructure.Persistence;
+namespace MultiMart.Infrastructure.Persistence;
 
 public class DatabaseSettings : IValidatableObject
 {

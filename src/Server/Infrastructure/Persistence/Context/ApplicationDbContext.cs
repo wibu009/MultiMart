@@ -1,12 +1,12 @@
 using Finbuckle.MultiTenant;
-using BookStack.Application.Common.Events;
-using BookStack.Application.Common.Interfaces;
-using BookStack.Domain.Catalog;
-using BookStack.Infrastructure.Persistence.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using MultiMart.Application.Common.Events;
+using MultiMart.Application.Common.Interfaces;
+using MultiMart.Domain.Catalog;
+using MultiMart.Infrastructure.Persistence.Configuration;
 
-namespace BookStack.Infrastructure.Persistence.Context;
+namespace MultiMart.Infrastructure.Persistence.Context;
 
 public class ApplicationDbContext : BaseDbContext
 {

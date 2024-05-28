@@ -1,7 +1,8 @@
-using BookStack.Application.Identity.Tokens;
-using BookStack.Infrastructure.Common.Extensions;
+using MultiMart.Application.Identity.Tokens;
+using MultiMart.Infrastructure.Common.Extensions;
+using MultiMart.Infrastructure.OpenApi;
 
-namespace BookStack.Host.Controllers.Identity;
+namespace MultiMart.Host.Controllers.Identity;
 
 public sealed class TokensController : VersionNeutralApiController
 {

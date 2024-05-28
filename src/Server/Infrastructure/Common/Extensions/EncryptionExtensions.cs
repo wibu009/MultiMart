@@ -2,7 +2,7 @@
 using System.Text;
 using Newtonsoft.Json;
 
-namespace BookStack.Infrastructure.Common.Extensions;
+namespace MultiMart.Infrastructure.Common.Extensions;
 
 public static class EncryptionExtensions
 {

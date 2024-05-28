@@ -1,11 +1,11 @@
 ﻿using Ardalis.Specification;
 using Ardalis.Specification.EntityFrameworkCore;
-using BookStack.Application.Common.Persistence;
-using BookStack.Domain.Common.Contracts;
-using BookStack.Infrastructure.Persistence.Context;
 using Mapster;
+using MultiMart.Application.Common.Persistence;
+using MultiMart.Domain.Common.Contracts;
+using MultiMart.Infrastructure.Persistence.Context;
 
-namespace BookStack.Infrastructure.Persistence.Repository;
+namespace MultiMart.Infrastructure.Persistence.Repository;
 
 // Inherited from Ardalis.Specification's RepositoryBase<T>
 public class ApplicationDbRepository<T> : RepositoryBase<T>, IReadRepository<T>, IRepository<T>

@@ -1,6 +1,10 @@
-﻿using BookStack.Application.Common.Exporters;
+﻿using MultiMart.Application.Common.Exporters;
+using MultiMart.Application.Common.Models;
+using MultiMart.Application.Common.Persistence;
+using MultiMart.Application.Common.Specification;
+using MultiMart.Domain.Catalog;
 
-namespace BookStack.Application.Catalog.Products;
+namespace MultiMart.Application.Catalog.Products;
 
 public class ExportProductsRequest : BaseFilter, IRequest<Stream>
 {

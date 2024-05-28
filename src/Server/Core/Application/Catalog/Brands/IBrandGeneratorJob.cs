@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
+using MultiMart.Application.Common.Interfaces;
 
-namespace BookStack.Application.Catalog.Brands;
+namespace MultiMart.Application.Catalog.Brands;
 
 public interface IBrandGeneratorJob : IScopedService
 {

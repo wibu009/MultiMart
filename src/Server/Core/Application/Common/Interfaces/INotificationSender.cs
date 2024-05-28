@@ -1,4 +1,6 @@
-﻿namespace BookStack.Application.Common.Interfaces;
+﻿using MultiMart.Shared.Notifications;
+
+namespace MultiMart.Application.Common.Interfaces;
 
 public interface INotificationSender : ITransientService
 {

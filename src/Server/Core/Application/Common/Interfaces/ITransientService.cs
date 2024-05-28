@@ -1,4 +1,4 @@
-namespace BookStack.Application.Common.Interfaces;
+namespace MultiMart.Application.Common.Interfaces;
 
 public interface ITransientService
 {

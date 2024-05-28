@@ -1,6 +1,6 @@
 using System.Net;
 
-namespace BookStack.Application.Common.Exceptions;
+namespace MultiMart.Application.Common.Exceptions;
 
 public class ConflictException : CustomException
 {

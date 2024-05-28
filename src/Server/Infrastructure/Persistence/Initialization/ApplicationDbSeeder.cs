@@ -1,15 +1,14 @@
-﻿using BookStack.Infrastructure.Identity;
-using BookStack.Infrastructure.Identity.Role;
-using BookStack.Infrastructure.Identity.User;
-using BookStack.Infrastructure.Multitenancy;
-using BookStack.Infrastructure.Persistence.Context;
-using BookStack.Shared.Authorization;
-using BookStack.Shared.Multitenancy;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using MultiMart.Infrastructure.Identity.Role;
+using MultiMart.Infrastructure.Identity.User;
+using MultiMart.Infrastructure.Multitenancy;
+using MultiMart.Infrastructure.Persistence.Context;
+using MultiMart.Shared.Authorization;
+using MultiMart.Shared.Multitenancy;
 
-namespace BookStack.Infrastructure.Persistence.Initialization;
+namespace MultiMart.Infrastructure.Persistence.Initialization;
 
 internal class ApplicationDbSeeder
 {

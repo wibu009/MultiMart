@@ -1,4 +1,4 @@
-namespace BookStack.Infrastructure.Persistence.Initialization;
+namespace MultiMart.Infrastructure.Persistence.Initialization;
 
 public interface ICustomSeeder
 {

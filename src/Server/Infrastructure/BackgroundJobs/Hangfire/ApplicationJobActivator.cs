@@ -1,13 +1,14 @@
-﻿using BookStack.Infrastructure.Auth;
-using BookStack.Infrastructure.Common;
-using BookStack.Infrastructure.Multitenancy;
-using BookStack.Shared.Multitenancy;
+﻿using MultiMart.Infrastructure.Common;
 using Finbuckle.MultiTenant;
 using Hangfire;
 using Hangfire.Server;
 using Microsoft.Extensions.DependencyInjection;
+using MultiMart.Infrastructure.Auth;
+using MultiMart.Infrastructure.Common;
+using MultiMart.Infrastructure.Multitenancy;
+using MultiMart.Shared.Multitenancy;
 
-namespace BookStack.Infrastructure.BackgroundJobs.Hangfire;
+namespace MultiMart.Infrastructure.BackgroundJobs.Hangfire;
 
 public class ApplicationJobActivator : JobActivator
 {

@@ -1,4 +1,4 @@
-﻿namespace BookStack.Infrastructure.Auth.OAuth2.Facebook;
+﻿namespace MultiMart.Infrastructure.Auth.OAuth2.Facebook;
 
 public class Userinfo
 {

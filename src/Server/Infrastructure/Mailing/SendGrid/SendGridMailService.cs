@@ -1,12 +1,12 @@
 ﻿using System.Net;
-using BookStack.Application.Common.Mailing;
-using BookStack.Application.Common.Mailing.SendGrid;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using MultiMart.Application.Common.Mailing;
+using MultiMart.Application.Common.Mailing.SendGrid;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 
-namespace BookStack.Infrastructure.Mailing.SendGrid;
+namespace MultiMart.Infrastructure.Mailing.SendGrid;
 
 public class SendGridMailService : ISendGridMailService
 {

@@ -1,6 +1,8 @@
-using BookStack.Application.Multitenancy;
+using MultiMart.Application.Multitenancy;
+using MultiMart.Infrastructure.Auth.Permissions;
+using MultiMart.Shared.Authorization;
 
-namespace BookStack.Host.Controllers.Multitenancy;
+namespace MultiMart.Host.Controllers.Multitenancy;
 
 public class TenantsController : VersionNeutralApiController
 {

@@ -2,7 +2,7 @@
 using System.Web;
 using Microsoft.AspNetCore.Http;
 
-namespace BookStack.Infrastructure.Common.Extensions;
+namespace MultiMart.Infrastructure.Common.Extensions;
 
 public static class HttpExtensions
 {

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 
-namespace BookStack.Infrastructure.Security.SecurityHeaders;
+namespace MultiMart.Infrastructure.Security.SecurityHeaders;
 
 internal static class Startup
 {

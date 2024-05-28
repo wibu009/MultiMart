@@ -1,11 +1,11 @@
-using BookStack.Infrastructure.Common.Extensions;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
+using MultiMart.Infrastructure.Common.Extensions;
 using OrchardCore.Localization;
 
-namespace BookStack.Infrastructure.Localization;
+namespace MultiMart.Infrastructure.Localization;
 
 /// <summary>
 /// Provides PO files for FSH Localization.

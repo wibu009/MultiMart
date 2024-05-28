@@ -1,14 +1,14 @@
 ﻿using Finbuckle.MultiTenant;
-using BookStack.Application.Common.Exceptions;
-using BookStack.Application.Common.Persistence;
-using BookStack.Application.Multitenancy;
-using BookStack.Infrastructure.Persistence;
-using BookStack.Infrastructure.Persistence.Initialization;
 using Mapster;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
+using MultiMart.Application.Common.Exceptions;
+using MultiMart.Application.Common.Persistence;
+using MultiMart.Application.Multitenancy;
+using MultiMart.Infrastructure.Persistence;
+using MultiMart.Infrastructure.Persistence.Initialization;
 
-namespace BookStack.Infrastructure.Multitenancy;
+namespace MultiMart.Infrastructure.Multitenancy;
 
 internal class TenantService : ITenantService
 {

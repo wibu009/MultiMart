@@ -1,14 +1,14 @@
-﻿using BookStack.Application.Common.Interfaces;
-using BookStack.Application.Common.Persistence;
-using BookStack.Infrastructure.Caching;
-using BookStack.Infrastructure.Common.Services;
-using BookStack.Infrastructure.Localization;
-using BookStack.Infrastructure.Persistence.ConnectionString;
-using Microsoft.Extensions.Caching.Distributed;
+﻿using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MultiMart.Application.Common.Interfaces;
+using MultiMart.Application.Common.Persistence;
+using MultiMart.Infrastructure.Caching;
+using MultiMart.Infrastructure.Common.Services;
+using MultiMart.Infrastructure.Localization;
+using MultiMart.Infrastructure.Persistence.ConnectionString;
 
 namespace Infrastructure.Test;
 

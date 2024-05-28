@@ -1,6 +1,6 @@
 using System.Linq.Expressions;
 
-namespace BookStack.Application.Common.Interfaces;
+namespace MultiMart.Application.Common.Interfaces;
 
 public interface IJobService : ITransientService
 {

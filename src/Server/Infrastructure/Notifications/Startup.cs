@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 
-namespace BookStack.Infrastructure.Notifications;
+namespace MultiMart.Infrastructure.Notifications;
 
 internal static class Startup
 {

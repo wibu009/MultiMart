@@ -1,4 +1,8 @@
-﻿namespace BookStack.Application.Catalog.Brands;
+﻿using MultiMart.Application.Common.Exceptions;
+using MultiMart.Application.Common.Persistence;
+using MultiMart.Domain.Catalog;
+
+namespace MultiMart.Application.Catalog.Brands;
 
 public class GetBrandRequest : IRequest<BrandDto>
 {

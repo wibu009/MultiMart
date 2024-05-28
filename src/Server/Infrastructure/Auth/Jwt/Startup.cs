@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
-namespace BookStack.Infrastructure.Auth.Jwt;
+namespace MultiMart.Infrastructure.Auth.Jwt;
 
 internal static class Startup
 {

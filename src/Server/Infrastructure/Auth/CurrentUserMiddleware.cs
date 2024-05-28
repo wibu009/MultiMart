@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace BookStack.Infrastructure.Auth;
+namespace MultiMart.Infrastructure.Auth;
 
 public class CurrentUserMiddleware : IMiddleware
 {

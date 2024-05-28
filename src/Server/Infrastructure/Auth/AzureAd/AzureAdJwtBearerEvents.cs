@@ -1,18 +1,18 @@
 ﻿using System.Security.Claims;
 using Finbuckle.MultiTenant;
-using BookStack.Application.Common.Exceptions;
-using BookStack.Application.Identity.Users;
-using BookStack.Infrastructure.Multitenancy;
-using BookStack.Shared.Authorization;
-using BookStack.Shared.Multitenancy;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Identity.Web;
+using MultiMart.Application.Common.Exceptions;
+using MultiMart.Application.Identity.Users;
+using MultiMart.Infrastructure.Multitenancy;
+using MultiMart.Shared.Authorization;
+using MultiMart.Shared.Multitenancy;
 using Serilog;
 
-namespace BookStack.Infrastructure.Auth.AzureAd;
+namespace MultiMart.Infrastructure.Auth.AzureAd;
 
 internal class AzureAdJwtBearerEvents : JwtBearerEvents
 {

@@ -14,7 +14,7 @@
             </References>
             <Imports>
                 <Import>
-                    <Namespace>BookStack.Domain.Common.Events</Namespace>
+                    <Namespace>MultiMart.Domain.Common.Events</Namespace>
                 </Import>
             </Imports>
             <Declarations>
@@ -36,7 +36,7 @@
                 </Object>
             </Declarations>
             <Code Language="CSharp">
-                <![CDATA[ 
+                <![CDATA[
 public class Search$classname$Request : PaginationFilter,IRequest<PaginationResponse<$entityclassname$Dto>>{
 
 }
@@ -59,7 +59,7 @@ public class Search$classname$RequestHandler : IRequestHandler<Search$classname$
         var spec = new $classname$BySearchRequestSpec(request);
         return await _repository.PaginatedListAsync(spec, request.PageNumber, request.PageSize, cancellationToken);
     }
-} 
+}
 ]]>
             </Code>
         </Snippet>

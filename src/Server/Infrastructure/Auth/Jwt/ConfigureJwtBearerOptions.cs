@@ -1,11 +1,11 @@
 ﻿using System.Security.Claims;
 using System.Text;
-using BookStack.Application.Common.Exceptions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using MultiMart.Application.Common.Exceptions;
 
-namespace BookStack.Infrastructure.Auth.Jwt;
+namespace MultiMart.Infrastructure.Auth.Jwt;
 
 public class ConfigureJwtBearerOptions : IConfigureNamedOptions<JwtBearerOptions>
 {

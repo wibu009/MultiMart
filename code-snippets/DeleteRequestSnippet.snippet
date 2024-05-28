@@ -14,7 +14,7 @@
             </References>
             <Imports>
                 <Import>
-                    <Namespace>BookStack.Domain.Common.Events</Namespace>
+                    <Namespace>MultiMart.Domain.Common.Events</Namespace>
                 </Import>
             </Imports>
             <Declarations>
@@ -30,7 +30,7 @@
                 </Literal>
             </Declarations>
             <Code Language="CSharp">
-                <![CDATA[ 
+                <![CDATA[
 public class Delete$classname$Request : IRequest<Guid>
 {
     public Guid Id { get; set; }
@@ -57,7 +57,7 @@ public class Delete$classname$RequestHandler : IRequestHandler<Delete$classname$
 
         return request.Id;
     }
-} 
+}
 ]]>
             </Code>
         </Snippet>

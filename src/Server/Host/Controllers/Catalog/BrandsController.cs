@@ -1,6 +1,9 @@
-﻿using BookStack.Application.Catalog.Brands;
+﻿using MultiMart.Application.Catalog.Brands;
+using MultiMart.Application.Common.Models;
+using MultiMart.Infrastructure.Auth.Permissions;
+using MultiMart.Shared.Authorization;
 
-namespace BookStack.Host.Controllers.Catalog;
+namespace MultiMart.Host.Controllers.Catalog;
 
 public class BrandsController : VersionedApiController
 {

@@ -1,4 +1,4 @@
-namespace BookStack.Application.Identity.Tokens;
+namespace MultiMart.Application.Identity.Tokens;
 
 public class TokenResponse
 {

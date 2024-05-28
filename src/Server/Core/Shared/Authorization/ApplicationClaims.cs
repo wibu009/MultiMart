@@ -1,4 +1,4 @@
-﻿namespace BookStack.Shared.Authorization;
+﻿namespace MultiMart.Shared.Authorization;
 
 public static class ApplicationClaims
 {

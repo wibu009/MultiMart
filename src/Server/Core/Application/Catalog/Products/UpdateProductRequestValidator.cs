@@ -1,4 +1,8 @@
-namespace BookStack.Application.Catalog.Products;
+using MultiMart.Application.Common.Persistence;
+using MultiMart.Application.Common.Validation;
+using MultiMart.Domain.Catalog;
+
+namespace MultiMart.Application.Catalog.Products;
 
 public class UpdateProductRequestValidator : CustomValidator<UpdateProductRequest>
 {

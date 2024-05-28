@@ -1,4 +1,6 @@
-﻿namespace BookStack.Domain.Identity;
+﻿using MultiMart.Domain.Common.Contracts;
+
+namespace MultiMart.Domain.Identity;
 
 public abstract class ApplicationRoleEvent : DomainEvent
 {

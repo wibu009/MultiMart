@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>net7.0</TargetFramework>
-        <RootNamespace>BookStack.Domain</RootNamespace>
-        <AssemblyName>BookStack.Domain</AssemblyName>
+        <RootNamespace>MultiMart.Domain</RootNamespace>
+        <AssemblyName>MultiMart.Domain</AssemblyName>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="NewId" Version="4.0.1"/>

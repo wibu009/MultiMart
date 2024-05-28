@@ -1,4 +1,4 @@
-namespace BookStack.Application.Identity.Users;
+namespace MultiMart.Application.Identity.Users;
 
 public class CreateUserRequest
 {

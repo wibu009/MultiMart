@@ -1,7 +1,10 @@
-﻿using BookStack.Application.Identity.Roles;
-using BookStack.Application.Identity.Users;
+﻿using MultiMart.Application.Common.Persistence;
+using MultiMart.Application.Common.Specification;
+using MultiMart.Application.Identity.Roles;
+using MultiMart.Application.Identity.Users;
+using MultiMart.Domain.Catalog;
 
-namespace BookStack.Application.Dashboard;
+namespace MultiMart.Application.Dashboard;
 
 public class GetStatsRequest : IRequest<StatsDto>
 {

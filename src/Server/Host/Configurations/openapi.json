@@ -1,14 +1,14 @@
 {
-  "SwaggerSettings": {
-    "Enable": true,
-    "Title": "BookStack",
-    "Version": "1.0",
-    "Description": "BookStack is a simple, self-hosted, easy-to-use platform for organizing and storing information.",
-    "ContactName": "Jack Cao",
-    "ContactEmail": "kienct.work@gmail.com",
-    "ContactUrl": "https://linkedin.com/in/bobo009",
-    "License": true,
-    "LicenseName": "MIT License",
-    "LicenseUrl": "https://github.com/wibu009/BookStack/blob/main/LICENSE"
-  }
+    "SwaggerSettings": {
+        "Enable": true,
+        "Title": "MultiMart",
+        "Version": "1.0",
+        "Description": "MultiMart is a multi-vendor marketplace platform to enable anyone to sell products online.",
+        "ContactName": "Jack Cao",
+        "ContactEmail": "kienct.work@gmail.com",
+        "ContactUrl": "https://linkedin.com/in/bobo009",
+        "License": true,
+        "LicenseName": "MIT License",
+        "LicenseUrl": "https://github.com/wibu009/MultiMart/blob/main/LICENSE"
+    }
 }

@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>net7.0</TargetFramework>
-        <RootNamespace>BookStack.Shared</RootNamespace>
-        <AssemblyName>BookStack.Shared</AssemblyName>
+        <RootNamespace>MultiMart.Shared</RootNamespace>
+        <AssemblyName>MultiMart.Shared</AssemblyName>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Update="Roslynator.Analyzers" Version="4.2.0">

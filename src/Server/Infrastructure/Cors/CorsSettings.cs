@@ -1,4 +1,4 @@
-namespace BookStack.Infrastructure.Common.Settings;
+namespace MultiMart.Infrastructure.Cors;
 
 public class CorsSettings
 {

@@ -1,11 +1,11 @@
 ﻿using Finbuckle.MultiTenant;
-using BookStack.Application.Common.Exceptions;
-using BookStack.Application.Common.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
+using MultiMart.Application.Common.Exceptions;
+using MultiMart.Application.Common.Interfaces;
 
-namespace BookStack.Infrastructure.Notifications;
+namespace MultiMart.Infrastructure.Notifications;
 
 [Authorize]
 public class NotificationHub : Hub, ITransientService

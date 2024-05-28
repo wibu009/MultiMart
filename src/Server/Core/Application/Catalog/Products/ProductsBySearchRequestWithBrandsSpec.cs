@@ -1,4 +1,8 @@
-﻿namespace BookStack.Application.Catalog.Products;
+﻿using MultiMart.Application.Common.Models;
+using MultiMart.Application.Common.Specification;
+using MultiMart.Domain.Catalog;
+
+namespace MultiMart.Application.Catalog.Products;
 
 public class ProductsBySearchRequestWithBrandsSpec : EntitiesByPaginationFilterSpec<Product, ProductDto>
 {

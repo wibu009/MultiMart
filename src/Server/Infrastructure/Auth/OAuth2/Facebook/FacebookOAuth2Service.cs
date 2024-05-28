@@ -1,7 +1,6 @@
-﻿using BookStack.Shared.Multitenancy;
-using Facebook;
+﻿using Facebook;
 
-namespace BookStack.Infrastructure.Auth.OAuth2.Facebook;
+namespace MultiMart.Infrastructure.Auth.OAuth2.Facebook;
 
 public class FacebookOAuth2Service
 {

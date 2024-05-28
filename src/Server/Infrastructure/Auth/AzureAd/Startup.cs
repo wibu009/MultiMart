@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Identity.Web;
 using Serilog;
 
-namespace BookStack.Infrastructure.Auth.AzureAd;
+namespace MultiMart.Infrastructure.Auth.AzureAd;
 
 internal static class Startup
 {

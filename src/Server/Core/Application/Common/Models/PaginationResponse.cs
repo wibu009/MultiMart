@@ -1,4 +1,4 @@
-﻿namespace BookStack.Application.Common.Models;
+﻿namespace MultiMart.Application.Common.Models;
 
 public class PaginationResponse<T>
 {

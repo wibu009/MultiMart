@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
     <PropertyGroup>
         <TargetFramework>net7.0</TargetFramework>
-        <RootNamespace>BookStack.Host</RootNamespace>
-        <AssemblyName>BookStack.Host</AssemblyName>
+        <RootNamespace>MultiMart.Host</RootNamespace>
+        <AssemblyName>MultiMart.Host</AssemblyName>
     </PropertyGroup>
     <PropertyGroup>
         <ContainerImageName>dotnet-webapi</ContainerImageName>

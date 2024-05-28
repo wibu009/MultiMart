@@ -1,9 +1,9 @@
-using BookStack.Application.Common.Interfaces;
 using Microsoft.AspNetCore.Http;
+using MultiMart.Application.Common.Interfaces;
 using Serilog;
 using Serilog.Context;
 
-namespace BookStack.Infrastructure.Middleware;
+namespace MultiMart.Infrastructure.Middleware;
 
 public class ResponseLoggingMiddleware : IMiddleware
 {

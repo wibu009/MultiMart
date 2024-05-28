@@ -1,7 +1,7 @@
-using BookStack.Shared.Authorization;
 using Microsoft.AspNetCore.Authorization;
+using MultiMart.Shared.Authorization;
 
-namespace BookStack.Infrastructure.Auth.Permissions;
+namespace MultiMart.Infrastructure.Auth.Permissions;
 
 public class MustHavePermissionAttribute : AuthorizeAttribute
 {

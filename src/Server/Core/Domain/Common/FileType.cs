@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace BookStack.Domain.Common;
+namespace MultiMart.Domain.Common;
 
 public enum FileType
 {

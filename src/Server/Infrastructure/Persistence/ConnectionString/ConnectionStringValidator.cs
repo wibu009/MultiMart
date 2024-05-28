@@ -1,13 +1,13 @@
-﻿using BookStack.Application.Common.Persistence;
-using BookStack.Infrastructure.Common;
+﻿using System.Data.SqlClient;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using MultiMart.Application.Common.Persistence;
+using MultiMart.Infrastructure.Common;
 using MySqlConnector;
 using Npgsql;
-using System.Data.SqlClient;
 
-namespace BookStack.Infrastructure.Persistence.ConnectionString;
+namespace MultiMart.Infrastructure.Persistence.ConnectionString;
 
 internal class ConnectionStringValidator : IConnectionStringValidator
 {

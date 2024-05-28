@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 
-namespace BookStack.Infrastructure.Identity;
+namespace MultiMart.Infrastructure.Identity;
 
 internal static class IdentityResultExtensions
 {

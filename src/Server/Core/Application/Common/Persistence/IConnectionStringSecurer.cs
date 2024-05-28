@@ -1,4 +1,4 @@
-﻿namespace BookStack.Application.Common.Persistence;
+﻿namespace MultiMart.Application.Common.Persistence;
 
 public interface IConnectionStringSecurer
 {

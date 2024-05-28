@@ -1,13 +1,12 @@
 ﻿using Finbuckle.MultiTenant.EntityFrameworkCore;
-using BookStack.Infrastructure.Identity;
-using BookStack.Infrastructure.Identity.Role;
-using BookStack.Infrastructure.Identity.Token;
-using BookStack.Infrastructure.Identity.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using MultiMart.Infrastructure.Identity.Role;
+using MultiMart.Infrastructure.Identity.Token;
+using MultiMart.Infrastructure.Identity.User;
 
-namespace BookStack.Infrastructure.Persistence.Configuration;
+namespace MultiMart.Infrastructure.Persistence.Configuration;
 
 public class ApplicationUserConfig : IEntityTypeConfiguration<ApplicationUser>
 {

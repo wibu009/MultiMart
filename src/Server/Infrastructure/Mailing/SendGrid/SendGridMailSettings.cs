@@ -1,4 +1,4 @@
-﻿namespace BookStack.Infrastructure.Mailing.SendGrid;
+﻿namespace MultiMart.Infrastructure.Mailing.SendGrid;
 
 public class SendGridMailSettings
 {

@@ -1,7 +1,7 @@
 ﻿using Finbuckle.MultiTenant;
-using BookStack.Shared.Multitenancy;
+using MultiMart.Shared.Multitenancy;
 
-namespace BookStack.Infrastructure.Multitenancy;
+namespace MultiMart.Infrastructure.Multitenancy;
 
 public class ApplicationTenantInfo : ITenantInfo
 {

@@ -1,4 +1,4 @@
-namespace BookStack.Shared.Multitenancy;
+namespace MultiMart.Shared.Multitenancy;
 
 public class MultitenancyConstants
 {

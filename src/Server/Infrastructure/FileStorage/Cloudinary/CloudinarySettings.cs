@@ -1,4 +1,4 @@
-﻿namespace BookStack.Infrastructure.FileStorage.Cloudinary;
+﻿namespace MultiMart.Infrastructure.FileStorage.Cloudinary;
 
 public class CloudinarySettings
 {

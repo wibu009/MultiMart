@@ -1,4 +1,4 @@
-﻿namespace BookStack.Infrastructure.Notifications;
+﻿namespace MultiMart.Infrastructure.Notifications;
 
 public class SignalRSettings
 {

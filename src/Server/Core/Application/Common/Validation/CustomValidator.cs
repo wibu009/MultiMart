@@ -1,4 +1,4 @@
-namespace BookStack.Application.Common.Validation;
+namespace MultiMart.Application.Common.Validation;
 
 public class CustomValidator<T> : AbstractValidator<T>
 {

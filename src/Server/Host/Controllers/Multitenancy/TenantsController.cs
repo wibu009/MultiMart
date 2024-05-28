@@ -31,7 +31,7 @@ public class TenantsController : VersionNeutralApiController
     [HttpPost("{id}/activate")]
     [MustHavePermission(ApplicationAction.Update, ApplicationResource.Tenants)]
     [OpenApiOperation("Activate a tenant.", "")]
-    [ApiConventionMethod(typeof(FSHApiConventions), nameof(FSHApiConventions.Register))]
+    [ApiConventionMethod(typeof(ApplicationApiConventions), nameof(ApplicationApiConventions.Register))]
     public Task<string> ActivateAsync(string id)
     {
         return Mediator.Send(new ActivateTenantRequest(id));
@@ -40,7 +40,7 @@ public class TenantsController : VersionNeutralApiController
     [HttpPost("{id}/deactivate")]
     [MustHavePermission(ApplicationAction.Update, ApplicationResource.Tenants)]
     [OpenApiOperation("Deactivate a tenant.", "")]
-    [ApiConventionMethod(typeof(FSHApiConventions), nameof(FSHApiConventions.Register))]
+    [ApiConventionMethod(typeof(ApplicationApiConventions), nameof(ApplicationApiConventions.Register))]
     public Task<string> DeactivateAsync(string id)
     {
         return Mediator.Send(new DeactivateTenantRequest(id));
@@ -49,7 +49,7 @@ public class TenantsController : VersionNeutralApiController
     [HttpPost("{id}/upgrade")]
     [MustHavePermission(ApplicationAction.UpgradeSubscription, ApplicationResource.Tenants)]
     [OpenApiOperation("Upgrade a tenant's subscription.", "")]
-    [ApiConventionMethod(typeof(FSHApiConventions), nameof(FSHApiConventions.Register))]
+    [ApiConventionMethod(typeof(ApplicationApiConventions), nameof(ApplicationApiConventions.Register))]
     public async Task<ActionResult<string>> UpgradeSubscriptionAsync(string id, UpgradeSubscriptionRequest request)
     {
         return id != request.TenantId

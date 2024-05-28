@@ -49,12 +49,13 @@ public static class Startup
             .AddFileStorage(config)
             .AddMailing(config)
             .AddMediatR(Assembly.GetExecutingAssembly())
-            .AddMultitenancy()
+            .AddMultitenancy(config)
             .AddNotifications(config)
             .AddOpenApiDocumentation(config)
             .AddPersistence()
             .AddRequestLogging(config)
             .AddRouting(options => options.LowercaseUrls = true)
+            .AddSettings(config)
             .AddServices();
     }
 
@@ -78,6 +79,7 @@ public static class Startup
             .UseFileStorage()
             .UseExceptionMiddleware()
             .UseRouting()
+            .UseApiVersion()
             .UseCorsPolicy()
             .UseAuthentication()
             .UseCurrentUser()

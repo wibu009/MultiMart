@@ -13,20 +13,29 @@ public sealed class TokensController : VersionNeutralApiController
     [AllowAnonymous]
     [TenantIdHeader]
     [OpenApiOperation("Request an access token using credentials.", "")]
-    public Task<TokenResponse> GetTokenAsync(TokenRequest request, CancellationToken cancellationToken)
+    public async Task<TokenResponse> GetTokenAsync(
+        [FromQuery] string? token,
+        [FromBody] TokenRequest request,
+        CancellationToken cancellationToken)
     {
-        return _tokenService.GetTokenAsync(request, Request.GetIpAddress(), cancellationToken);
+        return token is not null
+            ? await _tokenService.GetTokenAsync(token, Request.GetIpAddress(), cancellationToken)
+            : await _tokenService.GetTokenAsync(request, Request.GetIpAddress(), cancellationToken);
     }
 
     [HttpGet("refresh")]
     [AllowAnonymous]
     [TenantIdHeader]
-    [OpenApiOperation("Request an access token using sign-in code or cookie.", "")]
-    [ApiConventionMethod(typeof(FSHApiConventions), nameof(FSHApiConventions.Search))]
-    public Task<TokenResponse> RefreshAsync([FromQuery] string? signInCode)
+    [OpenApiOperation("Request an access token using a refresh token.", "")]
+    public async Task<TokenResponse> RefreshAsync()
     {
-        return signInCode == null
-            ? _tokenService.RefreshTokenAsync(Request.GetIpAddress())
-            : _tokenService.RefreshTokenAsync(Request.GetIpAddress(), signInCode);
+        return await _tokenService.RefreshTokenAsync(Request.GetIpAddress());
+    }
+
+    [HttpPost("revoke")]
+    [OpenApiOperation("Revoke current user's refresh token.", "")]
+    public async Task<IActionResult> RevokeAsync()
+    {
+        return HandleRedirect(await _tokenService.RevokeCurrentUserRefreshTokenAsync());
     }
 }

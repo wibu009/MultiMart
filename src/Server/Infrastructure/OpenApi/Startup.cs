@@ -23,7 +23,6 @@ internal static class Startup
         {
             services.AddVersionedApiExplorer(o => o.SubstituteApiVersionInUrl = true);
             services.AddEndpointsApiExplorer();
-
             services.AddScoped<FluentValidationSchemaProcessor>(provider =>
             {
                 var validationRules = provider.GetService<IEnumerable<FluentValidationRule>>();
@@ -62,9 +61,9 @@ internal static class Startup
                             Type = OpenApiSecuritySchemeType.OAuth2,
                             Flow = OpenApiOAuth2Flow.AccessCode,
                             Description = "OAuth2.0 Auth Code with PKCE",
-                            Flows = new()
+                            Flows = new OpenApiOAuthFlows
                             {
-                                AuthorizationCode = new()
+                                AuthorizationCode = new OpenApiOAuthFlow
                                 {
                                     AuthorizationUrl = config["SecuritySettings:Swagger:AuthorizationUrl"],
                                     TokenUrl = config["SecuritySettings:Swagger:TokenUrl"],
@@ -91,6 +90,7 @@ internal static class Startup
 
                     document.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor());
                     document.OperationProcessors.Add(new SwaggerGlobalAuthProcessor());
+                    document.OperationProcessors.Add(new SwaggerGlobalAcceptLanguageHeaderProcessor());
 
                     document.TypeMappers.Add(new PrimitiveTypeMapper(typeof(TimeSpan), schema =>
                     {
@@ -104,7 +104,7 @@ internal static class Startup
 
                     var fluentValidationSchemaProcessor = serviceProvider.CreateScope().ServiceProvider.GetService<FluentValidationSchemaProcessor>();
                     document.SchemaProcessors.Add(fluentValidationSchemaProcessor);
-            });
+                });
             }
         }
 

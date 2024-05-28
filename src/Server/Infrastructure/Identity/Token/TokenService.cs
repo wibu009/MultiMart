@@ -1,15 +1,18 @@
 using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using BookStack.Application.Common.Caching;
-using BookStack.Application.Common.Exceptions;
+using BookStack.Application.Common.Interfaces;
 using BookStack.Application.Identity.Tokens;
 using BookStack.Infrastructure.Auth;
 using BookStack.Infrastructure.Auth.Jwt;
+using BookStack.Infrastructure.Auth.OAuth2;
 using BookStack.Infrastructure.Common.Extensions;
 using BookStack.Infrastructure.Identity.User;
 using BookStack.Infrastructure.Multitenancy;
+using BookStack.Infrastructure.Security.Encrypt;
 using BookStack.Shared.Authorization;
 using BookStack.Shared.Multitenancy;
 using Microsoft.AspNetCore.Http;
@@ -18,6 +21,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using SendGrid.Helpers.Errors.Model;
+using UnauthorizedException = BookStack.Application.Common.Exceptions.UnauthorizedException;
 
 namespace BookStack.Infrastructure.Identity.Token;
 
@@ -28,8 +33,11 @@ internal class TokenService : ITokenService
     private readonly SecuritySettings _securitySettings;
     private readonly JwtSettings _jwtSettings;
     private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly ICacheService _cacheService;
     private readonly ApplicationTenantInfo? _currentTenant;
+    private readonly EncryptionSettings _encryptionSettings;
+    private  readonly ICurrentUser _currentUser;
+    private readonly ICacheService _cacheService;
+    private readonly string _refreshTokenCookieName;
 
     public TokenService(
         UserManager<ApplicationUser> userManager,
@@ -38,7 +46,9 @@ internal class TokenService : ITokenService
         ApplicationTenantInfo? currentTenant,
         IOptions<SecuritySettings> securitySettings,
         IHttpContextAccessor httpContextAccessor,
-        ICacheService cacheService)
+        IOptions<EncryptionSettings> encryptionSettings,
+        ICacheService cacheService,
+        ICurrentUser currentUser)
     {
         _userManager = userManager;
         _t = t;
@@ -46,7 +56,10 @@ internal class TokenService : ITokenService
         _currentTenant = currentTenant;
         _httpContextAccessor = httpContextAccessor;
         _cacheService = cacheService;
+        _currentUser = currentUser;
         _securitySettings = securitySettings.Value;
+        _encryptionSettings = encryptionSettings.Value;
+        _refreshTokenCookieName = $"refreshToken-{_currentTenant.Id}".Encrypt(_encryptionSettings.Key, _encryptionSettings.IV);
     }
 
     public async Task<TokenResponse> GetTokenAsync(TokenRequest request, string ipAddress,
@@ -86,6 +99,70 @@ internal class TokenService : ITokenService
             }
         }
 
+        string? oldUserRefreshToken = _httpContextAccessor.HttpContext?.Request.Cookies[_refreshTokenCookieName];
+        if (!string.IsNullOrEmpty(oldUserRefreshToken))
+        {
+            await RevokeRefreshToken(oldUserRefreshToken);
+        }
+
+        return await GenerateTokensAndUpdateUser(user, ipAddress);
+    }
+
+    public async Task<TokenResponse> GetTokenAsync(string? token, string ipAddress, CancellationToken cancellationToken)
+    {
+        if (_currentTenant == null || string.IsNullOrWhiteSpace(_currentTenant.Id))
+        {
+            throw new UnauthorizedException(_t["Authentication Failed."]);
+        }
+
+        string? decodedState = WebUtility.UrlDecode(token);
+        var stateData = decodedState.Contains("#/_=_")
+            ? decodedState.Replace("#/_=_", string.Empty).Decrypt<StateData<string>>(_encryptionSettings.Key, _encryptionSettings.IV)
+            : decodedState.Decrypt<StateData<string>>(_encryptionSettings.Key, _encryptionSettings.IV);
+        string tenantId = stateData.TenantId;
+        var expireAt = stateData.ExpireAt;
+        string cacheKey = stateData.Data;
+        (string userId, string clientIp) = await _cacheService.GetAsync<Tuple<string, string>>(cacheKey, cancellationToken) ??
+                                           throw new UnauthorizedException(_t["Authentication Failed."]);
+        await _cacheService.RemoveAsync(cacheKey, cancellationToken);
+
+        if (clientIp.IsNullOrEmpty())
+        {
+            throw new UnauthorizedException(_t["Authentication Failed."]);
+        }
+
+        if (clientIp != ipAddress)
+        {
+            throw new UnauthorizedException(_t["Authentication Failed."]);
+        }
+
+        if (string.IsNullOrWhiteSpace(userId))
+        {
+            throw new UnauthorizedException(_t["Authentication Failed."]);
+        }
+
+        if(tenantId != _currentTenant.Id)
+        {
+            throw new UnauthorizedException(_t["Authentication Failed."]);
+        }
+
+        if (expireAt < DateTimeOffset.UtcNow)
+        {
+            throw new UnauthorizedException(_t["Authentication Failed."]);
+        }
+
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user == null)
+        {
+            throw new UnauthorizedException(_t["Authentication Failed."]);
+        }
+
+        string? oldUserRefreshToken = _httpContextAccessor.HttpContext?.Request.Cookies[_refreshTokenCookieName];
+        if (!string.IsNullOrEmpty(oldUserRefreshToken))
+        {
+            await RevokeRefreshToken(oldUserRefreshToken);
+        }
+
         return await GenerateTokensAndUpdateUser(user, ipAddress);
     }
 
@@ -96,11 +173,11 @@ internal class TokenService : ITokenService
             throw new UnauthorizedException(_t["Authentication Failed."]);
         }
 
-        string? refreshToken = _httpContextAccessor.HttpContext?.Request.Cookies["refreshToken"];
+        string? refreshToken = _httpContextAccessor.HttpContext?.Request.Cookies[_refreshTokenCookieName];
 
         if (string.IsNullOrEmpty(refreshToken))
         {
-            throw new UnauthorizedException(_t["Invalid Refresh Token."]);
+            throw new UnauthorizedException(_t["Authentication Failed."]);
         }
 
         var user = await _userManager
@@ -108,50 +185,46 @@ internal class TokenService : ITokenService
             .SingleOrDefaultAsync(x => x.RefreshTokens.Any(y => y.Token == refreshToken));
 
         if (user == null)
-            throw new UnauthorizedException(_t["Invalid Refresh Token."]);
+            throw new UnauthorizedException(_t["Authentication Failed."]);
 
-        var oldRefreshToken = user.RefreshTokens.Single(x => x.Token == refreshToken);
-        if (!oldRefreshToken.IsActive)
-            throw new UnauthorizedException(_t["Invalid Refresh Token."]);
-        oldRefreshToken.Revoked = DateTime.UtcNow;
-        await _userManager.UpdateAsync(user);
+        await RevokeRefreshToken(refreshToken);
 
         return await GenerateTokensAndUpdateUser(user, ipAddress);
     }
 
-    public async Task<TokenResponse> RefreshTokenAsync(string ipAddress, string? signInCode)
+    public async Task<string> RevokeCurrentUserRefreshTokenAsync()
     {
-        if (_currentTenant == null || string.IsNullOrWhiteSpace(_currentTenant.Id))
-        {
-            throw new UnauthorizedException(_t["Authentication Failed."]);
-        }
-        (var userId, string clientIp) = _cacheService.Get<Tuple<Guid, string>>(signInCode ?? throw new ArgumentNullException(nameof(signInCode))) ?? throw new InvalidOperationException();
+        string userId = _currentUser.GetUserId().ToString();
 
-        if (userId == Guid.Empty || clientIp.IsNullOrEmpty())
-        {
-            throw new UnauthorizedException(_t["Invalid Sign In Code."]);
-        }
-
-        await _cacheService.RemoveAsync(signInCode!);
-
-        if (clientIp != _httpContextAccessor.HttpContext!.GetIpAddress())
-        {
-            throw new UnauthorizedException(_t["Invalid Sign In Code."]);
-        }
-
-        var user = await _userManager.FindByIdAsync(userId.ToString());
+        var user = await _userManager.Users
+            .Include(x => x.RefreshTokens)
+            .SingleOrDefaultAsync(x => x.Id == userId);
         if (user == null)
         {
-            throw new UnauthorizedException(_t["Invalid Sign In Code."]);
+            throw new NotFoundException(_t["User not found."]);
         }
-        return await GenerateTokensAndUpdateUser(user, ipAddress);
+
+        // Delete the refresh token cookie
+        if (_httpContextAccessor.HttpContext.Request.Cookies.ContainsKey(_refreshTokenCookieName))
+        {
+            var refreshToken = user.RefreshTokens.Single(x => x.Token == _httpContextAccessor.HttpContext?.Request.Cookies[_refreshTokenCookieName]);
+            if (refreshToken.IsActive)
+            {
+                refreshToken.Revoked = DateTime.UtcNow;
+                await _userManager.UpdateAsync(user);
+            }
+
+            _httpContextAccessor.HttpContext.Response.Cookies.Delete(_refreshTokenCookieName);
+        }
+
+        return _httpContextAccessor.HttpContext.Request.GetOrigin();
     }
 
     private async Task<TokenResponse> GenerateTokensAndUpdateUser(ApplicationUser user, string ipAddress)
     {
         string token = GenerateJwt(user, ipAddress);
 
-        await SetRefreshToken(user, ipAddress);
+        await SetRefreshToken(user);
 
         return await Task.FromResult(new TokenResponse(token));
     }
@@ -173,14 +246,6 @@ internal class TokenService : ITokenService
             new(ClaimTypes.MobilePhone, user.PhoneNumber ?? string.Empty)
         };
 
-    private static string GenerateRefreshToken()
-    {
-        byte[] randomNumber = new byte[32];
-        using var rng = RandomNumberGenerator.Create();
-        rng.GetBytes(randomNumber);
-        return Convert.ToBase64String(randomNumber);
-    }
-
     private string GenerateEncryptedToken(SigningCredentials signingCredentials, IEnumerable<Claim> claims)
     {
         var token = new JwtSecurityToken(
@@ -191,38 +256,13 @@ internal class TokenService : ITokenService
         return tokenHandler.WriteToken(token);
     }
 
-    private ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
-    {
-        var tokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key)),
-            ValidateIssuer = false,
-            ValidateAudience = false,
-            RoleClaimType = ClaimTypes.Role,
-            ClockSkew = TimeSpan.Zero,
-            ValidateLifetime = false
-        };
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out var securityToken);
-        if (securityToken is not JwtSecurityToken jwtSecurityToken ||
-            !jwtSecurityToken.Header.Alg.Equals(
-                SecurityAlgorithms.HmacSha256,
-                StringComparison.OrdinalIgnoreCase))
-        {
-            throw new UnauthorizedException(_t["Invalid Token."]);
-        }
-
-        return principal;
-    }
-
     private SigningCredentials GetSigningCredentials()
     {
         byte[] secret = Encoding.UTF8.GetBytes(_jwtSettings.Key);
         return new SigningCredentials(new SymmetricSecurityKey(secret), SecurityAlgorithms.HmacSha256);
     }
 
-    private async Task SetRefreshToken(ApplicationUser user, string ipAddress)
+    private async Task SetRefreshToken(ApplicationUser user)
     {
         string refreshToken = TokenGenerator.GenerateToken();
         user.RefreshTokens.Add(new ApplicationUserRefreshToken
@@ -237,6 +277,33 @@ internal class TokenService : ITokenService
             HttpOnly = true,
             Expires = DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenExpirationInDays),
         };
-        _httpContextAccessor.HttpContext?.Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
+
+        _httpContextAccessor.HttpContext.Response.Cookies.Append(_refreshTokenCookieName, refreshToken, cookieOptions);
+    }
+
+    private async Task RevokeRefreshToken(string refreshToken)
+    {
+        if (string.IsNullOrEmpty(refreshToken))
+        {
+            return;
+        }
+
+        var user = await _userManager
+            .Users.Include(x => x.RefreshTokens)
+            .SingleOrDefaultAsync(x => x.RefreshTokens.Any(y => y.Token == refreshToken));
+
+        if (user == null)
+        {
+            return;
+        }
+
+        var oldRefreshToken = user.RefreshTokens.Single(x => x.Token == refreshToken);
+        if (!oldRefreshToken.IsActive)
+        {
+            return;
+        }
+
+        oldRefreshToken.Revoked = DateTime.UtcNow;
+        await _userManager.UpdateAsync(user);
     }
 }

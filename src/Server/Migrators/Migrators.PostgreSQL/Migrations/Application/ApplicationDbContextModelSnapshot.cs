@@ -18,7 +18,7 @@ namespace Migrators.PostgreSQL.Migrations.Application
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("Catalog")
-                .HasAnnotation("ProductVersion", "6.0.3")
+                .HasAnnotation("ProductVersion", "7.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -165,7 +165,7 @@ namespace Migrators.PostgreSQL.Migrations.Application
                     b.HasAnnotation("Finbuckle:MultiTenant", true);
                 });
 
-            modelBuilder.Entity("BookStack.Infrastructure.Identity.ApplicationRole", b =>
+            modelBuilder.Entity("BookStack.Infrastructure.Identity.Role.ApplicationRole", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -201,7 +201,7 @@ namespace Migrators.PostgreSQL.Migrations.Application
                     b.HasAnnotation("Finbuckle:MultiTenant", true);
                 });
 
-            modelBuilder.Entity("BookStack.Infrastructure.Identity.ApplicationRoleClaim", b =>
+            modelBuilder.Entity("BookStack.Infrastructure.Identity.Role.ApplicationRoleClaim", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -239,7 +239,44 @@ namespace Migrators.PostgreSQL.Migrations.Application
                     b.HasAnnotation("Finbuckle:MultiTenant", true);
                 });
 
-            modelBuilder.Entity("BookStack.Infrastructure.Identity.ApplicationUser", b =>
+            modelBuilder.Entity("BookStack.Infrastructure.Identity.Token.ApplicationUserRefreshToken", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Expires")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("Revoked")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserRefreshTokens", "Identity");
+
+                    b.HasAnnotation("Finbuckle:MultiTenant", true);
+                });
+
+            modelBuilder.Entity("BookStack.Infrastructure.Identity.User.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -461,18 +498,29 @@ namespace Migrators.PostgreSQL.Migrations.Application
                     b.Navigation("Brand");
                 });
 
-            modelBuilder.Entity("BookStack.Infrastructure.Identity.ApplicationRoleClaim", b =>
+            modelBuilder.Entity("BookStack.Infrastructure.Identity.Role.ApplicationRoleClaim", b =>
                 {
-                    b.HasOne("BookStack.Infrastructure.Identity.ApplicationRole", null)
+                    b.HasOne("BookStack.Infrastructure.Identity.Role.ApplicationRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("BookStack.Infrastructure.Identity.Token.ApplicationUserRefreshToken", b =>
+                {
+                    b.HasOne("BookStack.Infrastructure.Identity.User.ApplicationUser", "ApplicationUser")
+                        .WithMany("RefreshTokens")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("BookStack.Infrastructure.Identity.ApplicationUser", null)
+                    b.HasOne("BookStack.Infrastructure.Identity.User.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -481,7 +529,7 @@ namespace Migrators.PostgreSQL.Migrations.Application
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("BookStack.Infrastructure.Identity.ApplicationUser", null)
+                    b.HasOne("BookStack.Infrastructure.Identity.User.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -490,13 +538,13 @@ namespace Migrators.PostgreSQL.Migrations.Application
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
-                    b.HasOne("BookStack.Infrastructure.Identity.ApplicationRole", null)
+                    b.HasOne("BookStack.Infrastructure.Identity.Role.ApplicationRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BookStack.Infrastructure.Identity.ApplicationUser", null)
+                    b.HasOne("BookStack.Infrastructure.Identity.User.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -505,11 +553,16 @@ namespace Migrators.PostgreSQL.Migrations.Application
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("BookStack.Infrastructure.Identity.ApplicationUser", null)
+                    b.HasOne("BookStack.Infrastructure.Identity.User.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("BookStack.Infrastructure.Identity.User.ApplicationUser", b =>
+                {
+                    b.Navigation("RefreshTokens");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,4 +1,5 @@
 using BookStack.Application.Identity.Roles;
+using BookStack.Infrastructure.Common.Extensions;
 
 namespace BookStack.Host.Controllers.Identity;
 
@@ -37,12 +38,7 @@ public class RolesController : VersionNeutralApiController
     [OpenApiOperation("Update a role's permissions.", "")]
     public async Task<ActionResult<string>> UpdatePermissionsAsync(string id, UpdateRolePermissionsRequest request, CancellationToken cancellationToken)
     {
-        if (id != request.RoleId)
-        {
-            return BadRequest();
-        }
-
-        return Ok(await _roleService.UpdatePermissionsAsync(request, cancellationToken));
+        return Ok(await _roleService.UpdatePermissionsAsync(request.SetPropertyValue(nameof(UpdateRolePermissionsRequest.RoleId), id), cancellationToken));
     }
 
     [HttpPost]

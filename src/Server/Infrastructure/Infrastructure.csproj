@@ -13,8 +13,11 @@
         <PackageReference Include="ClosedXML" Version="0.100.3"/>
         <PackageReference Include="CloudinaryDotNet" Version="1.26.2" />
         <PackageReference Include="Dapper" Version="2.0.123"/>
+        <PackageReference Include="Facebook" Version="7.0.10-beta" />
         <PackageReference Include="Finbuckle.MultiTenant.AspNetCore" Version="6.10.0"/>
         <PackageReference Include="Finbuckle.MultiTenant.EntityFrameworkCore" Version="6.10.0"/>
+        <PackageReference Include="Google.Apis.Auth" Version="1.68.0" />
+        <PackageReference Include="Google.Apis.Oauth2.v2" Version="1.68.0.1869" />
         <PackageReference Include="Hangfire" Version="1.7.34"/>
         <PackageReference Include="Hangfire.Console" Version="1.4.2"/>
         <PackageReference Include="Hangfire.Console.Extensions" Version="1.0.5"/>

@@ -7,7 +7,7 @@ using BookStack.Infrastructure.Logging.Serilog;
 using Serilog;
 using Serilog.Formatting.Compact;
 
-[assembly: ApiConventionType(typeof(FSHApiConventions))]
+[assembly: ApiConventionType(typeof(ApplicationApiConventions))]
 
 internal class Program
 {

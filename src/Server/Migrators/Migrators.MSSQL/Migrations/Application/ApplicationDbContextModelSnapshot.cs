@@ -17,7 +17,7 @@ namespace Migrators.MSSQL.Migrations.Application
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasDefaultSchema("Catalog")
+                .HasDefaultSchema("catalog")
                 .HasAnnotation("ProductVersion", "7.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
@@ -62,7 +62,7 @@ namespace Migrators.MSSQL.Migrations.Application
 
                     b.HasKey("Id");
 
-                    b.ToTable("Brands", "Catalog");
+                    b.ToTable("Brands", "catalog");
 
                     b.HasAnnotation("Finbuckle:MultiTenant", true);
                 });
@@ -118,7 +118,7 @@ namespace Migrators.MSSQL.Migrations.Application
 
                     b.HasIndex("BrandId");
 
-                    b.ToTable("Products", "Catalog");
+                    b.ToTable("Products", "catalog");
 
                     b.HasAnnotation("Finbuckle:MultiTenant", true);
                 });
@@ -160,7 +160,7 @@ namespace Migrators.MSSQL.Migrations.Application
 
                     b.HasKey("Id");
 
-                    b.ToTable("AuditTrails", "Auditing");
+                    b.ToTable("AuditTrails", "auditing");
 
                     b.HasAnnotation("Finbuckle:MultiTenant", true);
                 });
@@ -197,7 +197,7 @@ namespace Migrators.MSSQL.Migrations.Application
                         .HasDatabaseName("RoleNameIndex")
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
-                    b.ToTable("Roles", "Identity");
+                    b.ToTable("Roles", "identity");
 
                     b.HasAnnotation("Finbuckle:MultiTenant", true);
                 });
@@ -235,7 +235,7 @@ namespace Migrators.MSSQL.Migrations.Application
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("RoleClaims", "Identity");
+                    b.ToTable("RoleClaims", "identity");
 
                     b.HasAnnotation("Finbuckle:MultiTenant", true);
                 });
@@ -272,7 +272,7 @@ namespace Migrators.MSSQL.Migrations.Application
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserRefreshTokens", "Identity");
+                    b.ToTable("UserRefreshTokens", "identity");
 
                     b.HasAnnotation("Finbuckle:MultiTenant", true);
                 });
@@ -335,12 +335,6 @@ namespace Migrators.MSSQL.Migrations.Application
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("RefreshToken")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("RefreshTokenExpiryTime")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -366,7 +360,7 @@ namespace Migrators.MSSQL.Migrations.Application
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("Users", "Identity");
+                    b.ToTable("Users", "identity");
 
                     b.HasAnnotation("Finbuckle:MultiTenant", true);
                 });
@@ -398,7 +392,7 @@ namespace Migrators.MSSQL.Migrations.Application
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserClaims", "Identity");
+                    b.ToTable("UserClaims", "identity");
 
                     b.HasAnnotation("Finbuckle:MultiTenant", true);
                 });
@@ -436,7 +430,7 @@ namespace Migrators.MSSQL.Migrations.Application
                     b.HasIndex("LoginProvider", "ProviderKey", "TenantId")
                         .IsUnique();
 
-                    b.ToTable("UserLogins", "Identity");
+                    b.ToTable("UserLogins", "identity");
 
                     b.HasAnnotation("Finbuckle:MultiTenant", true);
                 });
@@ -458,7 +452,7 @@ namespace Migrators.MSSQL.Migrations.Application
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("UserRoles", "Identity");
+                    b.ToTable("UserRoles", "identity");
 
                     b.HasAnnotation("Finbuckle:MultiTenant", true);
                 });
@@ -484,7 +478,7 @@ namespace Migrators.MSSQL.Migrations.Application
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("UserTokens", "Identity");
+                    b.ToTable("UserTokens", "identity");
 
                     b.HasAnnotation("Finbuckle:MultiTenant", true);
                 });

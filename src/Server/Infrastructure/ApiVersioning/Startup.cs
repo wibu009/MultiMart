@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Versioning;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BookStack.Infrastructure.ApiVersioning;
@@ -25,5 +26,11 @@ public static class Startup
         });
 
         return services;
+    }
+
+    public static IApplicationBuilder UseApiVersion(this IApplicationBuilder app)
+    {
+        app.UseApiVersioning();
+        return app;
     }
 }

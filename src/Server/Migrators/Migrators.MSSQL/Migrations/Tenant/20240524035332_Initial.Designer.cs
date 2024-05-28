@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Migrators.MSSQL.Migrations.Tenant
 {
     [DbContext(typeof(TenantDbContext))]
-    [Migration("20240522112626_Initial")]
+    [Migration("20240524035332_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -25,7 +25,7 @@ namespace Migrators.MSSQL.Migrations.Tenant
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("BookStack.Infrastructure.Multitenancy.FSHTenantInfo", b =>
+            modelBuilder.Entity("BookStack.Infrastructure.Multitenancy.ApplicationTenantInfo", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(64)
@@ -61,7 +61,7 @@ namespace Migrators.MSSQL.Migrations.Tenant
                     b.HasIndex("Identifier")
                         .IsUnique();
 
-                    b.ToTable("Tenants", "MultiTenancy");
+                    b.ToTable("Tenants", "multitenancy");
                 });
 #pragma warning restore 612, 618
         }

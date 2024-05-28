@@ -17,12 +17,12 @@ namespace Migrators.PostgreSQL.Migrations.Tenant
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.1")
+                .HasAnnotation("ProductVersion", "7.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("BookStack.Infrastructure.Multitenancy.FSHTenantInfo", b =>
+            modelBuilder.Entity("BookStack.Infrastructure.Multitenancy.ApplicationTenantInfo", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(64)

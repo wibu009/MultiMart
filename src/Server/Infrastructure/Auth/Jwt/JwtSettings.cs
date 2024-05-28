@@ -10,6 +10,8 @@ public class JwtSettings : IValidatableObject
 
     public int RefreshTokenExpirationInDays { get; set; }
 
+    public string RefreshTokenSecretKey { get; set; } = string.Empty;
+
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
         if (string.IsNullOrEmpty(Key))

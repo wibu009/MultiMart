@@ -6,7 +6,7 @@ namespace BookStack.Host.Controllers;
 #nullable disable
 #pragma warning disable RCS1163, IDE0060
 
-public static class FSHApiConventions
+public static class ApplicationApiConventions
 {
     [ProducesResponseType(200)]
     [ProducesResponseType(400, Type = typeof(HttpValidationProblemDetails))]

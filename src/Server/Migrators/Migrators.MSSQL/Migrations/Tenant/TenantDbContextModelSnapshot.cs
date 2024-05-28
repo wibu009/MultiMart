@@ -22,7 +22,7 @@ namespace Migrators.MSSQL.Migrations.Tenant
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("BookStack.Infrastructure.Multitenancy.FSHTenantInfo", b =>
+            modelBuilder.Entity("BookStack.Infrastructure.Multitenancy.ApplicationTenantInfo", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(64)
@@ -58,7 +58,7 @@ namespace Migrators.MSSQL.Migrations.Tenant
                     b.HasIndex("Identifier")
                         .IsUnique();
 
-                    b.ToTable("Tenants", "MultiTenancy");
+                    b.ToTable("Tenants", "multitenancy");
                 });
 #pragma warning restore 612, 618
         }

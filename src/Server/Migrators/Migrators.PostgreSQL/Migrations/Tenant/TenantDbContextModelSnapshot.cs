@@ -58,7 +58,7 @@ namespace Migrators.PostgreSQL.Migrations.Tenant
                     b.HasIndex("Identifier")
                         .IsUnique();
 
-                    b.ToTable("Tenants", "MultiTenancy");
+                    b.ToTable("Tenants", "multitenancy");
                 });
 #pragma warning restore 612, 618
         }

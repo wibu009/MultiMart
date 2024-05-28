@@ -10,12 +10,12 @@
     "FaceBookSettings": {
       "AppId": "your-app-id",
       "AppSecret": "your-app-secret",
-      "CallBackPath": "/api/oauth/external-auth-callback/facebook"
+      "CallBackPath": "/api/oauth/callback/facebook"
     },
     "GoogleSettings": {
       "ClientId": "your-client-id",
       "ClientSecret": "your-client-secret",
-      "CallBackPath": "/api/oauth/external-auth-callback/google"
+      "CallBackPath": "/api/oauth/callback/google"
     },
     "AzureAd": {
       "Instance": "https://login.microsoftonline.com/",

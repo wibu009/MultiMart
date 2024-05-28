@@ -1,4 +1,6 @@
 ﻿using BookStack.Application.Common.Caching;
+using BookStack.Application.Common.Events;
+using BookStack.Domain.Identity;
 using BookStack.Infrastructure.Auth.OAuth2.Facebook;
 using BookStack.Infrastructure.Auth.OAuth2.Google;
 using BookStack.Infrastructure.Common.Extensions;
@@ -25,6 +27,7 @@ public class OAuth2Service
     private readonly ApplicationTenantInfo _currentTenant;
     private readonly EncryptionSettings _encryptionSettings;
     private readonly ICacheService _cacheService;
+    private readonly IEventPublisher _events;
 
     public OAuth2Service(
         IHttpContextAccessor httpContextAccessor,
@@ -34,13 +37,15 @@ public class OAuth2Service
         IStringLocalizer<OAuth2Service> t,
         ApplicationTenantInfo currentTenant,
         IOptions<EncryptionSettings> encryptionSettings,
-        ICacheService cacheService)
+        ICacheService cacheService,
+        IEventPublisher events)
     {
         _httpContextAccessor = httpContextAccessor;
         _userManager = userManager;
         _t = t;
         _currentTenant = currentTenant;
         _cacheService = cacheService;
+        _events = events;
         _googleOAuth2Service = new GoogleOAuth2Service(
             googleSettings.Value,
             $"{httpContextAccessor.HttpContext!.Request.Scheme}://{httpContextAccessor.HttpContext!.Request.Host}{googleSettings.Value.CallBackPath}");
@@ -57,7 +62,7 @@ public class OAuth2Service
         await _cacheService.SetAsync(
             cacheKey,
             Tuple.Create(
-                _httpContextAccessor.HttpContext.Request.GetUrlFromRequest(),
+                _httpContextAccessor.HttpContext.Request.GetUri(),
                 _httpContextAccessor.HttpContext.GetIpAddress()),
             TimeSpan.FromMinutes(2));
 
@@ -96,7 +101,7 @@ public class OAuth2Service
         await _cacheService.RemoveAsync(stateData.Data);
 
         dynamic? userExist = await _userManager.FindByEmailAsync(user.Email);
-        string signInToken;
+        string token;
         string signInTokenCacheKey = TokenGenerator.GenerateToken();
         if (userExist != null)
         {
@@ -105,12 +110,12 @@ public class OAuth2Service
                 Tuple.Create(userExist.Id, clientIp),
                 TimeSpan.FromMinutes(2));
 
-            signInToken = new StateData<string>(
+            token = new StateData<string>(
                 tenantId,
                 signInTokenCacheKey,
                 DateTimeOffset.UtcNow.AddMinutes(2))
                 .Encrypt(_encryptionSettings.Key, _encryptionSettings.IV);
-            return clientUrl.AddQueryParam("sign_in_token", signInToken);
+            return clientUrl.AddQueryParam("token", token);
         }
 
         string[] nameParts = user.Name.Split(" ");
@@ -132,12 +137,14 @@ public class OAuth2Service
             signInTokenCacheKey,
             Tuple.Create(appUser.Id, clientIp),
             TimeSpan.FromMinutes(2));
-        signInToken = new StateData<string>(
+        token = new StateData<string>(
             tenantId,
             signInTokenCacheKey,
             DateTimeOffset.UtcNow.AddMinutes(2))
             .Encrypt(_encryptionSettings.Key, _encryptionSettings.IV);
 
-        return clientUrl.AddQueryParam("sign_token", signInToken);
+        await _events.PublishAsync(new ApplicationUserCreatedEvent(appUser.Id));
+
+        return clientUrl.AddQueryParam("token", token);
     }
 }

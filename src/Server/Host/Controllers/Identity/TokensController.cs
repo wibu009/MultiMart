@@ -14,12 +14,12 @@ public sealed class TokensController : VersionNeutralApiController
     [TenantIdHeader]
     [OpenApiOperation("Request an access token using credentials.", "")]
     public async Task<TokenResponse> GetTokenAsync(
-        [FromQuery] string? signInToken,
+        [FromQuery] string? token,
         [FromBody] TokenRequest request,
         CancellationToken cancellationToken)
     {
-        return signInToken is not null
-            ? await _tokenService.GetTokenAsync(signInToken, Request.GetIpAddress(), cancellationToken)
+        return token is not null
+            ? await _tokenService.GetTokenAsync(token, Request.GetIpAddress(), cancellationToken)
             : await _tokenService.GetTokenAsync(request, Request.GetIpAddress(), cancellationToken);
     }
 
@@ -33,9 +33,9 @@ public sealed class TokensController : VersionNeutralApiController
     }
 
     [HttpPost("revoke")]
-    [OpenApiOperation("Revoke a refresh token.", "")]
+    [OpenApiOperation("Revoke current user's refresh token.", "")]
     public async Task<IActionResult> RevokeAsync()
     {
-        return HandleRedirect(await _tokenService.RevokeRefreshTokenAsync());
+        return HandleRedirect(await _tokenService.RevokeCurrentUserRefreshTokenAsync());
     }
 }

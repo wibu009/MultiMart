@@ -42,12 +42,12 @@ public static class HttpExtensions
         return ip ?? "N/A";
     }
 
-    public static string GetUrlFromRequest(this HttpRequest request)
+    public static string GetUri(this HttpRequest request)
     {
         return request.Headers.TryGetValue("Referer", out var header) ? header.ToString() : string.Empty;
     }
 
-    public static string GetBaseUrl(this HttpRequest request)
+    public static string GetOrigin(this HttpRequest request)
     {
         string scheme = request.Scheme;
         var host = request.Host;

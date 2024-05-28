@@ -9,37 +9,53 @@ public static class EncryptionExtensions
     // Encrypts the data using AES encryption
     public static string Encrypt<T>(this T data, string key, string iv)
     {
-        string json = JsonConvert.SerializeObject(data);
-        byte[] bytes = Encoding.Unicode.GetBytes(json);
-
-        using var aes = Aes.Create();
-        aes.Key = Convert.FromBase64String(key);
-        aes.IV = Convert.FromBase64String(iv);
-
-        using var encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
         using var ms = new MemoryStream();
-        using var cs = new CryptoStream(ms, encryptor, CryptoStreamMode.Write);
-        cs.Write(bytes, 0, bytes.Length);
-        cs.Close();
+        using (var aes = Aes.Create()) // Create AES instance inside using block
+        {
+            aes.Key = Convert.FromBase64String(key);
+            aes.IV = Convert.FromBase64String(iv);
 
+            using (var encryptor = aes.CreateEncryptor(aes.Key, aes.IV))
+            using (var cs = new CryptoStream(ms, encryptor, CryptoStreamMode.Write))
+            {
+                // Serialize data to JSON
+                string json = JsonConvert.SerializeObject(data);
+                byte[] bytes = Encoding.Unicode.GetBytes(json);
+
+                // Write entire byte array to stream
+                cs.Write(bytes, 0, bytes.Length);
+            }
+        }
+
+        // Get complete byte array from MemoryStream
         return Convert.ToBase64String(ms.ToArray());
     }
 
+    // Decrypts the data using AES encryption
     public static T Decrypt<T>(this string base64, string key, string iv)
     {
-        byte[] cipherText = Convert.FromBase64String(base64);
-
+        using var ms = new MemoryStream(Convert.FromBase64String(base64));
         using var aes = Aes.Create();
         aes.Key = Convert.FromBase64String(key);
         aes.IV = Convert.FromBase64String(iv);
 
         using var decrypt = aes.CreateDecryptor(aes.Key, aes.IV);
-        using var ms = new MemoryStream(cipherText);
         using var cs = new CryptoStream(ms, decrypt, CryptoStreamMode.Read);
-        byte[] plainText = new byte[cipherText.Length];
-        int decryptedByteCount = cs.Read(plainText, 0, plainText.Length);
+        // Read all bytes from stream into a List<byte> for efficiency
+        var decryptedBytes = new List<byte>();
+        int readCount;
+        do
+        {
+            byte[] buffer = new byte[1024]; // Adjust buffer size as needed
+            readCount = cs.Read(buffer, 0, buffer.Length);
+            decryptedBytes.AddRange(buffer.Take(readCount));
+        }
+        while (readCount > 0);
 
-        string json = Encoding.Unicode.GetString(plainText, 0, decryptedByteCount);
+        // Convert decrypted bytes to string
+        string json = Encoding.Unicode.GetString(decryptedBytes.ToArray());
+
+        // Deserialize JSON into object
         return JsonConvert.DeserializeObject<T>(json) ?? throw new InvalidOperationException();
     }
 

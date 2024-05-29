@@ -4,7 +4,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using MultiMart.Application.Common.Mailing;
-using MultiMart.Application.Common.Mailing.Smtp;
 
 namespace MultiMart.Infrastructure.Mailing.Smtp;
 

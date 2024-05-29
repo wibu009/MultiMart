@@ -19,7 +19,7 @@ public class EmailTemplateService : IEmailTemplateService
     public static string GetTemplate(string templateName)
     {
         string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-        string tmplFolder = Path.Combine(baseDirectory, "Email Templates");
+        string tmplFolder = Path.Combine(baseDirectory, "EmailTemplates");
         string filePath = Path.Combine(tmplFolder, $"{templateName}.cshtml");
 
         using var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);

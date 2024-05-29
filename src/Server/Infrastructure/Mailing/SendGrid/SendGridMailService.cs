@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MultiMart.Application.Common.Mailing;
-using MultiMart.Application.Common.Mailing.SendGrid;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 

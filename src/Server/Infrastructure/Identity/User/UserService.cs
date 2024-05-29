@@ -11,7 +11,6 @@ using MultiMart.Application.Common.Exceptions;
 using MultiMart.Application.Common.FileStorage.LocalStorage;
 using MultiMart.Application.Common.Interfaces;
 using MultiMart.Application.Common.Mailing;
-using MultiMart.Application.Common.Mailing.Smtp;
 using MultiMart.Application.Common.Models;
 using MultiMart.Application.Common.Specification;
 using MultiMart.Application.Identity.Users;

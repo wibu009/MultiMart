@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using MultiMart.Application.Common.Persistence;
 using MultiMart.Domain.Common.Contracts;
 using MultiMart.Infrastructure.Common;
+using MultiMart.Infrastructure.Multitenancy;
 using MultiMart.Infrastructure.Persistence.ConnectionString;
 using MultiMart.Infrastructure.Persistence.Context;
 using MultiMart.Infrastructure.Persistence.Initialization;
@@ -21,10 +22,6 @@ internal static class Startup
     {
         services.AddOptions<DatabaseSettings>()
             .BindConfiguration(nameof(DatabaseSettings))
-            .PostConfigure(databaseSettings =>
-            {
-                _logger.Information("Current DB Provider: {dbProvider}", databaseSettings.DBProvider);
-            })
             .ValidateDataAnnotations()
             .ValidateOnStart();
 
@@ -32,7 +29,15 @@ internal static class Startup
             .AddDbContext<ApplicationDbContext>((p, m) =>
             {
                 var databaseSettings = p.GetRequiredService<IOptions<DatabaseSettings>>().Value;
-                m.UseDatabase(databaseSettings.DBProvider, databaseSettings.ConnectionString);
+                var applicationTenantInfo = p.GetService<ApplicationTenantInfo>();
+                if (applicationTenantInfo is not null && !string.IsNullOrWhiteSpace(applicationTenantInfo.DbProvider) && !string.IsNullOrWhiteSpace(applicationTenantInfo.ConnectionString))
+                {
+                    m.UseDatabase(applicationTenantInfo.DbProvider, applicationTenantInfo.ConnectionString);
+                }
+                else
+                {
+                    m.UseDatabase(databaseSettings.DBProvider, databaseSettings.ConnectionString);
+                }
             })
 
             .AddTransient<IDatabaseInitializer, DatabaseInitializer>()

@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Migrators.PostgreSQL.Migrations.Tenant
 {
     [DbContext(typeof(TenantDbContext))]
-    [Migration("20240528190655_Initial")]
+    [Migration("20240530080921_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -36,6 +36,10 @@ namespace Migrators.PostgreSQL.Migrations.Tenant
                         .HasColumnType("text");
 
                     b.Property<string>("ConnectionString")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("DbProvider")
                         .IsRequired()
                         .HasColumnType("text");
 

@@ -36,6 +36,10 @@ namespace Migrators.PostgreSQL.Migrations.Tenant
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("DbProvider")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Identifier")
                         .IsRequired()
                         .HasColumnType("text");

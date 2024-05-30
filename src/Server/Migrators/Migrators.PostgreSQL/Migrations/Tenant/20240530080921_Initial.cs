@@ -22,6 +22,7 @@ namespace Migrators.PostgreSQL.Migrations.Tenant
                     Id = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
                     Identifier = table.Column<string>(type: "text", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
+                    DbProvider = table.Column<string>(type: "text", nullable: false),
                     ConnectionString = table.Column<string>(type: "text", nullable: false),
                     AdminEmail = table.Column<string>(type: "text", nullable: false),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false),

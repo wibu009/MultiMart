@@ -29,7 +29,6 @@ public static class Extensions
             ConfigureElasticSearch(builder, serilogConfig, appName, elasticSearchUrl);
             SetMinimumLogLevel(serilogConfig, minLogLevel);
             OverideMinimumLogLevel(serilogConfig);
-            Console.WriteLine(FiggleFonts.Standard.Render(appName));
         });
     }
 

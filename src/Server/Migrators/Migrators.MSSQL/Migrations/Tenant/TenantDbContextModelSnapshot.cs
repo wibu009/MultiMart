@@ -36,6 +36,10 @@ namespace Migrators.MSSQL.Migrations.Tenant
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("DbProvider")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Identifier")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");

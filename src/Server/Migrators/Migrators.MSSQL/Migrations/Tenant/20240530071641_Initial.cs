@@ -22,6 +22,7 @@ namespace Migrators.MSSQL.Migrations.Tenant
                     Id = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     Identifier = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DbProvider = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ConnectionString = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AdminEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),

@@ -12,7 +12,7 @@ using MultiMart.Infrastructure.Multitenancy;
 namespace Migrators.MSSQL.Migrations.Tenant
 {
     [DbContext(typeof(TenantDbContext))]
-    [Migration("20240528193641_Initial")]
+    [Migration("20240530071641_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -36,6 +36,10 @@ namespace Migrators.MSSQL.Migrations.Tenant
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConnectionString")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DbProvider")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

@@ -12,7 +12,7 @@ using MultiMart.Infrastructure.Persistence.Context;
 namespace Migrators.MSSQL.Migrations.Application
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240528193736_Initial")]
+    [Migration("20240530071759_Initial")]
     partial class Initial
     {
         /// <inheritdoc />

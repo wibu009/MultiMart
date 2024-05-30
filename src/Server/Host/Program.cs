@@ -1,8 +1,11 @@
+using Figgle;
+using Microsoft.Extensions.Options;
 using MultiMart.Infrastructure.Common;
 using MultiMart.Application;
 using MultiMart.Host.Configurations;
 using MultiMart.Host.Controllers;
 using MultiMart.Infrastructure;
+using MultiMart.Infrastructure.Logging;
 using MultiMart.Infrastructure.Logging.Serilog;
 using Serilog;
 
@@ -21,6 +24,9 @@ internal static class Program
             var builder = WebApplication.CreateBuilder(args);
 
             builder.AddConfigurations().RegisterSerilog();
+            var loggerSettings = builder.Services.BuildServiceProvider()
+                .GetRequiredService<IOptions<LoggerSettings>>().Value;
+            Console.WriteLine(FiggleFonts.Standard.Render(loggerSettings.AppName));
             builder.Services.AddControllers();
             builder.Services.AddInfrastructure(builder.Configuration);
             builder.Services.AddApplication();

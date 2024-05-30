@@ -77,7 +77,8 @@ internal class ApplicationDbSeeder
                     RoleId = role.Id,
                     ClaimType = ApplicationClaims.Permission,
                     ClaimValue = permission.Name,
-                    CreatedBy = "ApplicationDbSeeder"
+                    CreatedBy = "ApplicationDbSeeder",
+                    CreatedOn = DateTime.UtcNow
                 });
                 await dbContext.SaveChangesAsync();
             }

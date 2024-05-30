@@ -9,11 +9,12 @@ public class ApplicationTenantInfo : ITenantInfo
     {
     }
 
-    public ApplicationTenantInfo(string id, string name, string? connectionString, string adminEmail, string? issuer = null)
+    public ApplicationTenantInfo(string id, string name, string? dbProvider, string? connectionString, string adminEmail, string? issuer = null)
     {
         Id = id;
         Identifier = id;
         Name = name;
+        DbProvider = dbProvider ?? string.Empty;
         ConnectionString = connectionString ?? string.Empty;
         AdminEmail = adminEmail;
         IsActive = true;
@@ -32,8 +33,8 @@ public class ApplicationTenantInfo : ITenantInfo
     /// The identifier that is used in headers/routes/querystrings. This is set to the same as Id to avoid confusion.
     /// </summary>
     public string Identifier { get; set; } = default!;
-
     public string Name { get; set; } = default!;
+    public string DbProvider { get; set; } = default!;
     public string ConnectionString { get; set; } = default!;
     public string AdminEmail { get; private set; } = default!;
     public bool IsActive { get; private set; }

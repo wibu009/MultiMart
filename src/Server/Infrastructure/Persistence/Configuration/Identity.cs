@@ -33,10 +33,19 @@ public class ApplicationRoleConfig : IEntityTypeConfiguration<ApplicationRole>
 
 public class ApplicationRoleClaimConfig : IEntityTypeConfiguration<ApplicationRoleClaim>
 {
-    public void Configure(EntityTypeBuilder<ApplicationRoleClaim> builder) =>
+    public void Configure(EntityTypeBuilder<ApplicationRoleClaim> builder)
+    {
         builder
             .ToTable("RoleClaims", SchemaNames.Identity)
             .IsMultiTenant();
+
+        builder
+            .HasOne(c => c.Role)
+            .WithMany(r => r.RoleClaims)
+            .HasForeignKey(c => c.RoleId)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Cascade);
+    }
 }
 
 public class IdentityUserRoleConfig : IEntityTypeConfiguration<IdentityUserRole<string>>

@@ -1,4 +1,5 @@
 using MediatR;
+using MultiMart.Application.Common.Models;
 
 namespace MultiMart.Host.Controllers;
 

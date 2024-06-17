@@ -1,4 +1,7 @@
-﻿namespace MultiMart.Infrastructure.Mapping;
+﻿using System.Reflection;
+using Mapster;
+
+namespace MultiMart.Infrastructure.Mapping;
 
 public class MapsterSettings
 {
@@ -7,7 +10,20 @@ public class MapsterSettings
         // here we will define the type conversion / Custom-mapping
         // More details at https://github.com/MapsterMapper/Mapster/wiki/Custom-mapping
 
-        // This one is actually not necessary as it's mapped by convention
-        // TypeAdapterConfig<Product, ProductDto>.NewConfig().Map(dest => dest.BrandName, src => src.Brand.Name);
+        var config = TypeAdapterConfig.GlobalSettings;
+
+        // Get all currently loaded assemblies
+        var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+
+        foreach (var assembly in assemblies)
+        {
+            var types = assembly.GetTypes()
+                .Where(t => t.GetInterfaces().Contains(typeof(IRegister)) && t is { IsInterface: false, IsAbstract: false });
+            foreach (var type in types)
+            {
+                var register = (IRegister)Activator.CreateInstance(type)!;
+                register.Register(config);
+            }
+        }
     }
 }

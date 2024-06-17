@@ -4,7 +4,7 @@ namespace MultiMart.Infrastructure.Identity.Token;
 
 public class ApplicationUserRefreshToken
 {
-    public int Id { get; set; }
+    public string Id { get; set; } = DefaultIdType.NewGuid().ToString();
     public string Token { get; set; } = default!;
     public DateTime Expires { get; set; } = DateTime.UtcNow.AddDays(30);
     public bool IsExpired => DateTime.UtcNow >= Expires;

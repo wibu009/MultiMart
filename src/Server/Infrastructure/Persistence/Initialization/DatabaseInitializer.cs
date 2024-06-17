@@ -29,6 +29,7 @@ internal class DatabaseInitializer : IDatabaseInitializer
             await InitializeApplicationDbForTenantAsync(tenant, cancellationToken);
         }
 
+        _logger.LogInformation("This project is built upon FullstackHero's Web API Template.");
         _logger.LogInformation("For documentations and guides, visit https://www.fullstackhero.net");
         _logger.LogInformation("To Sponsor this project, visit https://opencollective.com/fullstackhero");
     }

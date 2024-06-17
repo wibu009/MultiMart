@@ -20,7 +20,12 @@ internal class PermissionPolicyProvider : IAuthorizationPolicyProvider
         if (policyName.StartsWith(ApplicationClaims.Permission, StringComparison.OrdinalIgnoreCase))
         {
             var policy = new AuthorizationPolicyBuilder();
-            policy.AddRequirements(new PermissionRequirement(policyName));
+            string[] permissions = policyName.Split(';').Where(p => !string.IsNullOrEmpty(p)).ToArray();
+            foreach (string permission in permissions)
+            {
+                policy.AddRequirements(new PermissionRequirement(permission));
+            }
+
             return Task.FromResult<AuthorizationPolicy?>(policy.Build());
         }
 

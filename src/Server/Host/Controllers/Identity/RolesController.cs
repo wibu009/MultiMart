@@ -12,7 +12,7 @@ public class RolesController : VersionNeutralApiController
     public RolesController(IRoleService roleService) => _roleService = roleService;
 
     [HttpGet]
-    [MustHavePermission(ApplicationAction.View, ApplicationResource.Roles)]
+    [MustHavePermission(ApplicationAction.View, new[] { ApplicationResource.Roles, ApplicationResource.RoleClaims })]
     [OpenApiOperation("Get a list of all roles.", "")]
     public Task<List<RoleDto>> GetListAsync(CancellationToken cancellationToken)
     {
@@ -20,23 +20,15 @@ public class RolesController : VersionNeutralApiController
     }
 
     [HttpGet("{id}")]
-    [MustHavePermission(ApplicationAction.View, ApplicationResource.Roles)]
+    [MustHavePermission(ApplicationAction.View, new[] { ApplicationResource.Roles, ApplicationResource.RoleClaims })]
     [OpenApiOperation("Get role details.", "")]
     public Task<RoleDto> GetByIdAsync(string id)
     {
         return _roleService.GetByIdAsync(id);
     }
 
-    [HttpGet("{id}/permissions")]
-    [MustHavePermission(ApplicationAction.View, ApplicationResource.RoleClaims)]
-    [OpenApiOperation("Get role details with its permissions.", "")]
-    public Task<RoleDto> GetByIdWithPermissionsAsync(string id, CancellationToken cancellationToken)
-    {
-        return _roleService.GetByIdWithPermissionsAsync(id, cancellationToken);
-    }
-
     [HttpPut("{id}/permissions")]
-    [MustHavePermission(ApplicationAction.Update, ApplicationResource.RoleClaims)]
+    [MustHavePermission(ApplicationAction.Update, new[] { ApplicationResource.Roles, ApplicationResource.RoleClaims })]
     [OpenApiOperation("Update a role's permissions.", "")]
     public async Task<ActionResult<string>> UpdatePermissionsAsync(string id, UpdateRolePermissionsRequest request, CancellationToken cancellationToken)
     {

@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Finbuckle.MultiTenant;
 using Mapster;
 using Microsoft.AspNetCore.Identity;
@@ -5,11 +6,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using MultiMart.Application.Common.Events;
 using MultiMart.Application.Common.Exceptions;
-using MultiMart.Application.Common.Interfaces;
 using MultiMart.Application.Identity.Roles;
 using MultiMart.Domain.Identity;
 using MultiMart.Infrastructure.Identity.User;
-using MultiMart.Infrastructure.Persistence.Context;
 using MultiMart.Shared.Authorization;
 using MultiMart.Shared.Multitenancy;
 
@@ -19,32 +18,26 @@ internal class RoleService : IRoleService
 {
     private readonly RoleManager<ApplicationRole> _roleManager;
     private readonly UserManager<ApplicationUser> _userManager;
-    private readonly ApplicationDbContext _db;
     private readonly IStringLocalizer _t;
-    private readonly ICurrentUser _currentUser;
     private readonly ITenantInfo _currentTenant;
     private readonly IEventPublisher _events;
 
     public RoleService(
         RoleManager<ApplicationRole> roleManager,
         UserManager<ApplicationUser> userManager,
-        ApplicationDbContext db,
         IStringLocalizer<RoleService> localizer,
-        ICurrentUser currentUser,
         ITenantInfo currentTenant,
         IEventPublisher events)
     {
         _roleManager = roleManager;
         _userManager = userManager;
-        _db = db;
         _t = localizer;
-        _currentUser = currentUser;
         _currentTenant = currentTenant;
         _events = events;
     }
 
     public async Task<List<RoleDto>> GetListAsync(CancellationToken cancellationToken) =>
-        (await _roleManager.Roles.ToListAsync(cancellationToken))
+        (await _roleManager.Roles.Include(r => r.RoleClaims).ToListAsync(cancellationToken))
             .Adapt<List<RoleDto>>();
 
     public async Task<int> GetCountAsync(CancellationToken cancellationToken) =>
@@ -56,28 +49,21 @@ internal class RoleService : IRoleService
             && existingRole.Id != excludeId;
 
     public async Task<RoleDto> GetByIdAsync(string id) =>
-        await _db.Roles.SingleOrDefaultAsync(x => x.Id == id) is { } role
+        await _roleManager.Roles.Include(r => r.RoleClaims).FirstOrDefaultAsync(r => r.Id == id) is ApplicationRole role
             ? role.Adapt<RoleDto>()
             : throw new NotFoundException(_t["Role Not Found"]);
-
-    public async Task<RoleDto> GetByIdWithPermissionsAsync(string roleId, CancellationToken cancellationToken)
-    {
-        var role = await GetByIdAsync(roleId);
-
-        role.Permissions = await _db.RoleClaims
-            .Where(c => c.RoleId == roleId && c.ClaimType == ApplicationClaims.Permission)
-            .Select(c => c.ClaimValue!)
-            .ToListAsync(cancellationToken);
-
-        return role;
-    }
 
     public async Task<string> CreateOrUpdateAsync(CreateOrUpdateRoleRequest request)
     {
         if (string.IsNullOrEmpty(request.Id))
         {
             // Create a new role.
-            var role = new ApplicationRole(request.Name, request.Description);
+            var role = new ApplicationRole
+            {
+                Name = request.Name,
+                NormalizedName = request.Name.ToUpperInvariant(),
+                Description = request.Description
+            };
             var result = await _roleManager.CreateAsync(role);
 
             if (!result.Succeeded)
@@ -149,14 +135,7 @@ internal class RoleService : IRoleService
         {
             if (!string.IsNullOrEmpty(permission))
             {
-                _db.RoleClaims.Add(new ApplicationRoleClaim
-                {
-                    RoleId = role.Id,
-                    ClaimType = ApplicationClaims.Permission,
-                    ClaimValue = permission,
-                    CreatedBy = _currentUser.GetUserId().ToString()
-                });
-                await _db.SaveChangesAsync(cancellationToken);
+                await _roleManager.AddClaimAsync(role, new Claim(ApplicationClaims.Permission, permission));
             }
         }
 

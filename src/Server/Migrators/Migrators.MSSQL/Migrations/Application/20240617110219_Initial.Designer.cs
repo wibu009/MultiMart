@@ -12,7 +12,7 @@ using MultiMart.Infrastructure.Persistence.Context;
 namespace Migrators.MSSQL.Migrations.Application
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240530071759_Initial")]
+    [Migration("20240617110219_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -295,8 +295,20 @@ namespace Migrators.MSSQL.Migrations.Application
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("LastModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .HasMaxLength(256)
@@ -337,10 +349,16 @@ namespace Migrators.MSSQL.Migrations.Application
                     b.Property<string>("ClaimValue")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("LastModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("LastModifiedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("RoleId")
@@ -363,11 +381,8 @@ namespace Migrators.MSSQL.Migrations.Application
 
             modelBuilder.Entity("MultiMart.Infrastructure.Identity.Token.ApplicationUserRefreshToken", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("Expires")
                         .HasColumnType("datetime2");
@@ -410,6 +425,12 @@ namespace Migrators.MSSQL.Migrations.Application
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -425,6 +446,12 @@ namespace Migrators.MSSQL.Migrations.Application
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
+
+                    b.Property<Guid>("LastModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
@@ -541,11 +568,13 @@ namespace Migrators.MSSQL.Migrations.Application
 
             modelBuilder.Entity("MultiMart.Infrastructure.Identity.Role.ApplicationRoleClaim", b =>
                 {
-                    b.HasOne("MultiMart.Infrastructure.Identity.Role.ApplicationRole", null)
-                        .WithMany()
+                    b.HasOne("MultiMart.Infrastructure.Identity.Role.ApplicationRole", "Role")
+                        .WithMany("RoleClaims")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("MultiMart.Infrastructure.Identity.Token.ApplicationUserRefreshToken", b =>
@@ -557,6 +586,11 @@ namespace Migrators.MSSQL.Migrations.Application
                         .IsRequired();
 
                     b.Navigation("ApplicationUser");
+                });
+
+            modelBuilder.Entity("MultiMart.Infrastructure.Identity.Role.ApplicationRole", b =>
+                {
+                    b.Navigation("RoleClaims");
                 });
 
             modelBuilder.Entity("MultiMart.Infrastructure.Identity.User.ApplicationUser", b =>

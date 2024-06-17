@@ -43,7 +43,16 @@ internal class ApplicationDbSeeder
             {
                 // Create the role
                 _logger.LogInformation("Seeding {role} Role for '{tenantId}' Tenant.", roleName, _currentTenant.Id);
-                role = new ApplicationRole(roleName, $"{roleName} Role for {_currentTenant.Id} Tenant");
+                role = new ApplicationRole
+                {
+                    Name = roleName,
+                    NormalizedName = roleName.ToUpperInvariant(),
+                    Description = $"{roleName} Role for {_currentTenant.Id} Tenant",
+                    CreatedBy = DefaultIdType.Empty,
+                    LastModifiedBy = DefaultIdType.Empty,
+                    CreatedOn = DateTime.UtcNow,
+                    LastModifiedOn = DateTime.UtcNow
+                };
                 await _roleManager.CreateAsync(role);
             }
 
@@ -77,8 +86,10 @@ internal class ApplicationDbSeeder
                     RoleId = role.Id,
                     ClaimType = ApplicationClaims.Permission,
                     ClaimValue = permission.Name,
-                    CreatedBy = "ApplicationDbSeeder",
-                    CreatedOn = DateTime.UtcNow
+                    CreatedBy = DefaultIdType.Empty,
+                    LastModifiedBy = DefaultIdType.Empty,
+                    CreatedOn = DateTime.UtcNow,
+                    LastModifiedOn = DateTime.UtcNow
                 });
                 await dbContext.SaveChangesAsync();
             }
@@ -106,7 +117,11 @@ internal class ApplicationDbSeeder
                 PhoneNumberConfirmed = true,
                 NormalizedEmail = _currentTenant.AdminEmail?.ToUpperInvariant(),
                 NormalizedUserName = adminUserName.ToUpperInvariant(),
-                IsActive = true
+                IsActive = true,
+                CreatedBy = DefaultIdType.Empty,
+                LastModifiedBy = DefaultIdType.Empty,
+                CreatedOn = DateTime.UtcNow,
+                LastModifiedOn = DateTime.UtcNow
             };
 
             _logger.LogInformation("Seeding Default Admin User for '{tenantId}' Tenant.", _currentTenant.Id);

@@ -4,7 +4,6 @@ using Hangfire;
 using Hangfire.Server;
 using Microsoft.Extensions.DependencyInjection;
 using MultiMart.Infrastructure.Auth;
-using MultiMart.Infrastructure.Common;
 using MultiMart.Infrastructure.Multitenancy;
 using MultiMart.Shared.Multitenancy;
 

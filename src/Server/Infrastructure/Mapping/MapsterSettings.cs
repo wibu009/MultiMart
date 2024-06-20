@@ -1,27 +1,24 @@
 ﻿using System.Reflection;
 using Mapster;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MultiMart.Infrastructure.Mapping;
 
 public class MapsterSettings
 {
-    public static void Configure()
+    public static void Configure(IServiceProvider serviceProvider)
     {
-        // here we will define the type conversion / Custom-mapping
-        // More details at https://github.com/MapsterMapper/Mapster/wiki/Custom-mapping
-
         var config = TypeAdapterConfig.GlobalSettings;
 
         // Get all currently loaded assemblies
         var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-
         foreach (var assembly in assemblies)
         {
             var types = assembly.GetTypes()
                 .Where(t => t.GetInterfaces().Contains(typeof(IRegister)) && t is { IsInterface: false, IsAbstract: false });
             foreach (var type in types)
             {
-                var register = (IRegister)Activator.CreateInstance(type)!;
+                var register = (IRegister)ActivatorUtilities.CreateInstance(serviceProvider, type);
                 register.Register(config);
             }
         }

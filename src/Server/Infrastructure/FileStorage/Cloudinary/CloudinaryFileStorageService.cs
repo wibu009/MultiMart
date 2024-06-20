@@ -25,7 +25,8 @@ public class CloudinaryFileStorageService : ICloudinaryFileStorageService
         {
             throw new InvalidOperationException("Data is required.");
         }
-        if (request.Extension is null || !supportedFileType.GetDescriptionList().Contains(request.Extension.ToLower(System.Globalization.CultureInfo.CurrentCulture)))
+
+        if (!supportedFileType.GetDescriptionList().Contains(request.Extension.ToLower(System.Globalization.CultureInfo.CurrentCulture)))
             throw new InvalidOperationException("File Format Not Supported.");
         if (request.Name is null)
             throw new InvalidOperationException("Name is required.");
@@ -73,6 +74,7 @@ public class CloudinaryFileStorageService : ICloudinaryFileStorageService
         {
             return string.Empty;
         }
+
         string publicId = idOrUrl.Contains("http") ? GetIdFromUrl(idOrUrl, folder ?? throw new ArgumentNullException(nameof(folder))) : idOrUrl;
         var deletionParams = new DeletionParams(publicId);
         var result = await _cloudinary.DestroyAsync(deletionParams);

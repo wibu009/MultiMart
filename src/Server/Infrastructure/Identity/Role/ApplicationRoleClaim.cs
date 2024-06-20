@@ -9,5 +9,5 @@ public class ApplicationRoleClaim : IdentityRoleClaim<string>, IAuditableEntity
     public DateTime CreatedOn { get; set; }
     public Guid LastModifiedBy { get; set; }
     public DateTime? LastModifiedOn { get; set; }
-    public virtual ApplicationRole Role { get; set; }
+    public virtual ApplicationRole Role { get; set; } = null!;
 }

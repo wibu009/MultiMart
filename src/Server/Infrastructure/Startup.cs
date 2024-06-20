@@ -33,8 +33,8 @@ public static class Startup
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration config)
     {
         var applicationAssembly = typeof(MultiMart.Application.Startup).GetTypeInfo().Assembly;
-        MapsterSettings.Configure();
-        return services
+
+        services
             .AddHttpContextAccessor()
             .AddApiVersion()
             .AddAuth(config)
@@ -56,6 +56,10 @@ public static class Startup
             .AddRouting(options => options.LowercaseUrls = true)
             .AddSettings(config)
             .AddServices();
+
+        MapsterSettings.Configure(services.BuildServiceProvider());
+
+        return services;
     }
 
     private static IServiceCollection AddHealthCheck(this IServiceCollection services) =>

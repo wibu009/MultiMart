@@ -34,7 +34,7 @@ internal class TokenService : ITokenService
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly ApplicationTenantInfo? _currentTenant;
     private readonly EncryptionSettings _encryptionSettings;
-    private  readonly ICurrentUser _currentUser;
+    private readonly ICurrentUser _currentUser;
     private readonly ICacheService _cacheService;
     private readonly string _refreshTokenCookieName;
 
@@ -64,8 +64,8 @@ internal class TokenService : ITokenService
     public async Task<TokenResponse> GetTokenAsync(TokenRequest request, string ipAddress,
         CancellationToken cancellationToken)
     {
-        var user = await _userManager.FindByEmailAsync(request.UserNameOrEmail?.Trim().Normalize())
-                   ?? await _userManager.FindByNameAsync(request.UserNameOrEmail?.Trim().Normalize());
+        var user = await _userManager.FindByEmailAsync(request.UserNameOrEmail.Trim().Normalize())
+                   ?? await _userManager.FindByNameAsync(request.UserNameOrEmail.Trim().Normalize());
 
         if (string.IsNullOrWhiteSpace(_currentTenant?.Id) || user == null ||
             !await _userManager.CheckPasswordAsync(user, request.Password))

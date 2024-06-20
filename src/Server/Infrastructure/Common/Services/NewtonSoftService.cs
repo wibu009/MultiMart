@@ -9,9 +9,10 @@ public class NewtonSoftService : ISerializerService
 {
     public T Deserialize<T>(string text)
     {
-        return JsonConvert.DeserializeObject<T>(text);
+        return JsonConvert.DeserializeObject<T>(text) ?? throw new InvalidOperationException();
     }
 
+    [Obsolete("Use Deserialize<T> instead.")]
     public string Serialize<T>(T obj)
     {
         return JsonConvert.SerializeObject(obj, new JsonSerializerSettings

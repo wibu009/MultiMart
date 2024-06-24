@@ -10,7 +10,6 @@ using MultiMart.Infrastructure.Auth;
 using MultiMart.Infrastructure.BackgroundJobs;
 using MultiMart.Infrastructure.Caching;
 using MultiMart.Infrastructure.Common;
-using MultiMart.Infrastructure.Cors;
 using MultiMart.Infrastructure.FileStorage;
 using MultiMart.Infrastructure.Localization;
 using MultiMart.Infrastructure.Mailing;
@@ -21,7 +20,9 @@ using MultiMart.Infrastructure.Notifications;
 using MultiMart.Infrastructure.OpenApi;
 using MultiMart.Infrastructure.Persistence;
 using MultiMart.Infrastructure.Persistence.Initialization;
-using MultiMart.Infrastructure.Security.SecurityHeaders;
+using MultiMart.Infrastructure.Security;
+using MultiMart.Infrastructure.Security.Cors;
+using MultiMart.Infrastructure.Security.Header;
 using MultiMart.Infrastructure.Validations;
 
 [assembly: InternalsVisibleTo("Infrastructure.Test")]
@@ -40,7 +41,7 @@ public static class Startup
             .AddAuth(config)
             .AddBackgroundJobs(config)
             .AddCaching(config)
-            .AddCorsPolicy(config)
+            .AddSecurity(config)
             .AddExceptionMiddleware()
             .AddBehaviours(applicationAssembly)
             .AddHealthCheck()
@@ -78,12 +79,11 @@ public static class Startup
         builder
             .UseRequestLocalization()
             .UseStaticFiles()
-            .UseSecurityHeaders(config)
             .UseFileStorage()
+            .UseSecurity(config)
             .UseExceptionMiddleware()
             .UseRouting()
             .UseApiVersion()
-            .UseCorsPolicy()
             .UseAuthentication()
             .UseCurrentUser()
             .UseMultiTenancy()

@@ -14,8 +14,6 @@ public class UpdateRolePermissionsRequestValidator : CustomValidator<UpdateRoleP
 {
     public UpdateRolePermissionsRequestValidator()
     {
-        RuleFor(r => r.RoleId)
-            .NotEmpty();
         RuleFor(r => r.Permissions)
             .NotNull();
     }

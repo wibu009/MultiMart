@@ -1,5 +1,4 @@
 ﻿using MultiMart.Shared.Multitenancy;
-using NJsonSchema;
 
 namespace MultiMart.Infrastructure.OpenApi;
 
@@ -10,7 +9,7 @@ public class TenantIdHeaderAttribute : SwaggerHeaderAttribute
             MultitenancyConstants.TenantIdName,
             "Input your tenant Id to access this API",
             string.Empty,
-            JsonObjectType.String,
+            "string",
             true)
     {
     }

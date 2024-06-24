@@ -10,6 +10,6 @@ public class ApplicationUserRefreshToken
     public bool IsExpired => DateTime.UtcNow >= Expires;
     public DateTime? Revoked { get; set; }
     public bool IsActive => Revoked == null && !IsExpired;
-    public string UserId { get; set; }
-    public ApplicationUser ApplicationUser { get; set; } = default!;
+    public string UserId { get; init; }
+    public ApplicationUser ApplicationUser { get; init; } = default!;
 }

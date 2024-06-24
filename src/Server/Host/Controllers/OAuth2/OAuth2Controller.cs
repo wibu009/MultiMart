@@ -12,13 +12,13 @@ public class OAuth2Controller : VersionNeutralApiController
     [HttpGet("{provider}")]
     [AllowAnonymous]
     [TenantIdHeader]
-    [OpenApiOperation("External authentication", "Supports Google and Facebook.")]
+    [SwaggerOperation("External authentication", "Supports Google and Facebook.")]
     public async Task<IActionResult> ExternalLogin([FromRoute] string provider)
         => HandleRedirect(await _oauth2Service.ExternalAuthAsync(provider));
 
     [HttpGet("callback/{provider}")]
     [AllowAnonymous]
-    [OpenApiOperation("External authentication callback", "Supports Google and Facebook.")]
+    [SwaggerOperation("External authentication callback", "Supports Google and Facebook.")]
     public async Task<IActionResult> ExternalLoginCallback(
         [FromRoute] string provider,
         [FromQuery] string code,

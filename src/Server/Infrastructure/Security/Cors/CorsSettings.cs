@@ -1,4 +1,4 @@
-namespace MultiMart.Infrastructure.Cors;
+namespace MultiMart.Infrastructure.Security.Cors;
 
 public class CorsSettings
 {

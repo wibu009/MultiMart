@@ -3,13 +3,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using NJsonSchema.Generation.TypeMappers;
-using NSwag;
-using NSwag.AspNetCore;
-using NSwag.Generation.Processors.Security;
-using ZymLabs.NSwag.FluentValidation;
-using SwaggerSettings = MultiMart.Infrastructure.OpenApi.SwaggerSettings;
+using Microsoft.OpenApi.Models;
+using Uri = System.Uri;
 
 namespace MultiMart.Infrastructure.OpenApi;
 
@@ -24,87 +19,47 @@ internal static class Startup
         {
             services.AddVersionedApiExplorer(o => o.SubstituteApiVersionInUrl = true);
             services.AddEndpointsApiExplorer();
-            services.AddScoped<FluentValidationSchemaProcessor>(provider =>
-            {
-                var validationRules = provider.GetService<IEnumerable<FluentValidationRule>>();
-                var loggerFactory = provider.GetService<ILoggerFactory>();
-
-                return new FluentValidationSchemaProcessor(provider, validationRules, loggerFactory);
-            });
 
             foreach (var description in provider.ApiVersionDescriptions)
             {
-                _ = services.AddOpenApiDocument((document, serviceProvider) =>
+                services.AddSwaggerGen(options =>
                 {
-                    document.DocumentName = description.GroupName;
-                    document.PostProcess = doc =>
+                    options.SwaggerDoc(description.GroupName, new OpenApiInfo
                     {
-                        doc.Info.Title = settings.Title;
-                        doc.Info.Version = description.GroupName;
-                        doc.Info.Description = settings.Description;
-                        doc.Info.Contact = new OpenApiContact
+                        Title = settings.Title,
+                        Version = description.GroupName,
+                        Description = settings.Description,
+                        Contact = new OpenApiContact
                         {
                             Name = settings.ContactName,
                             Email = settings.ContactEmail,
-                            Url = settings.ContactUrl
-                        };
-                        doc.Info.License = new OpenApiLicense
+                            Url = new Uri(settings.ContactUrl ?? string.Empty)
+                        },
+                        License = new OpenApiLicense
                         {
                             Name = settings.LicenseName,
-                            Url = settings.LicenseUrl
-                        };
-                    };
+                            Url = new Uri(settings.LicenseUrl ?? string.Empty)
+                        }
+                    });
 
-                    if (config["SecuritySettings:Provider"].Equals("AzureAd", StringComparison.OrdinalIgnoreCase))
+                    // Check if the security definition already exists
+                    if (!options.SwaggerGeneratorOptions.SecuritySchemes.ContainsKey(JwtBearerDefaults.AuthenticationScheme))
                     {
-                        document.AddSecurity(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
-                        {
-                            Type = OpenApiSecuritySchemeType.OAuth2,
-                            Flow = OpenApiOAuth2Flow.AccessCode,
-                            Description = "OAuth2.0 Auth Code with PKCE",
-                            Flows = new OpenApiOAuthFlows
-                            {
-                                AuthorizationCode = new OpenApiOAuthFlow
-                                {
-                                    AuthorizationUrl = config["SecuritySettings:Swagger:AuthorizationUrl"],
-                                    TokenUrl = config["SecuritySettings:Swagger:TokenUrl"],
-                                    Scopes = new Dictionary<string, string>
-                                    {
-                                        { config["SecuritySettings:Swagger:ApiScope"]!, "access the api" }
-                                    }
-                                }
-                            }
-                        });
-                    }
-                    else
-                    {
-                        document.AddSecurity(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
+                        options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
                         {
                             Name = "Authorization",
                             Description = "Input your Bearer token to access this API",
-                            In = OpenApiSecurityApiKeyLocation.Header,
-                            Type = OpenApiSecuritySchemeType.Http,
+                            In = ParameterLocation.Header,
+                            Type = SecuritySchemeType.Http,
                             Scheme = JwtBearerDefaults.AuthenticationScheme,
                             BearerFormat = "JWT",
                         });
                     }
 
-                    document.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor());
-                    document.OperationProcessors.Add(new SwaggerGlobalAuthProcessor());
-                    document.OperationProcessors.Add(new SwaggerGlobalAcceptLanguageHeaderProcessor());
-
-                    document.TypeMappers.Add(new PrimitiveTypeMapper(typeof(TimeSpan), schema =>
-                    {
-                        schema.Type = NJsonSchema.JsonObjectType.String;
-                        schema.IsNullableRaw = true;
-                        schema.Pattern = @"^([0-9]{1}|(?:0[0-9]|1[0-9]|2[0-3])+):([0-5]?[0-9])(?::([0-5]?[0-9])(?:.(\d{1,9}))?)?$";
-                        schema.Example = "02:00:00";
-                    }));
-
-                    document.OperationProcessors.Add(new SwaggerHeaderAttributeProcessor());
-
-                    var fluentValidationSchemaProcessor = serviceProvider.CreateScope().ServiceProvider.GetService<FluentValidationSchemaProcessor>();
-                    document.SchemaProcessors.Add(fluentValidationSchemaProcessor);
+                    options.EnableAnnotations();
+                    options.OperationFilter<SwaggerGlobalAuthOperationFilter>();
+                    options.OperationFilter<SwaggerGlobalAcceptLanguageHeaderOperationFilter>();
+                    options.OperationFilter<SwaggerHeaderAttributeOperationFilter>();
                 });
             }
         }
@@ -117,27 +72,13 @@ internal static class Startup
         var provider = app.ApplicationServices.GetService<IApiVersionDescriptionProvider>();
         if (config.GetValue<bool>("SwaggerSettings:Enable"))
         {
-            app.UseOpenApi();
-            app.UseSwaggerUi3(options =>
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
             {
                 foreach (var description in provider.ApiVersionDescriptions)
                 {
-                    options.SwaggerRoutes.Add(new SwaggerUi3Route(description.GroupName.ToUpperInvariant(), $"/swagger/{description.GroupName}/swagger.json"));
-                    options.DefaultModelsExpandDepth = -1;
-                    options.DocExpansion = "none";
-                    options.TagsSorter = "alpha";
-                    if (config["SecuritySettings:Provider"].Equals("AzureAd", StringComparison.OrdinalIgnoreCase))
-                    {
-                        options.OAuth2Client = new OAuth2ClientSettings
-                        {
-                            AppName = "MultiMart Api Client",
-                            ClientId = config["SecuritySettings:Swagger:OpenIdClientId"],
-                            ClientSecret = string.Empty,
-                            UsePkceWithAuthorizationCodeGrant = true,
-                            ScopeSeparator = " "
-                        };
-                        options.OAuth2Client.Scopes.Add(config["SecuritySettings:Swagger:ApiScope"]);
-                    }
+                    c.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
+                    c.DocExpansion(Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.None);
                 }
             });
         }

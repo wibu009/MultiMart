@@ -3,14 +3,14 @@ using MultiMart.Shared.Authorization;
 
 namespace MultiMart.Infrastructure.Auth.Permissions;
 
-public class MustHavePermissionAttribute : AuthorizeAttribute
+public class RequiresPermissionAttribute : AuthorizeAttribute
 {
-    // MustHavePermission("Create", "Products")
-    public MustHavePermissionAttribute(string action, string resource) =>
+    // RequiresPermission("Create", "Products")
+    public RequiresPermissionAttribute(string action, string resource) =>
         Policy = ApplicationPermission.NameFor(action, resource);
 
-    // MustHavePermission("Create", new[] { "Products", "Categories" })
-    public MustHavePermissionAttribute(string[] actions, string resource)
+    // RequiresPermission("Create", new[] { "Products", "Categories" })
+    public RequiresPermissionAttribute(string[] actions, string resource)
     {
         foreach (string action in actions)
         {
@@ -18,8 +18,8 @@ public class MustHavePermissionAttribute : AuthorizeAttribute
         }
     }
 
-    // MustHavePermission(new[] { "Create", "Update" }, Products)
-    public MustHavePermissionAttribute(string action, string[] resources)
+    // RequiresPermission(new[] { "Create", "Update" }, Products)
+    public RequiresPermissionAttribute(string action, string[] resources)
     {
         foreach (string resource in resources)
         {
@@ -28,7 +28,7 @@ public class MustHavePermissionAttribute : AuthorizeAttribute
     }
 
     // MustHavePermission(new[] { "Create", "Update" }, new[] { "Products", "Categories" })
-    public MustHavePermissionAttribute(string[] actions, string[] resources)
+    public RequiresPermissionAttribute(string[] actions, string[] resources)
     {
         foreach (string action in actions)
         {

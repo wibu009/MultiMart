@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace MultiMart.Infrastructure.Cors;
+namespace MultiMart.Infrastructure.Security.Cors;
 
 internal static class Startup
 {

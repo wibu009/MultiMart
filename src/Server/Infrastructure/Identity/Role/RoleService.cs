@@ -121,7 +121,7 @@ internal class RoleService : IRoleService
         var currentClaims = await _roleManager.GetClaimsAsync(role);
 
         // Remove permissions that were previously selected
-        foreach (var claim in currentClaims.Where(c => !request.Permissions.Any(p => p == c.Value)))
+        foreach (var claim in currentClaims.Where(c => request.Permissions.All(p => p != c.Value)))
         {
             var removeResult = await _roleManager.RemoveClaimAsync(role, claim);
             if (!removeResult.Succeeded)
@@ -131,7 +131,7 @@ internal class RoleService : IRoleService
         }
 
         // Add all permissions that were not previously selected
-        foreach (string permission in request.Permissions.Where(c => !currentClaims.Any(p => p.Value == c)))
+        foreach (string permission in request.Permissions.Where(c => currentClaims.All(p => p.Value != c)))
         {
             if (!string.IsNullOrEmpty(permission))
             {

@@ -1,6 +1,5 @@
 using MultiMart.Application.Identity.Users;
 using MultiMart.Application.Identity.Users.Password;
-using MultiMart.Infrastructure.Auth.Permissions;
 using MultiMart.Infrastructure.OpenApi;
 using MultiMart.Shared.Authorization;
 
@@ -13,24 +12,24 @@ public class UsersController : VersionNeutralApiController
     public UsersController(IUserService userService) => _userService = userService;
 
     [HttpGet]
-    [MustHavePermission(ApplicationAction.View, ApplicationResource.Users)]
-    [OpenApiOperation("Get list of all users.", "")]
+    [RequiresPermission(ApplicationAction.View, ApplicationResource.Users)]
+    [SwaggerOperation("Get list of all users.", "")]
     public Task<List<UserDetailsDto>> GetListAsync(CancellationToken cancellationToken)
     {
         return _userService.GetListAsync(cancellationToken);
     }
 
     [HttpGet("{id}")]
-    [MustHavePermission(ApplicationAction.View, ApplicationResource.Users)]
-    [OpenApiOperation("Get a user's details.", "")]
+    [RequiresPermission(ApplicationAction.View, ApplicationResource.Users)]
+    [SwaggerOperation("Get a user's details.", "")]
     public Task<UserDetailsDto> GetByIdAsync(string id, CancellationToken cancellationToken)
     {
         return _userService.GetAsync(id, cancellationToken);
     }
 
     [HttpGet("{id}/roles")]
-    [MustHavePermission(ApplicationAction.View, ApplicationResource.UserRoles)]
-    [OpenApiOperation("Get a user's roles.", "")]
+    [RequiresPermission(ApplicationAction.View, ApplicationResource.UserRoles)]
+    [SwaggerOperation("Get a user's roles.", "")]
     public Task<List<UserRoleDto>> GetRolesAsync(string id, CancellationToken cancellationToken)
     {
         return _userService.GetRolesAsync(id, cancellationToken);
@@ -38,16 +37,16 @@ public class UsersController : VersionNeutralApiController
 
     [HttpPost("{id}/roles")]
     [ApiConventionMethod(typeof(ApplicationApiConventions), nameof(ApplicationApiConventions.Register))]
-    [MustHavePermission(ApplicationAction.Update, ApplicationResource.UserRoles)]
-    [OpenApiOperation("Update a user's assigned roles.", "")]
+    [RequiresPermission(ApplicationAction.Update, ApplicationResource.UserRoles)]
+    [SwaggerOperation("Update a user's assigned roles.", "")]
     public Task<string> AssignRolesAsync(string id, UserRolesRequest request, CancellationToken cancellationToken)
     {
         return _userService.AssignRolesAsync(id, request, cancellationToken);
     }
 
     [HttpPost]
-    [MustHavePermission(ApplicationAction.Create, ApplicationResource.Users)]
-    [OpenApiOperation("Creates a new user.", "")]
+    [RequiresPermission(ApplicationAction.Create, ApplicationResource.Users)]
+    [SwaggerOperation("Creates a new user.", "")]
     public Task<string> CreateAsync(CreateUserRequest request)
     {
         // TODO: check if registering anonymous users is actually allowed (should probably be an appsetting)
@@ -59,7 +58,7 @@ public class UsersController : VersionNeutralApiController
     [HttpPost("self-register")]
     [TenantIdHeader]
     [AllowAnonymous]
-    [OpenApiOperation("Anonymous user creates a user.", "")]
+    [SwaggerOperation("Anonymous user creates a user.", "")]
     [ApiConventionMethod(typeof(ApplicationApiConventions), nameof(ApplicationApiConventions.Register))]
     public Task<string> SelfRegisterAsync(CreateUserRequest request)
     {
@@ -70,9 +69,9 @@ public class UsersController : VersionNeutralApiController
     }
 
     [HttpPost("{id}/toggle-status")]
-    [MustHavePermission(ApplicationAction.Update, ApplicationResource.Users)]
+    [RequiresPermission(ApplicationAction.Update, ApplicationResource.Users)]
     [ApiConventionMethod(typeof(ApplicationApiConventions), nameof(ApplicationApiConventions.Register))]
-    [OpenApiOperation("Toggle a user's active status.", "")]
+    [SwaggerOperation("Toggle a user's active status.", "")]
     public async Task<ActionResult> ToggleStatusAsync(string id, ToggleUserStatusRequest request, CancellationToken cancellationToken)
     {
         if (id != request.UserId)
@@ -86,7 +85,7 @@ public class UsersController : VersionNeutralApiController
 
     [HttpGet("confirm-email")]
     [AllowAnonymous]
-    [OpenApiOperation("Confirm email address for a user.", "")]
+    [SwaggerOperation("Confirm email address for a user.", "")]
     [ApiConventionMethod(typeof(ApplicationApiConventions), nameof(ApplicationApiConventions.Search))]
     public Task<string> ConfirmEmailAsync([FromQuery] string tenant, [FromQuery] string userId, [FromQuery] string code, CancellationToken cancellationToken)
     {
@@ -95,7 +94,7 @@ public class UsersController : VersionNeutralApiController
 
     [HttpGet("confirm-phone-number")]
     [AllowAnonymous]
-    [OpenApiOperation("Confirm phone number for a user.", "")]
+    [SwaggerOperation("Confirm phone number for a user.", "")]
     [ApiConventionMethod(typeof(ApplicationApiConventions), nameof(ApplicationApiConventions.Search))]
     public Task<string> ConfirmPhoneNumberAsync([FromQuery] string userId, [FromQuery] string code)
     {
@@ -105,7 +104,7 @@ public class UsersController : VersionNeutralApiController
     [HttpPost("forgot-password")]
     [AllowAnonymous]
     [TenantIdHeader]
-    [OpenApiOperation("Request a password reset email for a user.", "")]
+    [SwaggerOperation("Request a password reset email for a user.", "")]
     [ApiConventionMethod(typeof(ApplicationApiConventions), nameof(ApplicationApiConventions.Register))]
     public Task<string> ForgotPasswordAsync(ForgotPasswordRequest request)
     {
@@ -113,7 +112,7 @@ public class UsersController : VersionNeutralApiController
     }
 
     [HttpPost("reset-password")]
-    [OpenApiOperation("Reset a user's password.", "")]
+    [SwaggerOperation("Reset a user's password.", "")]
     [ApiConventionMethod(typeof(ApplicationApiConventions), nameof(ApplicationApiConventions.Register))]
     public Task<string> ResetPasswordAsync(ResetPasswordRequest request)
     {

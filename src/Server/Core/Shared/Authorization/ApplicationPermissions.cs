@@ -54,6 +54,8 @@ public static class ApplicationPermissions
         new("Update Products", ApplicationAction.Update, ApplicationResource.Products),
         new("Delete Products", ApplicationAction.Delete, ApplicationResource.Products),
         new("Export Products", ApplicationAction.Export, ApplicationResource.Products),
+        new ("Generate Products", ApplicationAction.Generate, ApplicationResource.Products),
+        new ("Clean Products", ApplicationAction.Clean, ApplicationResource.Products),
         new("View Brands", ApplicationAction.View, ApplicationResource.Brands, IsBasic: true),
         new("Search Brands", ApplicationAction.Search, ApplicationResource.Brands, IsBasic: true),
         new("Create Brands", ApplicationAction.Create, ApplicationResource.Brands),

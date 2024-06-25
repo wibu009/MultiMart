@@ -28,7 +28,7 @@ public class BrandSeeder : ICustomSeeder
 
             // Here you can use your own logic to populate the database.
             // As an example, I am using a JSON file to populate the database.
-            string brandData = await File.ReadAllTextAsync(path + "/Catalog/brands.json", cancellationToken);
+            string brandData = await File.ReadAllTextAsync(path + "/Catalog/Brand/brands.json", cancellationToken);
             var brands = _serializerService.Deserialize<List<Domain.Catalog.Brand>>(brandData);
 
             foreach (var brand in brands)

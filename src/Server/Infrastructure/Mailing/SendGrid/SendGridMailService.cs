@@ -17,7 +17,7 @@ public class SendGridMailService : ISendGridMailService
     {
         _logger = logger;
         _sendGridMailSettings = sendGridSettings.Value;
-        _client = new SendGridClient(_sendGridMailSettings.Key);
+        _client = new SendGridClient(_sendGridMailSettings.ApiKey);
     }
 
     public async Task SendAsync(MailRequest request, CancellationToken ct)

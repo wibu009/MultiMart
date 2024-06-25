@@ -56,6 +56,39 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{30974E
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{FE4B32C2-7346-47CF-81AD-C75FCB51FE57}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{B1E79286-DD67-43AB-B2DA-48A2E0E8B367}"
+	ProjectSection(SolutionItems) = preProject
+		src\Client\Web\.eslintrc.cjs = src\Client\Web\.eslintrc.cjs
+		src\Client\Web\.gitignore = src\Client\Web\.gitignore
+		src\Client\Web\index.html = src\Client\Web\index.html
+		src\Client\Web\package.json = src\Client\Web\package.json
+		src\Client\Web\package-lock.json = src\Client\Web\package-lock.json
+		src\Client\Web\README.md = src\Client\Web\README.md
+		src\Client\Web\tsconfig.app.json = src\Client\Web\tsconfig.app.json
+		src\Client\Web\tsconfig.json = src\Client\Web\tsconfig.json
+		src\Client\Web\tsconfig.node.json = src\Client\Web\tsconfig.node.json
+		src\Client\Web\vite.config.ts = src\Client\Web\vite.config.ts
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{0F28C23F-AB0D-4A85-8AC3-9F51F5EFA870}"
+	ProjectSection(SolutionItems) = preProject
+		src\Client\Web\src\App.css = src\Client\Web\src\App.css
+		src\Client\Web\src\App.tsx = src\Client\Web\src\App.tsx
+		src\Client\Web\src\index.css = src\Client\Web\src\index.css
+		src\Client\Web\src\main.tsx = src\Client\Web\src\main.tsx
+		src\Client\Web\src\vite-env.d.ts = src\Client\Web\src\vite-env.d.ts
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "public", "public", "{F38104A9-1CD1-4CA6-A03D-7D2E71F3EEE0}"
+	ProjectSection(SolutionItems) = preProject
+		src\Client\Web\public\vite.svg = src\Client\Web\public\vite.svg
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "assets", "assets", "{AC6FE559-4D2E-4824-9853-A62FF47D4704}"
+	ProjectSection(SolutionItems) = preProject
+		src\Client\Web\src\assets\react.svg = src\Client\Web\src\assets\react.svg
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -126,6 +159,10 @@ Global
 		{5C3397B9-EF56-4499-B625-D1B8D1B7DD68} = {30974E87-B7F8-4C09-8524-D5ED52CC1414}
 		{225C0FD8-B796-4E9E-B1E7-0E4CD13F2E45} = {30974E87-B7F8-4C09-8524-D5ED52CC1414}
 		{B778FB14-BDFD-454E-9FD7-5CE3572552B7} = {30974E87-B7F8-4C09-8524-D5ED52CC1414}
+		{B1E79286-DD67-43AB-B2DA-48A2E0E8B367} = {FE4B32C2-7346-47CF-81AD-C75FCB51FE57}
+		{0F28C23F-AB0D-4A85-8AC3-9F51F5EFA870} = {B1E79286-DD67-43AB-B2DA-48A2E0E8B367}
+		{F38104A9-1CD1-4CA6-A03D-7D2E71F3EEE0} = {B1E79286-DD67-43AB-B2DA-48A2E0E8B367}
+		{AC6FE559-4D2E-4824-9853-A62FF47D4704} = {0F28C23F-AB0D-4A85-8AC3-9F51F5EFA870}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D0D80036-558A-4A3A-A0BE-00CED864A4DD}

@@ -30,7 +30,7 @@ internal partial class UserService : IUserService
     private readonly ApplicationDbContext _db;
     private readonly IStringLocalizer _t;
     private readonly IJobService _jobService;
-    private readonly ISmtpMailService _mailService;
+    private readonly ISendGridMailService _mailService;
     private readonly SecuritySettings _securitySettings;
     private readonly IEmailTemplateService _templateService;
     private readonly ILocalFileStorageService _localFileStorage;
@@ -46,7 +46,7 @@ internal partial class UserService : IUserService
         ApplicationDbContext db,
         IStringLocalizer<UserService> t,
         IJobService jobService,
-        ISmtpMailService mailService,
+        ISendGridMailService mailService,
         IEmailTemplateService templateService,
         ILocalFileStorageService localFileStorage,
         IEventPublisher events,

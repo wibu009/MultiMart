@@ -1,3 +1,5 @@
+using Finbuckle.MultiTenant;
+using Finbuckle.MultiTenant.Stores;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -25,13 +27,28 @@ internal static class Startup
                 var databaseSettings = p.GetRequiredService<IOptions<DatabaseSettings>>().Value;
                 m.UseDatabase(databaseSettings.DBProvider, databaseSettings.ConnectionString);
             })
-            .AddMultiTenant<ApplicationTenantInfo>()
-                .WithClaimStrategy(ApplicationClaims.Tenant)
-                .WithHeaderStrategy(MultitenancyConstants.TenantIdName)
-                .WithQueryStringStrategy(MultitenancyConstants.TenantIdName)
-                .WithOAuthStateStrategy(configuration)
-                .WithEFCoreStore<TenantDbContext, ApplicationTenantInfo>()
-                .Services
+            .AddMultiTenant<ApplicationTenantInfo>(config =>
+            {
+                config.Events.OnTenantResolved = async context =>
+                {
+                    if (context.StoreType != typeof(EFCoreStore<TenantDbContext, ApplicationTenantInfo>))
+                    {
+                        var sp = ((HttpContext)context.Context!).RequestServices;
+                        var store = sp.GetServices<IMultiTenantStore<ApplicationTenantInfo>>()
+                            .OfType<EFCoreStore<TenantDbContext, ApplicationTenantInfo>>()
+                            .FirstOrDefault();
+
+                        await store!.TryAddAsync((ApplicationTenantInfo)context.TenantInfo!);
+                    }
+                };
+            })
+            .WithClaimStrategy(ApplicationClaims.Tenant)
+            .WithHeaderStrategy(MultitenancyConstants.TenantIdName)
+            .WithQueryStringStrategy(MultitenancyConstants.TenantIdName)
+            .WithOAuthStateStrategy(configuration)
+            .WithDistributedCacheStore(TimeSpan.FromMinutes(60))
+            .WithEFCoreStore<TenantDbContext, ApplicationTenantInfo>()
+            .Services
             .AddScoped<ITenantService, TenantService>();
     }
 

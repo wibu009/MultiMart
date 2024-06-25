@@ -13,7 +13,7 @@ public sealed class TokensController : VersionNeutralApiController
     [HttpPost]
     [AllowAnonymous]
     [TenantIdHeader]
-    [OpenApiOperation("Request an access token using credentials.", "")]
+    [SwaggerOperation("Request an access token using credentials.", "")]
     public async Task<TokenResponse> GetTokenAsync(
         [FromQuery] string? token,
         [FromBody] TokenRequest request,
@@ -27,14 +27,14 @@ public sealed class TokensController : VersionNeutralApiController
     [HttpGet("refresh")]
     [AllowAnonymous]
     [TenantIdHeader]
-    [OpenApiOperation("Request an access token using a refresh token.", "")]
+    [SwaggerOperation("Request an access token using a refresh token.", "")]
     public async Task<TokenResponse> RefreshAsync()
     {
         return await _tokenService.RefreshTokenAsync(Request.GetIpAddress());
     }
 
     [HttpPost("revoke")]
-    [OpenApiOperation("Revoke current user's refresh token.", "")]
+    [SwaggerOperation("Revoke current user's refresh token.", "")]
     public async Task<IActionResult> RevokeAsync()
     {
         return HandleRedirect(await _tokenService.RevokeCurrentUserRefreshTokenAsync());

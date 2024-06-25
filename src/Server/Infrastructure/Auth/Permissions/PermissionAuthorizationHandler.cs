@@ -13,10 +13,16 @@ internal class PermissionAuthorizationHandler : AuthorizationHandler<PermissionR
 
     protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement)
     {
-        if (context.User?.GetUserId() is { } userId &&
-            await _userService.HasPermissionAsync(userId, requirement.Permission))
+        if (context.User?.GetUserId() is { } userId)
         {
-            context.Succeed(requirement);
+            string[] permissions = requirement.Permission.Split(';');
+            foreach (string permission in permissions)
+            {
+                if (await _userService.HasPermissionAsync(userId, permission))
+                {
+                    context.Succeed(requirement);
+                }
+            }
         }
     }
 }

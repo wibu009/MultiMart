@@ -22,15 +22,15 @@ public class SendGridMailService : ISendGridMailService
 
     public async Task SendAsync(MailRequest request, CancellationToken ct)
     {
-        //From
+        // From
         var from = new EmailAddress(request.From ?? _sendGridMailSettings.From, _sendGridMailSettings.DisplayName);
 
-        //To, Cc, Bcc
+        // To, Cc, Bcc
         var to = request.To.ConvertAll(email => new EmailAddress(email));
         var cc = request.Cc.ConvertAll(email => new EmailAddress(email));
         var bcc = request.Bcc.ConvertAll(email => new EmailAddress(email));
 
-        //Only works if cc, bcc, to are less than 1000 because of SendGrid's limitation
+        // Only works if cc, bcc, to are less than 1000 because of SendGrid's limitation
         var personalization = new List<Personalization>
         {
             new()
@@ -41,13 +41,13 @@ public class SendGridMailService : ISendGridMailService
             }
         };
 
-        //Subject
+        // Subject
         string subject = request.Subject;
 
-        //Body
+        // Body
         string? body = request.Body;
 
-        //Headers
+        // Headers
         var headers = request.Headers.ToDictionary(header => header.Key, header => header.Value);
 
         var msg = new SendGridMessage()
@@ -60,13 +60,13 @@ public class SendGridMailService : ISendGridMailService
             Headers = headers
         };
 
-        //ReplyTo
+        // ReplyTo
         if (!string.IsNullOrEmpty(request.ReplyTo))
         {
             msg.ReplyTo = new EmailAddress(request.ReplyTo);
         }
 
-        //Attachment
+        // Attachment
         if (request.AttachmentData.Any())
         {
             var attachments = request.AttachmentData.Select(attachment =>

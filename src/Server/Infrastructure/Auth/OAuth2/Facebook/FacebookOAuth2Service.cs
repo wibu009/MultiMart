@@ -11,7 +11,6 @@ public class FacebookOAuth2Service
     {
         _facebookSettings = facebookSettings;
         _redirectUri = redirectUri;
-        //$"{httpContextAccessor.HttpContext!.Request.Scheme}://{httpContextAccessor.HttpContext!.Request.Host}{_facebookSettings.CallBackPath}";
     }
 
     public string GetLoginLinkUrl(string? state = null)

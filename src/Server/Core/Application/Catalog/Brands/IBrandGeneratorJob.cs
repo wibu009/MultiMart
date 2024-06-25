@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using MultiMart.Application.Common.Interfaces;
+﻿using MultiMart.Application.Common.Interfaces;
 
 namespace MultiMart.Application.Catalog.Brands;
 

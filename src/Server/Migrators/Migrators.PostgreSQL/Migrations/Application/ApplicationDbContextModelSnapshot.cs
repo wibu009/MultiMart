@@ -292,8 +292,20 @@ namespace Migrators.PostgreSQL.Migrations.Application
                         .IsConcurrencyToken()
                         .HasColumnType("text");
 
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Description")
                         .HasColumnType("text");
+
+                    b.Property<Guid>("LastModifiedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
                         .HasMaxLength(256)
@@ -333,10 +345,16 @@ namespace Migrators.PostgreSQL.Migrations.Application
                     b.Property<string>("ClaimValue")
                         .HasColumnType("text");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("text");
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("LastModifiedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("LastModifiedOn")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("RoleId")
@@ -359,11 +377,8 @@ namespace Migrators.PostgreSQL.Migrations.Application
 
             modelBuilder.Entity("MultiMart.Infrastructure.Identity.Token.ApplicationUserRefreshToken", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("Expires")
                         .HasColumnType("timestamp with time zone");
@@ -406,6 +421,12 @@ namespace Migrators.PostgreSQL.Migrations.Application
                         .IsConcurrencyToken()
                         .HasColumnType("text");
 
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
@@ -421,6 +442,12 @@ namespace Migrators.PostgreSQL.Migrations.Application
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
+
+                    b.Property<Guid>("LastModifiedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("LastName")
                         .HasColumnType("text");
@@ -536,11 +563,13 @@ namespace Migrators.PostgreSQL.Migrations.Application
 
             modelBuilder.Entity("MultiMart.Infrastructure.Identity.Role.ApplicationRoleClaim", b =>
                 {
-                    b.HasOne("MultiMart.Infrastructure.Identity.Role.ApplicationRole", null)
-                        .WithMany()
+                    b.HasOne("MultiMart.Infrastructure.Identity.Role.ApplicationRole", "Role")
+                        .WithMany("RoleClaims")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("MultiMart.Infrastructure.Identity.Token.ApplicationUserRefreshToken", b =>
@@ -552,6 +581,11 @@ namespace Migrators.PostgreSQL.Migrations.Application
                         .IsRequired();
 
                     b.Navigation("ApplicationUser");
+                });
+
+            modelBuilder.Entity("MultiMart.Infrastructure.Identity.Role.ApplicationRole", b =>
+                {
+                    b.Navigation("RoleClaims");
                 });
 
             modelBuilder.Entity("MultiMart.Infrastructure.Identity.User.ApplicationUser", b =>

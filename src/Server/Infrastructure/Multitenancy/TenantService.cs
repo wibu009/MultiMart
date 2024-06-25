@@ -35,7 +35,6 @@ internal class TenantService : ITenantService
     public async Task<List<TenantDto>> GetAllAsync()
     {
         var tenants = (await _tenantStore.GetAllAsync()).Adapt<List<TenantDto>>();
-        tenants.ForEach(t => t.ConnectionString = _csSecurer.MakeSecure(t.ConnectionString));
         return tenants;
     }
 
@@ -47,7 +46,7 @@ internal class TenantService : ITenantService
 
     public async Task<TenantDto> GetByIdAsync(string id) =>
         (await GetTenantInfoAsync(id))
-            .Adapt<TenantDto>();
+        .Adapt<TenantDto>();
 
     public async Task<string> CreateAsync(CreateTenantRequest request, CancellationToken cancellationToken)
     {

@@ -9,7 +9,7 @@ namespace MultiMart.Infrastructure.BackgroundJobs.Hangfire;
 
 public class HangfireCustomBasicAuthenticationFilter : IDashboardAuthorizationFilter
 {
-    private const string _AuthenticationScheme = "Basic";
+    private const string AuthenticationScheme = "Basic";
     private readonly ILogger _logger;
     public string User { get; set; } = default!;
     public string Pass { get; set; } = default!;
@@ -77,7 +77,7 @@ public class HangfireCustomBasicAuthenticationFilter : IDashboardAuthorizationFi
 
     private static bool NotBasicAuthentication(AuthenticationHeaderValue authValues)
     {
-        return !_AuthenticationScheme.Equals(authValues.Scheme, StringComparison.InvariantCultureIgnoreCase);
+        return !AuthenticationScheme.Equals(authValues.Scheme, StringComparison.InvariantCultureIgnoreCase);
     }
 
     private static void SetChallengeResponse(HttpContext httpContext)

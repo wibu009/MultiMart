@@ -12,7 +12,7 @@ public class PersonalController : VersionNeutralApiController
     public PersonalController(IUserService userService) => _userService = userService;
 
     [HttpGet("profile")]
-    [OpenApiOperation("Get profile details of currently logged in user.", "")]
+    [SwaggerOperation("Get profile details of currently logged in user.", "")]
     public async Task<ActionResult<UserDetailsDto>> GetProfileAsync(CancellationToken cancellationToken)
     {
         return User.GetUserId() is not { } userId || string.IsNullOrEmpty(userId)
@@ -21,7 +21,7 @@ public class PersonalController : VersionNeutralApiController
     }
 
     [HttpPut("profile")]
-    [OpenApiOperation("Update profile details of currently logged in user.", "")]
+    [SwaggerOperation("Update profile details of currently logged in user.", "")]
     public async Task<ActionResult> UpdateProfileAsync(UpdateUserRequest request)
     {
         if (User.GetUserId() is not { } userId || string.IsNullOrEmpty(userId))
@@ -34,7 +34,7 @@ public class PersonalController : VersionNeutralApiController
     }
 
     [HttpPut("change-password")]
-    [OpenApiOperation("Change password of currently logged in user.", "")]
+    [SwaggerOperation("Change password of currently logged in user.", "")]
     [ApiConventionMethod(typeof(ApplicationApiConventions), nameof(ApplicationApiConventions.Register))]
     public async Task<ActionResult> ChangePasswordAsync(ChangePasswordRequest model)
     {
@@ -48,7 +48,7 @@ public class PersonalController : VersionNeutralApiController
     }
 
     [HttpGet("permissions")]
-    [OpenApiOperation("Get permissions of currently logged in user.", "")]
+    [SwaggerOperation("Get permissions of currently logged in user.", "")]
     public async Task<ActionResult<List<string>>> GetPermissionsAsync(CancellationToken cancellationToken)
     {
         return User.GetUserId() is not { } userId || string.IsNullOrEmpty(userId)
@@ -57,7 +57,7 @@ public class PersonalController : VersionNeutralApiController
     }
 
     [HttpGet("logs")]
-    [OpenApiOperation("Get audit logs of currently logged in user.", "")]
+    [SwaggerOperation("Get audit logs of currently logged in user.", "")]
     public Task<List<AuditDto>> GetLogsAsync()
     {
         return Mediator.Send(new GetMyAuditLogsRequest());

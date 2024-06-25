@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MultiMart.Infrastructure.BackgroundJobs.Hangfire;
-using MultiMart.Infrastructure.Common;
 using Serilog;
 
 namespace MultiMart.Infrastructure.BackgroundJobs;

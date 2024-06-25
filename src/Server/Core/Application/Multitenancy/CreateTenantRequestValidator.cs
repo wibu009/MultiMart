@@ -26,10 +26,10 @@ public class CreateTenantRequestValidator : CustomValidator<CreateTenantRequest>
 
         RuleFor(t => t.DbProvider).Cascade(CascadeMode.Stop)
             .Must(dbProvider => dbProvider == null || new[] { "postgresql", "mssql", "mysql", "oracle", "sqlite" }.Contains(dbProvider.ToLowerInvariant()))
-            .WithMessage("DbProvider must be one of the following: postgresql, mssql, mysql, oracle, sqlite");
+            .WithMessage((_, _) => T["DbProvider must be one of the following: postgresql, mssql, mysql, oracle, sqlite"]);
 
         RuleFor(t => t.ConnectionString).Cascade(CascadeMode.Stop)
             .Must((request, connectionString) => request.DbProvider == null || connectionString == null || connectionStringValidator.TryValidate(connectionString, request.DbProvider))
-            .WithMessage("Invalid ConnectionString for the provided DbProvider");
+            .WithMessage((_, _) => T["Invalid ConnectionString for the provided DbProvider"]);
     }
 }

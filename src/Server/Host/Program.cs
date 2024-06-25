@@ -18,15 +18,13 @@ internal static class Program
     public static async Task Main(string[] args)
     {
         StaticLogger.EnsureInitialized();
+        Console.WriteLine(FiggleFonts.Standard.Render("MultiMart"));
         Log.Information("Server Booting Up...");
         try
         {
             var builder = WebApplication.CreateBuilder(args);
 
             builder.AddConfigurations().RegisterSerilog();
-            var loggerSettings = builder.Services.BuildServiceProvider()
-                .GetRequiredService<IOptions<LoggerSettings>>().Value;
-            Console.WriteLine(FiggleFonts.Standard.Render(loggerSettings.AppName));
             builder.Services.AddControllers();
             builder.Services.AddInfrastructure(builder.Configuration);
             builder.Services.AddApplication();

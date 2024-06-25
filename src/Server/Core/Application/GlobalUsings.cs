@@ -1,3 +1,4 @@
+global using System.ComponentModel;
 global using Ardalis.Specification;
 global using FluentValidation;
 global using MultiMart.Domain.Common;

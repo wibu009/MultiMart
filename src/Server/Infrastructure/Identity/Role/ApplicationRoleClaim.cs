@@ -1,9 +1,13 @@
 using Microsoft.AspNetCore.Identity;
+using MultiMart.Domain.Common.Contracts;
 
 namespace MultiMart.Infrastructure.Identity.Role;
 
-public class ApplicationRoleClaim : IdentityRoleClaim<string>
+public class ApplicationRoleClaim : IdentityRoleClaim<string>, IAuditableEntity
 {
-    public string? CreatedBy { get; init; }
-    public DateTime CreatedOn { get; init; }
+    public Guid CreatedBy { get; set; }
+    public DateTime CreatedOn { get; set; }
+    public Guid LastModifiedBy { get; set; }
+    public DateTime? LastModifiedOn { get; set; }
+    public virtual ApplicationRole Role { get; set; } = null!;
 }

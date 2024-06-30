@@ -7,6 +7,12 @@ public class Brand : AuditableEntity, IAggregateRoot
     public string Name { get; private set; }
     public string? Description { get; private set; }
 
+    public Brand()
+    {
+        // Only needed for working with dapper (See GetBrandViaDapperRequest)
+        // If you're not using dapper it's better to remove this constructor.
+    }
+
     public Brand(string name, string? description)
     {
         Name = name;

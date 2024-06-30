@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using Hangfire;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MultiMart.Application.Common.Mailing;
@@ -22,73 +23,82 @@ public class SendGridMailService : ISendGridMailService
 
     public async Task SendAsync(MailRequest request, CancellationToken ct)
     {
-        // From
-        var from = new EmailAddress(request.From ?? _sendGridMailSettings.From, _sendGridMailSettings.DisplayName);
-
-        // To, Cc, Bcc
-        var to = request.To.ConvertAll(email => new EmailAddress(email));
-        var cc = request.Cc.ConvertAll(email => new EmailAddress(email));
-        var bcc = request.Bcc.ConvertAll(email => new EmailAddress(email));
-
-        // Only works if cc, bcc, to are less than 1000 because of SendGrid's limitation
-        var personalization = new List<Personalization>
+        try
         {
-            new()
+            // From
+            var from = new EmailAddress(request.From ?? _sendGridMailSettings.From, _sendGridMailSettings.DisplayName);
+
+            // To, Cc, Bcc
+            var to = request.To.ConvertAll(email => new EmailAddress(email));
+            var cc = request.Cc.Any() ? request.Cc.ConvertAll(email => new EmailAddress(email)) : new List<EmailAddress>();
+            var bcc = request.Bcc.Any() ? request.Bcc.ConvertAll(email => new EmailAddress(email)) : new List<EmailAddress>();
+
+            // Personalization
+            var personalization = new List<Personalization>
             {
-                Tos = to,
-                Ccs = cc,
-                Bccs = bcc
-            }
-        };
-
-        // Subject
-        string subject = request.Subject;
-
-        // Body
-        string? body = request.Body;
-
-        // Headers
-        var headers = request.Headers.ToDictionary(header => header.Key, header => header.Value);
-
-        var msg = new SendGridMessage()
-        {
-            From = from,
-            Subject = subject,
-            PlainTextContent = body,
-            HtmlContent = body,
-            Personalizations = personalization,
-            Headers = headers
-        };
-
-        // ReplyTo
-        if (!string.IsNullOrEmpty(request.ReplyTo))
-        {
-            msg.ReplyTo = new EmailAddress(request.ReplyTo);
-        }
-
-        // Attachment
-        if (request.AttachmentData.Any())
-        {
-            var attachments = request.AttachmentData.Select(attachment =>
-                new Attachment
+                new()
                 {
-                    Content = Convert.ToBase64String(attachment.Value),
-                    Filename = attachment.Key,
-                    Type = attachment.Key.Split('.').Last()
-                }).ToList();
+                    Tos = to,
+                    Ccs = cc.Any() ? cc : null,
+                    Bccs = bcc.Any() ? bcc : null
+                }
+            };
 
-            msg.AddAttachments(attachments);
+            // Subject
+            string subject = request.Subject;
+
+            // Body
+            string? body = request.Body;
+
+            // Headers
+            var headers = request.Headers.ToDictionary(header => header.Key, header => header.Value);
+
+            var msg = new SendGridMessage
+            {
+                From = from,
+                Subject = subject,
+                PlainTextContent = body,
+                HtmlContent = body,
+                Personalizations = personalization,
+                Headers = headers
+            };
+
+            // ReplyTo
+            if (!string.IsNullOrEmpty(request.ReplyTo))
+            {
+                msg.ReplyTo = new EmailAddress(request.ReplyTo);
+            }
+
+            // Attachments
+            if (request.AttachmentData.Any())
+            {
+                var attachments = request.AttachmentData.Select(attachment =>
+                    new Attachment
+                    {
+                        Content = Convert.ToBase64String(attachment.Value),
+                        Filename = attachment.Key,
+                        Type = attachment.Key.Split('.').Last()
+                    }).ToList();
+
+                msg.AddAttachments(attachments);
+            }
+
+            msg.SetClickTracking(false, false);
+
+            var response = await _client.SendEmailAsync(msg, ct);
+
+            if (response.StatusCode != HttpStatusCode.OK && response.StatusCode != HttpStatusCode.Accepted)
+            {
+                _logger.LogError(
+                    "Failed to send email. Status code: {StatusCode}, Body: {Body}",
+                    response.StatusCode, await response.Body.ReadAsStringAsync(ct));
+                throw new Exception("Failed to send email");
+            }
         }
-
-        msg.SetClickTracking(false, false);
-
-        var response = await _client.SendEmailAsync(msg, ct);
-
-        if (response.StatusCode != HttpStatusCode.OK)
+        catch (Exception ex)
         {
-            _logger.LogError("Failed to send email. Status code: {StatusCode}, Body: {Body}", response.StatusCode,
-                await response.Body.ReadAsStringAsync(ct));
-            throw new Exception("Failed to send email");
+            _logger.LogError(ex, "An error occurred while sending email using SendGrid.");
+            throw;
         }
     }
 }

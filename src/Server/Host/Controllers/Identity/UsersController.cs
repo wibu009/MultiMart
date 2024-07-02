@@ -96,9 +96,9 @@ public class UsersController : VersionNeutralApiController
     [AllowAnonymous]
     [SwaggerOperation("Confirm phone number for a user.", "")]
     [ApiConventionMethod(typeof(ApplicationApiConventions), nameof(ApplicationApiConventions.Search))]
-    public Task<string> ConfirmPhoneNumberAsync([FromQuery] string userId, [FromQuery] string code)
+    public Task<string> ConfirmPhoneNumberAsync([FromQuery] string userId, [FromQuery] string token)
     {
-        return _userService.ConfirmPhoneNumberAsync(userId, code);
+        return _userService.ConfirmPhoneNumberAsync(userId, token);
     }
 
     [HttpPost("forgot-password")]
@@ -112,6 +112,8 @@ public class UsersController : VersionNeutralApiController
     }
 
     [HttpPost("reset-password")]
+    [AllowAnonymous]
+    [TenantIdHeader]
     [SwaggerOperation("Reset a user's password.", "")]
     [ApiConventionMethod(typeof(ApplicationApiConventions), nameof(ApplicationApiConventions.Register))]
     public Task<string> ResetPasswordAsync(ResetPasswordRequest request)

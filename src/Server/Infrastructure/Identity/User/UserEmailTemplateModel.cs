@@ -1,6 +1,6 @@
 ﻿namespace MultiMart.Infrastructure.Identity.User;
 
-public class RegisterUserEmailModel
+public class UserEmailTemplateModel
 {
     public string UserName { get; set; } = default!;
     public string Email { get; set; } = default!;

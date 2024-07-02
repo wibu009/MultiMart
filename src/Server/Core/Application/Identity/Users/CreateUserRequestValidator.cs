@@ -32,7 +32,11 @@ public class CreateUserRequestValidator : CustomValidator<CreateUserRequest>
 
         RuleFor(p => p.Password).Cascade(CascadeMode.Stop)
             .NotEmpty()
-            .MinimumLength(6);
+            .MinimumLength(8)
+            .Matches("[A-Z]+").WithMessage(T["Password must contain at least one uppercase letter."])
+            .Matches("[a-z]+").WithMessage(T["Password must contain at least one lowercase letter."])
+            .Matches("[0-9]+").WithMessage(T["Password must contain at least one number."])
+            .Matches("[!@#$%^&*]+").WithMessage(T["Password must contain at least one special character."]);
 
         RuleFor(p => p.ConfirmPassword).Cascade(CascadeMode.Stop)
             .NotEmpty()

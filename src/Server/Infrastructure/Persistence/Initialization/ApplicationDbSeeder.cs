@@ -42,7 +42,7 @@ internal class ApplicationDbSeeder
                 is not ApplicationRole role)
             {
                 // Create the role
-                _logger.LogInformation("Seeding {role} Role for '{tenantId}' Tenant.", roleName, _currentTenant.Id);
+                _logger.LogInformation("Seeding {Role} Role for '{TenantId}' Tenant", roleName, _currentTenant.Id);
                 role = new ApplicationRole
                 {
                     Name = roleName,
@@ -56,19 +56,21 @@ internal class ApplicationDbSeeder
                 await _roleManager.CreateAsync(role);
             }
 
-            // Assign permissions
-            if (roleName == ApplicationRoles.Basic)
+            switch (roleName)
             {
-                await AssignPermissionsToRoleAsync(dbContext, ApplicationPermissions.Basic, role);
-            }
-            else if (roleName == ApplicationRoles.Admin)
-            {
-                await AssignPermissionsToRoleAsync(dbContext, ApplicationPermissions.Admin, role);
+                // Assign permissions
+                case ApplicationRoles.Basic:
+                    await AssignPermissionsToRoleAsync(dbContext, ApplicationPermissions.Basic, role);
+                    break;
+                case ApplicationRoles.Admin:
+                    await AssignPermissionsToRoleAsync(dbContext, ApplicationPermissions.Admin, role);
 
-                if (_currentTenant.Id == MultitenancyConstants.Root.Id)
-                {
-                    await AssignPermissionsToRoleAsync(dbContext, ApplicationPermissions.Root, role);
-                }
+                    if (_currentTenant.Id == MultitenancyConstants.Root.Id)
+                    {
+                        await AssignPermissionsToRoleAsync(dbContext, ApplicationPermissions.Root, role);
+                    }
+
+                    break;
             }
         }
     }
@@ -80,7 +82,7 @@ internal class ApplicationDbSeeder
         {
             if (!currentClaims.Any(c => c.Type == ApplicationClaims.Permission && c.Value == permission.Name))
             {
-                _logger.LogInformation("Seeding {role} Permission '{permission}' for '{tenantId}' Tenant.", role.Name, permission.Name, _currentTenant.Id);
+                _logger.LogInformation("Seeding {Role} Permission '{Permission}' for '{TenantId}' Tenant", role.Name, permission.Name, _currentTenant.Id);
                 dbContext.RoleClaims.Add(new ApplicationRoleClaim
                 {
                     RoleId = role.Id,

@@ -1,4 +1,7 @@
-﻿using MultiMart.Application.Catalog.Brands;
+﻿using MultiMart.Application.Catalog.Brand;
+using MultiMart.Application.Catalog.Brand.Dtos;
+using MultiMart.Application.Catalog.Brand.Requests.Commands;
+using MultiMart.Application.Catalog.Brand.Requests.Queries;
 using MultiMart.Application.Common.Models;
 using MultiMart.Shared.Authorization;
 

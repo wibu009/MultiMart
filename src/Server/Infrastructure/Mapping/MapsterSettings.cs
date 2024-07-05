@@ -10,17 +10,13 @@ public class MapsterSettings
     {
         var config = TypeAdapterConfig.GlobalSettings;
 
-        // Get all currently loaded assemblies
-        var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-        foreach (var assembly in assemblies)
+        var assembly = Assembly.GetExecutingAssembly();
+        var types = assembly.GetTypes()
+            .Where(t => t.GetInterfaces().Contains(typeof(IRegister)) && t is { IsInterface: false, IsAbstract: false });
+        foreach (var type in types)
         {
-            var types = assembly.GetTypes()
-                .Where(t => t.GetInterfaces().Contains(typeof(IRegister)) && t is { IsInterface: false, IsAbstract: false });
-            foreach (var type in types)
-            {
-                var register = (IRegister)ActivatorUtilities.CreateInstance(serviceProvider, type);
-                register.Register(config);
-            }
+            var register = (IRegister)ActivatorUtilities.CreateInstance(serviceProvider, type);
+            register.Register(config);
         }
     }
 }

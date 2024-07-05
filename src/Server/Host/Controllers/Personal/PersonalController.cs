@@ -1,4 +1,6 @@
 using MultiMart.Application.Auditing;
+using MultiMart.Application.Auditing.Dtos;
+using MultiMart.Application.Auditing.Request.Queries;
 using MultiMart.Application.Identity.Users;
 using MultiMart.Application.Identity.Users.Password;
 using MultiMart.Shared.Authorization;

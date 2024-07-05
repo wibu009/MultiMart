@@ -35,10 +35,10 @@ internal class ExceptionMiddleware : IMiddleware
             string email = _currentUser.GetUserEmail() is string userEmail ? userEmail : "Anonymous";
             var userId = _currentUser.GetUserId();
             string tenant = _currentUser.GetTenant() ?? string.Empty;
-            if (userId != Guid.Empty) LogContext.PushProperty("UserId", userId);
+            if (userId != DefaultIdType.Empty) LogContext.PushProperty("UserId", userId);
             LogContext.PushProperty("UserEmail", email);
             if (!string.IsNullOrEmpty(tenant)) LogContext.PushProperty("Tenant", tenant);
-            string errorId = Guid.NewGuid().ToString();
+            string errorId = DefaultIdType.NewGuid().ToString();
             LogContext.PushProperty("ErrorId", errorId);
             LogContext.PushProperty("StackTrace", exception.StackTrace);
             var errorResult = new ErrorResult
@@ -90,7 +90,7 @@ internal class ExceptionMiddleware : IMiddleware
                     break;
             }
 
-            Log.Error($"{errorResult.Exception} Request failed with Status Code {errorResult.StatusCode} and Error Id {errorId}.");
+            Log.Error("{ErrorResultException} Request failed with Status Code {ErrorResultStatusCode} and Error Id {ErrorId}", errorResult.Exception, errorResult.StatusCode, errorId);
             var response = context.Response;
             if (!response.HasStarted)
             {
@@ -100,7 +100,7 @@ internal class ExceptionMiddleware : IMiddleware
             }
             else
             {
-                Log.Warning("Can't write error response. Response has already started.");
+                Log.Warning("Can't write error response. Response has already started");
             }
         }
     }

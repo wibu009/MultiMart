@@ -14,6 +14,9 @@ using MultiMart.Application.Common.Mailing;
 using MultiMart.Application.Common.Models;
 using MultiMart.Application.Common.Specification;
 using MultiMart.Application.Identity.Users;
+using MultiMart.Application.Identity.Users.Interfaces;
+using MultiMart.Application.Identity.Users.Models;
+using MultiMart.Application.Identity.Users.Requests.Commands;
 using MultiMart.Domain.Identity;
 using MultiMart.Infrastructure.Auth;
 using MultiMart.Infrastructure.Identity.Role;
@@ -132,9 +135,9 @@ internal partial class UserService : IUserService
         return user.Adapt<UserDetailsDto>();
     }
 
-    public async Task ToggleStatusAsync(ToggleUserStatusRequest request, CancellationToken cancellationToken)
+    public async Task ToggleStatusAsync(bool activateUser, string userId, CancellationToken cancellationToken)
     {
-        var user = await _userManager.Users.Where(u => u.Id == request.UserId).FirstOrDefaultAsync(cancellationToken);
+        var user = await _userManager.Users.Where(u => u.Id == userId).FirstOrDefaultAsync(cancellationToken);
 
         _ = user ?? throw new NotFoundException(_t["User Not Found."]);
 
@@ -144,7 +147,7 @@ internal partial class UserService : IUserService
             throw new ConflictException(_t["Administrators Profile's Status cannot be toggled"]);
         }
 
-        user.IsActive = request.ActivateUser;
+        user.IsActive = activateUser;
 
         await _userManager.UpdateAsync(user);
 

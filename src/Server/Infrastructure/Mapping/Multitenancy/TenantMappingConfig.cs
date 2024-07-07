@@ -1,6 +1,7 @@
 ﻿using Mapster;
 using MultiMart.Application.Common.Persistence;
 using MultiMart.Application.Multitenancy;
+using MultiMart.Application.Multitenancy.Models;
 using MultiMart.Infrastructure.Multitenancy;
 
 namespace MultiMart.Infrastructure.Mapping.Multitenancy;

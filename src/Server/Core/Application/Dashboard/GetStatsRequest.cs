@@ -1,7 +1,9 @@
 ﻿using MultiMart.Application.Common.Persistence;
 using MultiMart.Application.Common.Specification;
 using MultiMart.Application.Identity.Roles;
+using MultiMart.Application.Identity.Roles.Interfaces;
 using MultiMart.Application.Identity.Users;
+using MultiMart.Application.Identity.Users.Interfaces;
 using MultiMart.Domain.Catalog;
 
 namespace MultiMart.Application.Dashboard;

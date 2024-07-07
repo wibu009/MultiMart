@@ -23,7 +23,7 @@ internal partial class UserService
         return verificationUri;
     }
 
-    public async Task<string> ConfirmEmailAsync(string userId, string token, string tenant, CancellationToken cancellationToken)
+    public async Task<string> ConfirmEmailAsync(string userId, string token, CancellationToken cancellationToken)
     {
         EnsureValidTenant();
 

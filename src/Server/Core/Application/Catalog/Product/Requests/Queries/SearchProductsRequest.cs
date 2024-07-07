@@ -1,4 +1,4 @@
-using MultiMart.Application.Catalog.Product.Dtos;
+using MultiMart.Application.Catalog.Product.Models;
 using MultiMart.Application.Catalog.Product.Specifications;
 using MultiMart.Application.Common.Models;
 using MultiMart.Application.Common.Persistence;

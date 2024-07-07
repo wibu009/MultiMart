@@ -1,4 +1,4 @@
-﻿using MultiMart.Application.Catalog.Product.Dtos;
+﻿using MultiMart.Application.Catalog.Product.Models;
 
 namespace MultiMart.Application.Catalog.Product.Specifications;
 

@@ -1,8 +1,8 @@
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 using MultiMart.Application.Auditing;
-using MultiMart.Application.Auditing.Dtos;
 using MultiMart.Application.Auditing.Interfaces;
+using MultiMart.Application.Auditing.Models;
 using MultiMart.Application.Auditing.Request.Queries;
 using MultiMart.Application.Common.Models;
 using MultiMart.Infrastructure.Persistence.Context;

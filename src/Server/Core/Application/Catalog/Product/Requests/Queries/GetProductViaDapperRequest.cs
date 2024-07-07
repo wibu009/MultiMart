@@ -1,4 +1,4 @@
-﻿using MultiMart.Application.Catalog.Product.Dtos;
+﻿using MultiMart.Application.Catalog.Product.Models;
 using MultiMart.Application.Common.Exceptions;
 using MultiMart.Application.Common.Persistence;
 

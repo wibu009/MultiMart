@@ -1,4 +1,4 @@
-﻿using MultiMart.Application.Catalog.Brand.Dtos;
+﻿using MultiMart.Application.Catalog.Brand.Models;
 using MultiMart.Application.Catalog.Brand.Requests.Queries;
 using MultiMart.Application.Common.Models;
 using MultiMart.Application.Common.Specification;

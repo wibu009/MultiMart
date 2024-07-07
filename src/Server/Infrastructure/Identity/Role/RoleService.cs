@@ -7,6 +7,9 @@ using Microsoft.Extensions.Localization;
 using MultiMart.Application.Common.Events;
 using MultiMart.Application.Common.Exceptions;
 using MultiMart.Application.Identity.Roles;
+using MultiMart.Application.Identity.Roles.Interfaces;
+using MultiMart.Application.Identity.Roles.Models;
+using MultiMart.Application.Identity.Roles.Requests.Commands;
 using MultiMart.Domain.Identity;
 using MultiMart.Infrastructure.Identity.User;
 using MultiMart.Shared.Authorization;
@@ -53,16 +56,16 @@ internal class RoleService : IRoleService
             ? role.Adapt<RoleDto>()
             : throw new NotFoundException(_t["Role Not Found"]);
 
-    public async Task<string> CreateOrUpdateAsync(CreateOrUpdateRoleRequest request)
+    public async Task<string> CreateOrUpdateAsync(string? id, string name, string? description)
     {
-        if (string.IsNullOrEmpty(request.Id))
+        if (string.IsNullOrEmpty(id))
         {
             // Create a new role.
             var role = new ApplicationRole
             {
-                Name = request.Name,
-                NormalizedName = request.Name.ToUpperInvariant(),
-                Description = request.Description
+                Name = name,
+                NormalizedName = name.ToUpperInvariant(),
+                Description = description
             };
             var result = await _roleManager.CreateAsync(role);
 
@@ -73,12 +76,12 @@ internal class RoleService : IRoleService
 
             await _events.PublishAsync(new ApplicationRoleCreatedEvent(role.Id, role.Name!));
 
-            return string.Format(_t["Role {0} Created."], request.Name);
+            return string.Format(_t["Role {0} Created."], name);
         }
         else
         {
             // Update an existing role.
-            var role = await _roleManager.FindByIdAsync(request.Id);
+            var role = await _roleManager.FindByIdAsync(id);
 
             _ = role ?? throw new NotFoundException(_t["Role Not Found"]);
 
@@ -87,9 +90,9 @@ internal class RoleService : IRoleService
                 throw new ConflictException(string.Format(_t["Not allowed to modify {0} Role."], role.Name));
             }
 
-            role.Name = request.Name;
-            role.NormalizedName = request.Name.ToUpperInvariant();
-            role.Description = request.Description;
+            role.Name = name;
+            role.NormalizedName = name.ToUpperInvariant();
+            role.Description = description;
             var result = await _roleManager.UpdateAsync(role);
 
             if (!result.Succeeded)
@@ -103,10 +106,11 @@ internal class RoleService : IRoleService
         }
     }
 
-    public async Task<string> UpdatePermissionsAsync(UpdateRolePermissionsRequest request, CancellationToken cancellationToken)
+    public async Task<string> UpdatePermissionsAsync(string roleId, List<string> permissions)
     {
-        var role = await _roleManager.FindByIdAsync(request.RoleId);
+        var role = await _roleManager.FindByIdAsync(roleId);
         _ = role ?? throw new NotFoundException(_t["Role Not Found"]);
+
         if (role.Name == ApplicationRoles.Admin)
         {
             throw new ConflictException(_t["Not allowed to modify Permissions for this Role."]);
@@ -115,13 +119,13 @@ internal class RoleService : IRoleService
         if (_currentTenant.Id != MultitenancyConstants.Root.Id)
         {
             // Remove Root Permissions if the Role is not created for Root Tenant.
-            request.Permissions.RemoveAll(u => u.StartsWith("Permissions.Root."));
+            permissions.RemoveAll(u => u.StartsWith("Permissions.Root."));
         }
 
         var currentClaims = await _roleManager.GetClaimsAsync(role);
 
         // Remove permissions that were previously selected
-        foreach (var claim in currentClaims.Where(c => request.Permissions.All(p => p != c.Value)))
+        foreach (var claim in currentClaims.Where(c => permissions.All(p => p != c.Value)))
         {
             var removeResult = await _roleManager.RemoveClaimAsync(role, claim);
             if (!removeResult.Succeeded)
@@ -131,7 +135,7 @@ internal class RoleService : IRoleService
         }
 
         // Add all permissions that were not previously selected
-        foreach (string permission in request.Permissions.Where(c => currentClaims.All(p => p.Value != c)))
+        foreach (string permission in permissions.Where(c => currentClaims.All(p => p.Value != c)))
         {
             if (!string.IsNullOrEmpty(permission))
             {

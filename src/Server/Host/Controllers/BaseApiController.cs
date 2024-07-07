@@ -1,19 +1,21 @@
 using MediatR;
-using MultiMart.Application.Common.Models;
 
 namespace MultiMart.Host.Controllers;
 
 [ApiController]
 public class BaseApiController : ControllerBase
 {
-    private ISender _mediator = null!;
+    private ISender? _mediator;
 
     protected ISender Mediator => _mediator ??= HttpContext.RequestServices.GetRequiredService<ISender>();
 
-    protected IActionResult HandleRedirect(string url)
+    protected IActionResult Redirect(string url)
     {
-        return Request.Headers["Referer"].ToString().Contains("/swagger")
-            ? Ok(url)
-            : Redirect(url);
+        if (Request.Headers["Referer"].ToString().Contains("swagger", StringComparison.OrdinalIgnoreCase))
+        {
+            return Ok(url);
+        }
+
+        return base.Redirect(url);
     }
 }

@@ -1,4 +1,4 @@
-﻿using MultiMart.Application.Catalog.Product.Dtos;
+﻿using MultiMart.Application.Catalog.Product.Models;
 using MultiMart.Application.Catalog.Product.Requests.Commands;
 using MultiMart.Application.Catalog.Product.Requests.Queries;
 using MultiMart.Application.Common.Models;

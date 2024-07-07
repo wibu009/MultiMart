@@ -14,7 +14,7 @@ public class OAuth2Controller : VersionNeutralApiController
     [TenantIdHeader]
     [SwaggerOperation("External authentication", "Supports Google and Facebook.")]
     public async Task<IActionResult> ExternalLogin([FromRoute] string provider)
-        => HandleRedirect(await _oauth2Service.ExternalAuthAsync(provider));
+        => Redirect(await _oauth2Service.ExternalAuthAsync(provider));
 
     [HttpGet("callback/{provider}")]
     [AllowAnonymous]
@@ -24,5 +24,5 @@ public class OAuth2Controller : VersionNeutralApiController
         [FromQuery] string code,
         [FromQuery] string? error = "",
         [FromQuery] string? state = "")
-        => HandleRedirect(await _oauth2Service.ExternalAuthCallbackAsync(provider, code, error, state));
+        => Redirect(await _oauth2Service.ExternalAuthCallbackAsync(provider, code, error, state));
 }

@@ -1,5 +1,5 @@
-using MultiMart.Application.Auditing.Dtos;
 using MultiMart.Application.Auditing.Interfaces;
+using MultiMart.Application.Auditing.Models;
 using MultiMart.Application.Common.Interfaces;
 
 namespace MultiMart.Application.Auditing.Request.Queries;

@@ -1,5 +1,5 @@
 ﻿using Mapster;
-using MultiMart.Application.Catalog.Product.Dtos;
+using MultiMart.Application.Catalog.Product.Models;
 using MultiMart.Domain.Catalog;
 
 namespace MultiMart.Infrastructure.Mapping.Catalog;

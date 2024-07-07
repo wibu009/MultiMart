@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using MultiMart.Application.Multitenancy;
+using MultiMart.Application.Multitenancy.Interfaces;
 using MultiMart.Infrastructure.Auth.OAuth2;
 using MultiMart.Infrastructure.Common.Extensions;
 using MultiMart.Infrastructure.Common.Settings;

@@ -26,14 +26,14 @@ internal static class Program
 
             builder.AddConfigurations().RegisterSerilog();
             builder.Services.AddControllers();
-            builder.Services.AddInfrastructure(builder.Configuration);
+            builder.Services.AddInfrastructure(builder.Configuration, builder.Environment);
             builder.Services.AddApplication();
 
             var app = builder.Build();
 
             await app.Services.InitializeDatabasesAsync().ConfigureAwait(false);
 
-            app.UseInfrastructure(builder.Configuration);
+            app.UseInfrastructure(builder.Configuration, builder.Environment);
             app.MapEndpoints();
             await app.RunAsync().ConfigureAwait(false);
         }

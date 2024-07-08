@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using MultiMart.Application.Identity.Users;
+using MultiMart.Application.Identity.Users.Interfaces;
 using MultiMart.Shared.Authorization;
 
 namespace MultiMart.Infrastructure.Auth.Permissions;

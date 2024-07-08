@@ -11,6 +11,9 @@ using Microsoft.IdentityModel.Tokens;
 using MultiMart.Application.Common.Caching;
 using MultiMart.Application.Common.Interfaces;
 using MultiMart.Application.Identity.Tokens;
+using MultiMart.Application.Identity.Tokens.Interfaces;
+using MultiMart.Application.Identity.Tokens.Models;
+using MultiMart.Application.Identity.Tokens.Requests;
 using MultiMart.Infrastructure.Auth;
 using MultiMart.Infrastructure.Auth.Jwt;
 using MultiMart.Infrastructure.Auth.OAuth2;
@@ -61,108 +64,20 @@ internal class TokenService : ITokenService
         _refreshTokenCookieName = $"refreshToken-{_currentTenant.Id}".Encrypt(_encryptionSettings.Key, _encryptionSettings.IV);
     }
 
-    public async Task<TokenResponse> GetTokenAsync(TokenRequest request, string ipAddress,
-        CancellationToken cancellationToken)
+    public async Task<TokenResponse> GetTokenAsync(GetTokenRequest request, CancellationToken cancellationToken)
     {
-        var user = await _userManager.FindByEmailAsync(request.UserNameOrEmail.Trim().Normalize())
-                   ?? await _userManager.FindByNameAsync(request.UserNameOrEmail.Trim().Normalize());
-
-        if (string.IsNullOrWhiteSpace(_currentTenant?.Id) || user == null ||
-            !await _userManager.CheckPasswordAsync(user, request.Password))
+        switch (string.IsNullOrWhiteSpace(request.Token))
         {
-            throw new UnauthorizedException(_t["Authentication Failed."]);
+            case false:
+                return await GetTokenUsingTokenAsync(request, cancellationToken);
+            default:
+                if (!string.IsNullOrWhiteSpace(request.UserNameOrEmail) && !string.IsNullOrWhiteSpace(request.Password))
+                {
+                    return await GetTokenUsingCredentialsAsync(request);
+                }
+
+                throw new ArgumentException("Invalid request parameters.");
         }
-
-        if (!user.IsActive)
-        {
-            throw new UnauthorizedException(_t["User Not Active. Please contact the administrator."]);
-        }
-
-        if (_securitySettings.RequireConfirmedAccount && !user.EmailConfirmed)
-        {
-            throw new UnauthorizedException(_t["E-Mail not confirmed."]);
-        }
-
-        if (_currentTenant.Id != MultitenancyConstants.Root.Id)
-        {
-            if (!_currentTenant.IsActive)
-            {
-                throw new UnauthorizedException(
-                    _t["Tenant is not Active. Please contact the Application Administrator."]);
-            }
-
-            if (DateTime.UtcNow > _currentTenant.ValidUpto)
-            {
-                throw new UnauthorizedException(
-                    _t["Tenant Validity Has Expired. Please contact the Application Administrator."]);
-            }
-        }
-
-        string? oldUserRefreshToken = _httpContextAccessor.HttpContext?.Request.Cookies[_refreshTokenCookieName];
-        if (!string.IsNullOrEmpty(oldUserRefreshToken))
-        {
-            await RevokeRefreshToken(oldUserRefreshToken);
-        }
-
-        return await GenerateTokensAndUpdateUser(user, ipAddress);
-    }
-
-    public async Task<TokenResponse> GetTokenAsync(string? token, string ipAddress, CancellationToken cancellationToken)
-    {
-        if (_currentTenant == null || string.IsNullOrWhiteSpace(_currentTenant.Id))
-        {
-            throw new UnauthorizedException(_t["Authentication Failed."]);
-        }
-
-        string? decodedState = WebUtility.UrlDecode(token);
-        var stateData = decodedState.Contains("#/_=_")
-            ? decodedState.Replace("#/_=_", string.Empty).Decrypt<StateData<string>>(_encryptionSettings.Key, _encryptionSettings.IV)
-            : decodedState.Decrypt<StateData<string>>(_encryptionSettings.Key, _encryptionSettings.IV);
-        string tenantId = stateData.TenantId;
-        var expireAt = stateData.ExpireAt;
-        string cacheKey = stateData.Data;
-        (string userId, string clientIp) = await _cacheService.GetAsync<Tuple<string, string>>(cacheKey, cancellationToken) ??
-                                           throw new UnauthorizedException(_t["Authentication Failed."]);
-        await _cacheService.RemoveAsync(cacheKey, cancellationToken);
-
-        if (clientIp.IsNullOrEmpty())
-        {
-            throw new UnauthorizedException(_t["Authentication Failed."]);
-        }
-
-        if (clientIp != ipAddress)
-        {
-            throw new UnauthorizedException(_t["Authentication Failed."]);
-        }
-
-        if (string.IsNullOrWhiteSpace(userId))
-        {
-            throw new UnauthorizedException(_t["Authentication Failed."]);
-        }
-
-        if(tenantId != _currentTenant.Id)
-        {
-            throw new UnauthorizedException(_t["Authentication Failed."]);
-        }
-
-        if (expireAt < DateTimeOffset.UtcNow)
-        {
-            throw new UnauthorizedException(_t["Authentication Failed."]);
-        }
-
-        var user = await _userManager.FindByIdAsync(userId);
-        if (user == null)
-        {
-            throw new UnauthorizedException(_t["Authentication Failed."]);
-        }
-
-        string? oldUserRefreshToken = _httpContextAccessor.HttpContext?.Request.Cookies[_refreshTokenCookieName];
-        if (!string.IsNullOrEmpty(oldUserRefreshToken))
-        {
-            await RevokeRefreshToken(oldUserRefreshToken);
-        }
-
-        return await GenerateTokensAndUpdateUser(user, ipAddress);
     }
 
     public async Task<TokenResponse> RefreshTokenAsync(string ipAddress)
@@ -217,6 +132,109 @@ internal class TokenService : ITokenService
         }
 
         return _httpContextAccessor.HttpContext.Request.GetOrigin();
+    }
+
+    private async Task<TokenResponse> GetTokenUsingCredentialsAsync(GetTokenRequest request)
+    {
+        var user = await _userManager.FindByEmailAsync(request.UserNameOrEmail.Trim().Normalize())
+                 ?? await _userManager.FindByNameAsync(request.UserNameOrEmail.Trim().Normalize());
+
+        if (string.IsNullOrWhiteSpace(_currentTenant?.Id) || user == null ||
+        !await _userManager.CheckPasswordAsync(user, request.Password))
+        {
+            throw new UnauthorizedException(_t["Authentication Failed."]);
+        }
+
+        if (!user.IsActive)
+        {
+            throw new UnauthorizedException(_t["User Not Active. Please contact the administrator."]);
+        }
+
+        if (_securitySettings.RequireConfirmedAccount && !user.EmailConfirmed)
+        {
+            throw new UnauthorizedException(_t["E-Mail not confirmed."]);
+        }
+
+        if (_currentTenant.Id != MultitenancyConstants.Root.Id)
+        {
+            if (!_currentTenant.IsActive)
+            {
+                throw new UnauthorizedException(
+                    _t["Tenant is not Active. Please contact the Application Administrator."]);
+            }
+
+            if (DateTime.UtcNow > _currentTenant.ValidUpto)
+            {
+                throw new UnauthorizedException(
+                    _t["Tenant Validity Has Expired. Please contact the Application Administrator."]);
+            }
+        }
+
+        string? oldUserRefreshToken = _httpContextAccessor.HttpContext?.Request.Cookies[_refreshTokenCookieName];
+        if (!string.IsNullOrEmpty(oldUserRefreshToken))
+        {
+            await RevokeRefreshToken(oldUserRefreshToken);
+        }
+
+        return await GenerateTokensAndUpdateUser(user, request.IpAddress);
+    }
+
+    private async Task<TokenResponse> GetTokenUsingTokenAsync(GetTokenRequest request, CancellationToken cancellationToken)
+    {
+        if (_currentTenant == null || string.IsNullOrWhiteSpace(_currentTenant.Id))
+        {
+            throw new UnauthorizedException(_t["Authentication Failed."]);
+        }
+
+        string? decodedState = WebUtility.UrlDecode(request.Token);
+        var stateData = decodedState.Contains("#/_=_")
+            ? decodedState.Replace("#/_=_", string.Empty).Decrypt<StateData<string>>(_encryptionSettings.Key, _encryptionSettings.IV)
+            : decodedState.Decrypt<StateData<string>>(_encryptionSettings.Key, _encryptionSettings.IV);
+        string tenantId = stateData.TenantId;
+        var expireAt = stateData.ExpireAt;
+        string cacheKey = stateData.Data;
+        (string userId, string clientIp) = await _cacheService.GetAsync<Tuple<string, string>>(cacheKey, cancellationToken) ??
+                                           throw new UnauthorizedException(_t["Authentication Failed."]);
+        await _cacheService.RemoveAsync(cacheKey, cancellationToken);
+
+        if (clientIp.IsNullOrEmpty())
+        {
+            throw new UnauthorizedException(_t["Authentication Failed."]);
+        }
+
+        if (clientIp != request.IpAddress)
+        {
+            throw new UnauthorizedException(_t["Authentication Failed."]);
+        }
+
+        if (string.IsNullOrWhiteSpace(userId))
+        {
+            throw new UnauthorizedException(_t["Authentication Failed."]);
+        }
+
+        if(tenantId != _currentTenant.Id)
+        {
+            throw new UnauthorizedException(_t["Authentication Failed."]);
+        }
+
+        if (expireAt < DateTimeOffset.UtcNow)
+        {
+            throw new UnauthorizedException(_t["Authentication Failed."]);
+        }
+
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user == null)
+        {
+            throw new UnauthorizedException(_t["Authentication Failed."]);
+        }
+
+        string? oldUserRefreshToken = _httpContextAccessor.HttpContext?.Request.Cookies[_refreshTokenCookieName];
+        if (!string.IsNullOrEmpty(oldUserRefreshToken))
+        {
+            await RevokeRefreshToken(oldUserRefreshToken);
+        }
+
+        return await GenerateTokensAndUpdateUser(user, request.IpAddress);
     }
 
     private async Task<TokenResponse> GenerateTokensAndUpdateUser(ApplicationUser user, string ipAddress)

@@ -2,7 +2,7 @@
 
 public class SendGridMailSettings
 {
-    public string Key { get; set; } = default!;
+    public string ApiKey { get; set; } = default!;
     public string From { get; set; } = default!;
     public string DisplayName { get; set; } = default!;
 }

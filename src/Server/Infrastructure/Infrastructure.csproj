@@ -79,11 +79,6 @@
         <ProjectReference Include="..\Core\Domain\Domain.csproj"/>
     </ItemGroup>
     <ItemGroup>
-        <None Update="Catalog\Brand\brands.json">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
-    </ItemGroup>
-    <ItemGroup>
         <PackageReference Update="Roslynator.Analyzers" Version="4.2.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

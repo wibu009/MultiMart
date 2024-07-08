@@ -1,15 +1,15 @@
 {
-  "SmtpMailSettings": {
-    "DisplayName": "Mukesh Murugan",
-    "From": "mukesh@fullstackhero.net",
-    "Host": "smtp.ethereal.email",
-    "Password": "AdEqEKB4QwWX9Xey82",
-    "Port": 587,
-    "UserName": "nestor91@ethereal.email"
-  },
-  "SendGridSettings": {
-    "ApiKey": "your_sendgrid_api_key",
-    "FromEmail": "noreply@multimart.com",
-    "DisplayName": "MultiMart"
-  }
+    "SmtpMailSettings": {
+        "DisplayName": "Mukesh Murugan",
+        "From": "mukesh@fullstackhero.net",
+        "Host": "smtp.ethereal.email",
+        "Password": "AdEqEKB4QwWX9Xey82",
+        "Port": 587,
+        "UserName": "nestor91@ethereal.email"
+    },
+    "SendGridMailSettings": {
+        "ApiKey": "your_sendgrid_api_key",
+        "From": "noreply.multimart@gmail.com", // confirm your email address in sendgrid
+        "DisplayName": "MultiMart"
+    }
 }

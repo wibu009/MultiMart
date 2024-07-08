@@ -7,6 +7,7 @@ using MultiMart.Application.Common.Events;
 using MultiMart.Domain.Identity;
 using MultiMart.Infrastructure.Auth.OAuth2.Facebook;
 using MultiMart.Infrastructure.Auth.OAuth2.Google;
+using MultiMart.Infrastructure.Common;
 using MultiMart.Infrastructure.Common.Extensions;
 using MultiMart.Infrastructure.Common.Settings;
 using MultiMart.Infrastructure.Identity.Token;
@@ -115,7 +116,7 @@ public class OAuth2Service
                 signInTokenCacheKey,
                 DateTimeOffset.UtcNow.AddMinutes(2))
                 .Encrypt(_encryptionSettings.Key, _encryptionSettings.IV);
-            return clientUrl.AddQueryParam("token", token);
+            return clientUrl.AddQueryParam(QueryStringKeys.Token, token);
         }
 
         string[] nameParts = user.Name.Split(" ");
@@ -145,6 +146,6 @@ public class OAuth2Service
 
         await _events.PublishAsync(new ApplicationUserCreatedEvent(appUser.Id));
 
-        return clientUrl.AddQueryParam("token", token);
+        return clientUrl.AddQueryParam(QueryStringKeys.Token, token);
     }
 }

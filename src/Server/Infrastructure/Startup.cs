@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using MultiMart.Infrastructure.ApiVersioning;
 using MultiMart.Infrastructure.Auth;
 using MultiMart.Infrastructure.BackgroundJobs;
@@ -31,7 +32,7 @@ namespace MultiMart.Infrastructure;
 
 public static class Startup
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration config)
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration config, IHostEnvironment env)
     {
         var applicationAssembly = typeof(MultiMart.Application.Startup).GetTypeInfo().Assembly;
 
@@ -41,7 +42,7 @@ public static class Startup
             .AddAuth(config)
             .AddBackgroundJobs(config)
             .AddCaching(config)
-            .AddSecurity(config)
+            .AddSecurity(config, env)
             .AddExceptionMiddleware()
             .AddBehaviours(applicationAssembly)
             .AddHealthCheck()
@@ -75,12 +76,12 @@ public static class Startup
             .InitializeDatabasesAsync(cancellationToken);
     }
 
-    public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder builder, IConfiguration config) =>
+    public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder builder, IConfiguration config, IHostEnvironment env) =>
         builder
             .UseRequestLocalization()
             .UseStaticFiles()
             .UseFileStorage()
-            .UseSecurity(config)
+            .UseSecurity(env)
             .UseExceptionMiddleware()
             .UseRouting()
             .UseApiVersion()

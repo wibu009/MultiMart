@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 using MultiMart.Application.Common.Exceptions;
+using MultiMart.Application.Common.FileStorage;
 using MultiMart.Application.Common.Mailing;
 using MultiMart.Application.Identity.Users;
+using MultiMart.Application.Identity.Users.Requests.Commands;
 using MultiMart.Domain.Identity;
 using MultiMart.Shared.Authorization;
 
@@ -101,19 +103,19 @@ internal partial class UserService
         return user;
     }
 
-    public async Task<string> CreateAsync(CreateUserRequest request, string origin)
+    public async Task<string> CreateAsync(string firstName, string lastName, string email, string userName, string password, string? phoneNumber, string? origin, CancellationToken cancellationToken = default)
     {
         var user = new ApplicationUser
         {
-            Email = request.Email,
-            FirstName = request.FirstName,
-            LastName = request.LastName,
-            UserName = request.UserName,
-            PhoneNumber = request.PhoneNumber,
+            Email = email,
+            FirstName = firstName,
+            LastName = lastName,
+            UserName = userName,
+            PhoneNumber = phoneNumber,
             IsActive = true
         };
 
-        var result = await _userManager.CreateAsync(user, request.Password);
+        var result = await _userManager.CreateAsync(user, password);
         if (!result.Succeeded)
         {
             throw new InternalServerException(_t["Validation Errors Occurred."], result.GetErrors(_t));
@@ -126,8 +128,8 @@ internal partial class UserService
         if (_securitySettings.RequireConfirmedAccount && !string.IsNullOrEmpty(user.Email))
         {
             // send verification email
-            string emailVerificationUri = await GetEmailVerificationUriAsync(user, origin);
-            RegisterUserEmailModel eMailModel = new RegisterUserEmailModel()
+            string emailVerificationUri = await GetEmailVerificationUriAsync(user, origin!);
+            var emailModel = new UserEmailTemplateModel()
             {
                 Email = user.Email,
                 UserName = user.UserName,
@@ -136,8 +138,8 @@ internal partial class UserService
             var mailRequest = new MailRequest(
                 new List<string> { user.Email },
                 _t["Confirm Registration"],
-                _templateService.GenerateEmailTemplate("email-confirmation", eMailModel));
-            _jobService.Enqueue(() => _mailService.SendAsync(mailRequest, CancellationToken.None));
+                _templateService.GenerateEmailTemplate("email-confirmation", emailModel));
+            _jobService.Enqueue(() => _mailService.SendAsync(mailRequest, cancellationToken));
             messages.Add(_t[$"Please check {user.Email} to verify your account!"]);
         }
 
@@ -146,30 +148,44 @@ internal partial class UserService
         return string.Join(Environment.NewLine, messages);
     }
 
-    public async Task UpdateAsync(UpdateUserRequest request, string userId)
+    public async Task UpdateAsync(
+        string id,
+        string? firstName,
+        string? lastName,
+        string? phoneNumber,
+        string? email,
+        FileUploadRequest? image,
+        bool deleteCurrentImage,
+        CancellationToken cancellationToken = default)
     {
-        var user = await _userManager.FindByIdAsync(userId);
+        var user = await _userManager.FindByIdAsync(id);
 
         _ = user ?? throw new NotFoundException(_t["User Not Found."]);
 
         string currentImage = user.ImageUrl ?? string.Empty;
-        if (request.Image != null || request.DeleteCurrentImage)
+        if (image != null || deleteCurrentImage)
         {
-            user.ImageUrl = await _localFileStorage.UploadAsync<ApplicationUser>(request.Image, FileType.Image);
-            if (request.DeleteCurrentImage && !string.IsNullOrEmpty(currentImage))
+            user.ImageUrl = await _localFileStorage.UploadAsync<ApplicationUser>(image, FileType.Image, cancellationToken);
+            if (deleteCurrentImage && !string.IsNullOrEmpty(currentImage))
             {
                 string root = Directory.GetCurrentDirectory();
-               await _localFileStorage.RemoveAsync(Path.Combine(root, currentImage));
+                await _localFileStorage.RemoveAsync(Path.Combine(root, currentImage), cancellationToken);
             }
         }
 
-        user.FirstName = request.FirstName;
-        user.LastName = request.LastName;
-        user.PhoneNumber = request.PhoneNumber;
-        string? phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-        if (request.PhoneNumber != phoneNumber)
+        user.FirstName = firstName;
+        user.LastName = lastName;
+
+        string? currentPhoneNumber = await _userManager.GetPhoneNumberAsync(user);
+        if (phoneNumber != currentPhoneNumber)
         {
-            await _userManager.SetPhoneNumberAsync(user, request.PhoneNumber);
+            await _userManager.SetPhoneNumberAsync(user, phoneNumber);
+        }
+
+        string? currentEmail = await _userManager.GetEmailAsync(user);
+        if (email != currentEmail)
+        {
+            await _userManager.SetEmailAsync(user, email);
         }
 
         var result = await _userManager.UpdateAsync(user);
@@ -183,4 +199,5 @@ internal partial class UserService
             throw new InternalServerException(_t["Update profile failed"], result.GetErrors(_t));
         }
     }
+
 }

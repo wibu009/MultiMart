@@ -18,6 +18,7 @@ public static class ApplicationAction
 public static class ApplicationResource
 {
     public const string Tenants = nameof(Tenants);
+    public const string AuditLogs = nameof(AuditLogs);
     public const string Dashboard = nameof(Dashboard);
     public const string Hangfire = nameof(Hangfire);
     public const string Users = nameof(Users);
@@ -30,52 +31,83 @@ public static class ApplicationResource
 
 public static class ApplicationPermissions
 {
-    private static readonly ApplicationPermission[] _all = new ApplicationPermission[]
+    private static readonly ApplicationPermission[] AllPermissions =
     {
-        new("View Dashboard", ApplicationAction.View, ApplicationResource.Dashboard),
-        new("View Hangfire", ApplicationAction.View, ApplicationResource.Hangfire),
-        new("View Users", ApplicationAction.View, ApplicationResource.Users),
-        new("Search Users", ApplicationAction.Search, ApplicationResource.Users),
-        new("Create Users", ApplicationAction.Create, ApplicationResource.Users),
-        new("Update Users", ApplicationAction.Update, ApplicationResource.Users),
-        new("Delete Users", ApplicationAction.Delete, ApplicationResource.Users),
-        new("Export Users", ApplicationAction.Export, ApplicationResource.Users),
-        new("View UserRoles", ApplicationAction.View, ApplicationResource.UserRoles),
-        new("Update UserRoles", ApplicationAction.Update, ApplicationResource.UserRoles),
-        new("View Roles", ApplicationAction.View, ApplicationResource.Roles),
-        new("Create Roles", ApplicationAction.Create, ApplicationResource.Roles),
-        new("Update Roles", ApplicationAction.Update, ApplicationResource.Roles),
-        new("Delete Roles", ApplicationAction.Delete, ApplicationResource.Roles),
-        new("View RoleClaims", ApplicationAction.View, ApplicationResource.RoleClaims),
-        new("Update RoleClaims", ApplicationAction.Update, ApplicationResource.RoleClaims),
-        new("View Products", ApplicationAction.View, ApplicationResource.Products, IsBasic: true),
-        new("Search Products", ApplicationAction.Search, ApplicationResource.Products, IsBasic: true),
-        new("Create Products", ApplicationAction.Create, ApplicationResource.Products),
-        new("Update Products", ApplicationAction.Update, ApplicationResource.Products),
-        new("Delete Products", ApplicationAction.Delete, ApplicationResource.Products),
-        new("Export Products", ApplicationAction.Export, ApplicationResource.Products),
-        new ("Generate Products", ApplicationAction.Generate, ApplicationResource.Products),
-        new ("Clean Products", ApplicationAction.Clean, ApplicationResource.Products),
-        new("View Brands", ApplicationAction.View, ApplicationResource.Brands, IsBasic: true),
-        new("Search Brands", ApplicationAction.Search, ApplicationResource.Brands, IsBasic: true),
-        new("Create Brands", ApplicationAction.Create, ApplicationResource.Brands),
-        new("Update Brands", ApplicationAction.Update, ApplicationResource.Brands),
-        new("Delete Brands", ApplicationAction.Delete, ApplicationResource.Brands),
-        new("Generate Brands", ApplicationAction.Generate, ApplicationResource.Brands),
-        new("Clean Brands", ApplicationAction.Clean, ApplicationResource.Brands),
-        new("View Tenants", ApplicationAction.View, ApplicationResource.Tenants, IsRoot: true),
-        new("Create Tenants", ApplicationAction.Create, ApplicationResource.Tenants, IsRoot: true),
-        new("Update Tenants", ApplicationAction.Update, ApplicationResource.Tenants, IsRoot: true),
-        new("Upgrade Tenant Subscription", ApplicationAction.UpgradeSubscription, ApplicationResource.Tenants, IsRoot: true)
+        #region Dashboard
+        new(ApplicationAction.View, ApplicationResource.Dashboard),
+        #endregion
+
+        #region Hangfire
+        new(ApplicationAction.View, ApplicationResource.Hangfire),
+        #endregion
+
+        #region AuditLogs
+        new(ApplicationAction.View, ApplicationResource.AuditLogs),
+        new(ApplicationAction.Search, ApplicationResource.AuditLogs),
+        #endregion
+
+        #region Tenants
+        new(ApplicationAction.View, ApplicationResource.Tenants, IsRoot: true),
+        new(ApplicationAction.Create, ApplicationResource.Tenants, IsRoot: true),
+        new(ApplicationAction.Update, ApplicationResource.Tenants, IsRoot: true),
+        new(ApplicationAction.UpgradeSubscription, ApplicationResource.Tenants, IsRoot: true),
+        #endregion
+
+        #region Users
+        new(ApplicationAction.View, ApplicationResource.Users),
+        new(ApplicationAction.Search, ApplicationResource.Users),
+        new(ApplicationAction.Create, ApplicationResource.Users),
+        new(ApplicationAction.Update, ApplicationResource.Users),
+        new(ApplicationAction.Delete, ApplicationResource.Users),
+        new(ApplicationAction.Export, ApplicationResource.Users),
+        #endregion
+
+        #region UserRoles
+        new(ApplicationAction.View, ApplicationResource.UserRoles),
+        new(ApplicationAction.Update, ApplicationResource.UserRoles),
+        #endregion
+
+        #region Roles
+        new(ApplicationAction.View, ApplicationResource.Roles),
+        new(ApplicationAction.Create, ApplicationResource.Roles),
+        new(ApplicationAction.Update, ApplicationResource.Roles),
+        new(ApplicationAction.Delete, ApplicationResource.Roles),
+        #endregion
+
+        #region RoleClaims
+        new(ApplicationAction.View, ApplicationResource.RoleClaims),
+        new(ApplicationAction.Update, ApplicationResource.RoleClaims),
+        #endregion
+
+        #region Products
+        new(ApplicationAction.View, ApplicationResource.Products, IsBasic: true),
+        new(ApplicationAction.Search, ApplicationResource.Products, IsBasic: true),
+        new(ApplicationAction.Create, ApplicationResource.Products),
+        new(ApplicationAction.Update, ApplicationResource.Products),
+        new(ApplicationAction.Delete, ApplicationResource.Products),
+        new(ApplicationAction.Export, ApplicationResource.Products),
+        new (ApplicationAction.Generate, ApplicationResource.Products),
+        new (ApplicationAction.Clean, ApplicationResource.Products),
+        #endregion
+
+        #region Brands
+        new(ApplicationAction.View, ApplicationResource.Brands, IsBasic: true),
+        new(ApplicationAction.Search, ApplicationResource.Brands, IsBasic: true),
+        new(ApplicationAction.Create, ApplicationResource.Brands),
+        new(ApplicationAction.Update, ApplicationResource.Brands),
+        new(ApplicationAction.Delete, ApplicationResource.Brands),
+        new(ApplicationAction.Generate, ApplicationResource.Brands),
+        new(ApplicationAction.Clean, ApplicationResource.Brands),
+        #endregion
     };
 
-    public static IReadOnlyList<ApplicationPermission> All { get; } = new ReadOnlyCollection<ApplicationPermission>(_all);
-    public static IReadOnlyList<ApplicationPermission> Root { get; } = new ReadOnlyCollection<ApplicationPermission>(_all.Where(p => p.IsRoot).ToArray());
-    public static IReadOnlyList<ApplicationPermission> Admin { get; } = new ReadOnlyCollection<ApplicationPermission>(_all.Where(p => !p.IsRoot).ToArray());
-    public static IReadOnlyList<ApplicationPermission> Basic { get; } = new ReadOnlyCollection<ApplicationPermission>(_all.Where(p => p.IsBasic).ToArray());
+    public static IReadOnlyList<ApplicationPermission> All { get; } = new ReadOnlyCollection<ApplicationPermission>(AllPermissions);
+    public static IReadOnlyList<ApplicationPermission> Root { get; } = new ReadOnlyCollection<ApplicationPermission>(AllPermissions.Where(p => p.IsRoot).ToArray());
+    public static IReadOnlyList<ApplicationPermission> Admin { get; } = new ReadOnlyCollection<ApplicationPermission>(AllPermissions.Where(p => !p.IsRoot).ToArray());
+    public static IReadOnlyList<ApplicationPermission> Basic { get; } = new ReadOnlyCollection<ApplicationPermission>(AllPermissions.Where(p => p.IsBasic).ToArray());
 }
 
-public record ApplicationPermission(string Description, string Action, string Resource, bool IsBasic = false, bool IsRoot = false)
+public record ApplicationPermission(string Action, string Resource, bool IsBasic = false, bool IsRoot = false)
 {
     public string Name => NameFor(Action, Resource);
     public static string NameFor(string action, string resource) => $"Permissions.{resource}.{action}";

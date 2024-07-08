@@ -45,7 +45,7 @@
         <None Include="Logs\*"/>
     </ItemGroup>
     <ItemGroup>
-        <None Include="Email Templates\*.cshtml">
+        <None Include="EmailTemplates\*.cshtml">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
     </ItemGroup>

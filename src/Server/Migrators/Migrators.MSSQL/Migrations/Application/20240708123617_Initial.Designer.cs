@@ -12,7 +12,7 @@ using MultiMart.Infrastructure.Persistence.Context;
 namespace Migrators.MSSQL.Migrations.Application
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240617110219_Initial")]
+    [Migration("20240708123617_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -227,6 +227,9 @@ namespace Migrators.MSSQL.Migrations.Application
                         .HasMaxLength(1024)
                         .HasColumnType("nvarchar(1024)");
 
+                    b.Property<Guid>("ProductTypeId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<decimal>("Rate")
                         .HasColumnType("decimal(18,2)");
 
@@ -239,7 +242,158 @@ namespace Migrators.MSSQL.Migrations.Application
 
                     b.HasIndex("BrandId");
 
+                    b.HasIndex("ProductTypeId");
+
                     b.ToTable("Products", "catalog");
+
+                    b.HasAnnotation("Finbuckle:MultiTenant", true);
+                });
+
+            modelBuilder.Entity("MultiMart.Domain.Catalog.ProductDynamicProperty", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsRequired")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("LastModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ProductTypeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductTypeId");
+
+                    b.ToTable("ProductDynamicProperties", "catalog");
+
+                    b.HasAnnotation("Finbuckle:MultiTenant", true);
+                });
+
+            modelBuilder.Entity("MultiMart.Domain.Catalog.ProductDynamicPropertyValue", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("DynamicPropertyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("LastModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DynamicPropertyId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductDynamicPropertyValues", "catalog");
+
+                    b.HasAnnotation("Finbuckle:MultiTenant", true);
+                });
+
+            modelBuilder.Entity("MultiMart.Domain.Catalog.ProductType", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("LastModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(1024)
+                        .HasColumnType("nvarchar(1024)");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProductTypes", "catalog");
 
                     b.HasAnnotation("Finbuckle:MultiTenant", true);
                 });
@@ -563,7 +717,45 @@ namespace Migrators.MSSQL.Migrations.Application
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("MultiMart.Domain.Catalog.ProductType", "ProductType")
+                        .WithMany("Products")
+                        .HasForeignKey("ProductTypeId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.Navigation("Brand");
+
+                    b.Navigation("ProductType");
+                });
+
+            modelBuilder.Entity("MultiMart.Domain.Catalog.ProductDynamicProperty", b =>
+                {
+                    b.HasOne("MultiMart.Domain.Catalog.ProductType", "ProductType")
+                        .WithMany("ProductDynamicProperties")
+                        .HasForeignKey("ProductTypeId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("ProductType");
+                });
+
+            modelBuilder.Entity("MultiMart.Domain.Catalog.ProductDynamicPropertyValue", b =>
+                {
+                    b.HasOne("MultiMart.Domain.Catalog.ProductDynamicProperty", "DynamicProperty")
+                        .WithMany("Values")
+                        .HasForeignKey("DynamicPropertyId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("MultiMart.Domain.Catalog.Product", "Product")
+                        .WithMany("DynamicProperties")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("DynamicProperty");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("MultiMart.Infrastructure.Identity.Role.ApplicationRoleClaim", b =>
@@ -586,6 +778,23 @@ namespace Migrators.MSSQL.Migrations.Application
                         .IsRequired();
 
                     b.Navigation("ApplicationUser");
+                });
+
+            modelBuilder.Entity("MultiMart.Domain.Catalog.Product", b =>
+                {
+                    b.Navigation("DynamicProperties");
+                });
+
+            modelBuilder.Entity("MultiMart.Domain.Catalog.ProductDynamicProperty", b =>
+                {
+                    b.Navigation("Values");
+                });
+
+            modelBuilder.Entity("MultiMart.Domain.Catalog.ProductType", b =>
+                {
+                    b.Navigation("ProductDynamicProperties");
+
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("MultiMart.Infrastructure.Identity.Role.ApplicationRole", b =>

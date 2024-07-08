@@ -18,7 +18,6 @@ using MultiMart.Infrastructure.Auth;
 using MultiMart.Infrastructure.Auth.Jwt;
 using MultiMart.Infrastructure.Auth.OAuth2;
 using MultiMart.Infrastructure.Common.Extensions;
-using MultiMart.Infrastructure.Common.Settings;
 using MultiMart.Infrastructure.Identity.User;
 using MultiMart.Infrastructure.Multitenancy;
 using MultiMart.Shared.Authorization;
@@ -36,7 +35,6 @@ internal class TokenService : ITokenService
     private readonly JwtSettings _jwtSettings;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly ApplicationTenantInfo? _currentTenant;
-    private readonly EncryptionSettings _encryptionSettings;
     private readonly ICurrentUser _currentUser;
     private readonly ICacheService _cacheService;
     private readonly string _refreshTokenCookieName;
@@ -48,7 +46,6 @@ internal class TokenService : ITokenService
         ApplicationTenantInfo? currentTenant,
         IOptions<SecuritySettings> securitySettings,
         IHttpContextAccessor httpContextAccessor,
-        IOptions<EncryptionSettings> encryptionSettings,
         ICacheService cacheService,
         ICurrentUser currentUser)
     {
@@ -60,8 +57,7 @@ internal class TokenService : ITokenService
         _cacheService = cacheService;
         _currentUser = currentUser;
         _securitySettings = securitySettings.Value;
-        _encryptionSettings = encryptionSettings.Value;
-        _refreshTokenCookieName = $"refreshToken-{_currentTenant.Id}".Encrypt(_encryptionSettings.Key, _encryptionSettings.IV);
+        _refreshTokenCookieName = $"refreshToken-{_currentTenant.Id}".ToSha256Hash();
     }
 
     public async Task<TokenResponse> GetTokenAsync(GetTokenRequest request, CancellationToken cancellationToken)
@@ -140,7 +136,7 @@ internal class TokenService : ITokenService
                  ?? await _userManager.FindByNameAsync(request.UserNameOrEmail.Trim().Normalize());
 
         if (string.IsNullOrWhiteSpace(_currentTenant?.Id) || user == null ||
-        !await _userManager.CheckPasswordAsync(user, request.Password))
+        !await _userManager.CheckPasswordAsync(user, request.Password!))
         {
             throw new UnauthorizedException(_t["Authentication Failed."]);
         }
@@ -176,7 +172,7 @@ internal class TokenService : ITokenService
             await RevokeRefreshToken(oldUserRefreshToken);
         }
 
-        return await GenerateTokensAndUpdateUser(user, request.IpAddress);
+        return await GenerateTokensAndUpdateUser(user, request.IpAddress!);
     }
 
     private async Task<TokenResponse> GetTokenUsingTokenAsync(GetTokenRequest request, CancellationToken cancellationToken)
@@ -187,15 +183,14 @@ internal class TokenService : ITokenService
         }
 
         string? decodedState = WebUtility.UrlDecode(request.Token);
-        var stateData = decodedState.Contains("#/_=_")
-            ? decodedState.Replace("#/_=_", string.Empty).Decrypt<StateData<string>>(_encryptionSettings.Key, _encryptionSettings.IV)
-            : decodedState.Decrypt<StateData<string>>(_encryptionSettings.Key, _encryptionSettings.IV);
+        var stateData = decodedState.Contains("#_=_")
+            ? decodedState.Replace("#_=_", string.Empty).FromBase64String<StateData<string>>()
+            : decodedState.FromBase64String<StateData<string>>();
         string tenantId = stateData.TenantId;
         var expireAt = stateData.ExpireAt;
         string cacheKey = stateData.Data;
         (string userId, string clientIp) = await _cacheService.GetAsync<Tuple<string, string>>(cacheKey, cancellationToken) ??
                                            throw new UnauthorizedException(_t["Authentication Failed."]);
-        await _cacheService.RemoveAsync(cacheKey, cancellationToken);
 
         if (clientIp.IsNullOrEmpty())
         {
@@ -234,6 +229,7 @@ internal class TokenService : ITokenService
             await RevokeRefreshToken(oldUserRefreshToken);
         }
 
+        await _cacheService.RemoveAsync(cacheKey, cancellationToken);
         return await GenerateTokensAndUpdateUser(user, request.IpAddress);
     }
 

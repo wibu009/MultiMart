@@ -68,7 +68,6 @@ internal partial class UserService
         }
     }
 
-
     private async Task<string> GetEmailForgotPasswordUriAsync(ApplicationUser user, string origin)
     {
         EnsureValidTenant();

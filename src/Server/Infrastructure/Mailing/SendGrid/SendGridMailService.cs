@@ -89,15 +89,13 @@ public class SendGridMailService : ISendGridMailService
 
             if (response.StatusCode != HttpStatusCode.OK && response.StatusCode != HttpStatusCode.Accepted)
             {
-                _logger.LogError(
-                    "Failed to send email. Status code: {StatusCode}, Body: {Body}",
-                    response.StatusCode, await response.Body.ReadAsStringAsync(ct));
+                _logger.LogError("Failed to send email. Status code: {StatusCode}, Body: {Body}", response.StatusCode, await response.Body.ReadAsStringAsync(ct));
                 throw new Exception("Failed to send email");
             }
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "An error occurred while sending email using SendGrid.");
+            _logger.LogError(ex, "An error occurred while sending email using SendGrid");
             throw;
         }
     }

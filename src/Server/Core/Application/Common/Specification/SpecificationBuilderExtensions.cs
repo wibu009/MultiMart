@@ -66,7 +66,7 @@ public static class SpecificationBuilderExtensions
                     .Where(prop => (Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType) is
                                    {
                                        IsEnum: false
-                                   } propertyType
+                                   }propertyType
                                    && Type.GetTypeCode(propertyType) != TypeCode.Object))
                 {
                     var paramExpr = Expression.Parameter(typeof(T));

@@ -8,6 +8,7 @@ using MultiMart.Infrastructure.Identity.User;
 
 namespace MultiMart.Infrastructure.Persistence.Configuration;
 
+#region ApplicationUser
 public class ApplicationUserConfig : IEntityTypeConfiguration<ApplicationUser>
 {
     public void Configure(EntityTypeBuilder<ApplicationUser> builder)
@@ -18,10 +19,12 @@ public class ApplicationUserConfig : IEntityTypeConfiguration<ApplicationUser>
 
         builder
             .Property(u => u.ObjectId)
-                .HasMaxLength(256);
+            .HasMaxLength(256);
     }
 }
+#endregion
 
+#region ApplicationRole
 public class ApplicationRoleConfig : IEntityTypeConfiguration<ApplicationRole>
 {
     public void Configure(EntityTypeBuilder<ApplicationRole> builder) =>
@@ -30,7 +33,9 @@ public class ApplicationRoleConfig : IEntityTypeConfiguration<ApplicationRole>
             .IsMultiTenant()
                 .AdjustUniqueIndexes();
 }
+#endregion
 
+#region ApplicationRoleClaim
 public class ApplicationRoleClaimConfig : IEntityTypeConfiguration<ApplicationRoleClaim>
 {
     public void Configure(EntityTypeBuilder<ApplicationRoleClaim> builder)
@@ -47,7 +52,9 @@ public class ApplicationRoleClaimConfig : IEntityTypeConfiguration<ApplicationRo
             .OnDelete(DeleteBehavior.Cascade);
     }
 }
+#endregion
 
+#region IdentityUserRole
 public class IdentityUserRoleConfig : IEntityTypeConfiguration<IdentityUserRole<string>>
 {
     public void Configure(EntityTypeBuilder<IdentityUserRole<string>> builder) =>
@@ -55,7 +62,9 @@ public class IdentityUserRoleConfig : IEntityTypeConfiguration<IdentityUserRole<
             .ToTable("UserRoles", SchemaNames.Identity)
             .IsMultiTenant();
 }
+#endregion
 
+#region IdentityUserClaim
 public class IdentityUserClaimConfig : IEntityTypeConfiguration<IdentityUserClaim<string>>
 {
     public void Configure(EntityTypeBuilder<IdentityUserClaim<string>> builder) =>
@@ -63,7 +72,9 @@ public class IdentityUserClaimConfig : IEntityTypeConfiguration<IdentityUserClai
             .ToTable("UserClaims", SchemaNames.Identity)
             .IsMultiTenant();
 }
+#endregion
 
+#region IdentityUserLogin
 public class IdentityUserLoginConfig : IEntityTypeConfiguration<IdentityUserLogin<string>>
 {
     public void Configure(EntityTypeBuilder<IdentityUserLogin<string>> builder) =>
@@ -71,7 +82,9 @@ public class IdentityUserLoginConfig : IEntityTypeConfiguration<IdentityUserLogi
             .ToTable("UserLogins", SchemaNames.Identity)
             .IsMultiTenant();
 }
+#endregion
 
+#region IdentityUserToken
 public class IdentityUserTokenConfig : IEntityTypeConfiguration<IdentityUserToken<string>>
 {
     public void Configure(EntityTypeBuilder<IdentityUserToken<string>> builder) =>
@@ -79,7 +92,9 @@ public class IdentityUserTokenConfig : IEntityTypeConfiguration<IdentityUserToke
             .ToTable("UserTokens", SchemaNames.Identity)
             .IsMultiTenant();
 }
+#endregion
 
+#region ApplicationUserRefreshToken
 public class ApplicationUserRefreshTokenConfig : IEntityTypeConfiguration<ApplicationUserRefreshToken>
 {
     public void Configure(EntityTypeBuilder<ApplicationUserRefreshToken> builder)
@@ -98,3 +113,4 @@ public class ApplicationUserRefreshTokenConfig : IEntityTypeConfiguration<Applic
             .OnDelete(DeleteBehavior.Cascade);
     }
 }
+#endregion

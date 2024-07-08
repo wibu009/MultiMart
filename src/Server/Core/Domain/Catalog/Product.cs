@@ -8,8 +8,11 @@ public class Product : AuditableEntity, IAggregateRoot
     public string? Description { get; private set; }
     public decimal Rate { get; private set; }
     public string? ImagePath { get; private set; }
-    public Guid BrandId { get; private set; }
+    public DefaultIdType BrandId { get; private set; }
     public virtual Brand Brand { get; private set; } = default!;
+    public DefaultIdType ProductTypeId { get; private set; }
+    public virtual ProductType ProductType { get; private set; } = default!;
+    public virtual ICollection<ProductDynamicPropertyValue> DynamicProperties { get; init; } = new List<ProductDynamicPropertyValue>();
 
     public Product()
     {

@@ -46,9 +46,10 @@ public abstract class BaseDbContext : MultiTenantIdentityDbContext<ApplicationUs
     {
         // TODO: We want this only for development probably... maybe better make it configurable in logger.json config?
         optionsBuilder.EnableSensitiveDataLogging();
-        //If you want to log the SQL queries to the console, you can use the following code:
-        //optionsBuilder.LogTo(m => System.Diagnostics.Debug.WriteLine(m), Microsoft.Extensions.Logging.LogLevel.Information);
-        //optionsBuilder.LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information);
+
+        // If you want to log the SQL queries to the console, you can use the following code:
+        // optionsBuilder.LogTo(m => System.Diagnostics.Debug.WriteLine(m), Microsoft.Extensions.Logging.LogLevel.Information);
+        // optionsBuilder.LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information);
     }
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())

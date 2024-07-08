@@ -11,4 +11,5 @@ public class ProductDetailsDto : IDto
     public decimal Rate { get; set; }
     public string? ImagePath { get; set; }
     public BrandDto Brand { get; set; } = default!;
+    public List<ProductDynamicPropertyDto> DynamicProperties { get; set; } = new();
 }

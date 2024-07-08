@@ -30,4 +30,10 @@ public class NewtonSoftService : ISerializerService
     {
         return JsonConvert.SerializeObject(obj, type, new());
     }
+
+    public object Deserialize(string text, string type)
+    {
+        return JsonConvert.DeserializeObject(text, Type.GetType(type) ?? throw new InvalidOperationException())
+               ?? throw new InvalidOperationException();
+    }
 }

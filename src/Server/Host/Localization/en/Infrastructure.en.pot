@@ -1,159 +1,159 @@
-#: Infrastructure\Auth\OAuth2\OAuth2Service.cs:79
+#: Infrastructure\Auth\OAuth2\OAuth2Service.cs:77
 #. _ => throw new BadRequestException(_t["Invalid provider."])
-#: Infrastructure\Auth\OAuth2\OAuth2Service.cs:90
+#: Infrastructure\Auth\OAuth2\OAuth2Service.cs:87
 #. _ => throw new BadRequestException(_t["Invalid provider."])
 msgctxt ".OAuth2Service"
 msgid "Invalid provider."
 msgstr ""
 
-#: Infrastructure\Auth\OAuth2\OAuth2Service.cs:95
+#: Infrastructure\Auth\OAuth2\OAuth2Service.cs:92
 #. throw new BadRequestException(_t["External auth has failed."]);
 msgctxt ".OAuth2Service"
 msgid "External auth has failed."
 msgstr ""
 
-#: Infrastructure\Auth\OAuth2\OAuth2Service.cs:98
-#. var stateData = state == null ? throw new BadRequestException(_t["Invalid state."]) : state.Decrypt<StateData<string>>(_encryptionSettings.Key, _encryptionSettings.IV);
-#: Infrastructure\Auth\OAuth2\OAuth2Service.cs:100
+#: Infrastructure\Auth\OAuth2\OAuth2Service.cs:95
+#. var stateData = state == null ? throw new BadRequestException(_t["Invalid state."]) : state.FromBase64String<StateData<string>>();
+#: Infrastructure\Auth\OAuth2\OAuth2Service.cs:97
 #. (string clientUrl, string clientIp) = await _cacheService.GetAsync<Tuple<string, string>>(stateData.Data) ?? throw new BadRequestException(_t["Invalid state."]);
 msgctxt ".OAuth2Service"
 msgid "Invalid state."
 msgstr ""
 
-#: Infrastructure\Identity\Role\RoleService.cs:54
+#: Infrastructure\Identity\Role\RoleService.cs:57
 #. : throw new NotFoundException(_t["Role Not Found"]);
-#: Infrastructure\Identity\Role\RoleService.cs:83
+#: Infrastructure\Identity\Role\RoleService.cs:86
 #. _ = role ?? throw new NotFoundException(_t["Role Not Found"]);
-#: Infrastructure\Identity\Role\RoleService.cs:109
+#: Infrastructure\Identity\Role\RoleService.cs:112
 #. _ = role ?? throw new NotFoundException(_t["Role Not Found"]);
-#: Infrastructure\Identity\Role\RoleService.cs:151
+#: Infrastructure\Identity\Role\RoleService.cs:155
 #. _ = role ?? throw new NotFoundException(_t["Role Not Found"]);
 msgctxt ".RoleService"
 msgid "Role Not Found"
 msgstr ""
 
-#: Infrastructure\Identity\Role\RoleService.cs:71
+#: Infrastructure\Identity\Role\RoleService.cs:74
 #. throw new InternalServerException(_t["Register role failed"], result.GetErrors(_t));
 msgctxt ".RoleService"
 msgid "Register role failed"
 msgstr ""
 
-#: Infrastructure\Identity\Role\RoleService.cs:76
-#. return string.Format(_t["Role {0} Created."], request.Name);
+#: Infrastructure\Identity\Role\RoleService.cs:79
+#. return string.Format(_t["Role {0} Created."], name);
 msgctxt ".RoleService"
 msgid "Role {0} Created."
 msgstr ""
 
-#: Infrastructure\Identity\Role\RoleService.cs:87
+#: Infrastructure\Identity\Role\RoleService.cs:90
 #. throw new ConflictException(string.Format(_t["Not allowed to modify {0} Role."], role.Name));
 msgctxt ".RoleService"
 msgid "Not allowed to modify {0} Role."
 msgstr ""
 
-#: Infrastructure\Identity\Role\RoleService.cs:97
+#: Infrastructure\Identity\Role\RoleService.cs:100
 #. throw new InternalServerException(_t["Update role failed"], result.GetErrors(_t));
 msgctxt ".RoleService"
 msgid "Update role failed"
 msgstr ""
 
-#: Infrastructure\Identity\Role\RoleService.cs:102
+#: Infrastructure\Identity\Role\RoleService.cs:105
 #. return string.Format(_t["Role {0} Updated."], role.Name);
 msgctxt ".RoleService"
 msgid "Role {0} Updated."
 msgstr ""
 
-#: Infrastructure\Identity\Role\RoleService.cs:112
+#: Infrastructure\Identity\Role\RoleService.cs:116
 #. throw new ConflictException(_t["Not allowed to modify Permissions for this Role."]);
 msgctxt ".RoleService"
 msgid "Not allowed to modify Permissions for this Role."
 msgstr ""
 
-#: Infrastructure\Identity\Role\RoleService.cs:129
+#: Infrastructure\Identity\Role\RoleService.cs:133
 #. throw new InternalServerException(_t["Update permissions failed."], removeResult.GetErrors(_t));
 msgctxt ".RoleService"
 msgid "Update permissions failed."
 msgstr ""
 
-#: Infrastructure\Identity\Role\RoleService.cs:144
+#: Infrastructure\Identity\Role\RoleService.cs:148
 #. return _t["Permissions Updated."];
 msgctxt ".RoleService"
 msgid "Permissions Updated."
 msgstr ""
 
-#: Infrastructure\Identity\Role\RoleService.cs:155
+#: Infrastructure\Identity\Role\RoleService.cs:159
 #. throw new ConflictException(string.Format(_t["Not allowed to delete {0} Role."], role.Name));
 msgctxt ".RoleService"
 msgid "Not allowed to delete {0} Role."
 msgstr ""
 
-#: Infrastructure\Identity\Role\RoleService.cs:160
+#: Infrastructure\Identity\Role\RoleService.cs:164
 #. throw new ConflictException(string.Format(_t["Not allowed to delete {0} Role as it is being used."], role.Name));
 msgctxt ".RoleService"
 msgid "Not allowed to delete {0} Role as it is being used."
 msgstr ""
 
-#: Infrastructure\Identity\Role\RoleService.cs:167
+#: Infrastructure\Identity\Role\RoleService.cs:171
 #. return string.Format(_t["Role {0} Deleted."], role.Name);
 msgctxt ".RoleService"
 msgid "Role {0} Deleted."
 msgstr ""
 
-#: Infrastructure\Identity\Token\TokenService.cs:73
+#: Infrastructure\Identity\Token\TokenService.cs:83
 #. throw new UnauthorizedException(_t["Authentication Failed."]);
-#: Infrastructure\Identity\Token\TokenService.cs:114
+#: Infrastructure\Identity\Token\TokenService.cs:90
 #. throw new UnauthorizedException(_t["Authentication Failed."]);
-#: Infrastructure\Identity\Token\TokenService.cs:125
+#: Infrastructure\Identity\Token\TokenService.cs:98
 #. throw new UnauthorizedException(_t["Authentication Failed."]);
-#: Infrastructure\Identity\Token\TokenService.cs:130
+#: Infrastructure\Identity\Token\TokenService.cs:141
 #. throw new UnauthorizedException(_t["Authentication Failed."]);
-#: Infrastructure\Identity\Token\TokenService.cs:135
+#: Infrastructure\Identity\Token\TokenService.cs:182
 #. throw new UnauthorizedException(_t["Authentication Failed."]);
-#: Infrastructure\Identity\Token\TokenService.cs:140
+#: Infrastructure\Identity\Token\TokenService.cs:193
 #. throw new UnauthorizedException(_t["Authentication Failed."]);
-#: Infrastructure\Identity\Token\TokenService.cs:145
+#: Infrastructure\Identity\Token\TokenService.cs:197
 #. throw new UnauthorizedException(_t["Authentication Failed."]);
-#: Infrastructure\Identity\Token\TokenService.cs:150
+#: Infrastructure\Identity\Token\TokenService.cs:202
 #. throw new UnauthorizedException(_t["Authentication Failed."]);
-#: Infrastructure\Identity\Token\TokenService.cs:156
+#: Infrastructure\Identity\Token\TokenService.cs:207
 #. throw new UnauthorizedException(_t["Authentication Failed."]);
-#: Infrastructure\Identity\Token\TokenService.cs:172
+#: Infrastructure\Identity\Token\TokenService.cs:212
 #. throw new UnauthorizedException(_t["Authentication Failed."]);
-#: Infrastructure\Identity\Token\TokenService.cs:179
+#: Infrastructure\Identity\Token\TokenService.cs:217
 #. throw new UnauthorizedException(_t["Authentication Failed."]);
-#: Infrastructure\Identity\Token\TokenService.cs:187
+#: Infrastructure\Identity\Token\TokenService.cs:223
 #. throw new UnauthorizedException(_t["Authentication Failed."]);
 msgctxt ".TokenService"
 msgid "Authentication Failed."
 msgstr ""
 
-#: Infrastructure\Identity\Token\TokenService.cs:78
+#: Infrastructure\Identity\Token\TokenService.cs:114
+#. throw new NotFoundException(_t["User not found."]);
+msgctxt ".TokenService"
+msgid "User not found."
+msgstr ""
+
+#: Infrastructure\Identity\Token\TokenService.cs:146
 #. throw new UnauthorizedException(_t["User Not Active. Please contact the administrator."]);
 msgctxt ".TokenService"
 msgid "User Not Active. Please contact the administrator."
 msgstr ""
 
-#: Infrastructure\Identity\Token\TokenService.cs:83
+#: Infrastructure\Identity\Token\TokenService.cs:151
 #. throw new UnauthorizedException(_t["E-Mail not confirmed."]);
 msgctxt ".TokenService"
 msgid "E-Mail not confirmed."
 msgstr ""
 
-#: Infrastructure\Identity\Token\TokenService.cs:91
+#: Infrastructure\Identity\Token\TokenService.cs:159
 #. _t["Tenant is not Active. Please contact the Application Administrator."]);
 msgctxt ".TokenService"
 msgid "Tenant is not Active. Please contact the Application Administrator."
 msgstr ""
 
-#: Infrastructure\Identity\Token\TokenService.cs:97
+#: Infrastructure\Identity\Token\TokenService.cs:165
 #. _t["Tenant Validity Has Expired. Please contact the Application Administrator."]);
 msgctxt ".TokenService"
 msgid "Tenant Validity Has Expired. Please contact the Application Administrator."
-msgstr ""
-
-#: Infrastructure\Identity\Token\TokenService.cs:203
-#. throw new NotFoundException(_t["User not found."]);
-msgctxt ".TokenService"
-msgid "User not found."
 msgstr ""
 
 #: Infrastructure\Identity\User\UserService.Confirm.cs:34
@@ -240,85 +240,85 @@ msgctxt ".UserService"
 msgid "Confirm Registration"
 msgstr ""
 
-#: Infrastructure\Identity\User\UserService.CreateUpdate.cs:153
+#: Infrastructure\Identity\User\UserService.CreateUpdate.cs:161
 #. _ = user ?? throw new NotFoundException(_t["User Not Found."]);
-#: Infrastructure\Identity\User\UserService.cs:130
+#: Infrastructure\Identity\User\UserService.cs:133
 #. _ = user ?? throw new NotFoundException(_t["User Not Found."]);
-#: Infrastructure\Identity\User\UserService.cs:139
+#: Infrastructure\Identity\User\UserService.cs:142
 #. _ = user ?? throw new NotFoundException(_t["User Not Found."]);
-#: Infrastructure\Identity\User\UserService.Password.cs:54
+#: Infrastructure\Identity\User\UserService.Password.cs:61
 #. _ = user ?? throw new NotFoundException(_t["User Not Found."]);
-#: Infrastructure\Identity\User\UserService.Roles.cs:40
+#: Infrastructure\Identity\User\UserService.Roles.cs:43
 #. _ = user ?? throw new NotFoundException(_t["User Not Found."]);
 msgctxt ".UserService"
 msgid "User Not Found."
 msgstr ""
 
-#: Infrastructure\Identity\User\UserService.CreateUpdate.cs:183
+#: Infrastructure\Identity\User\UserService.CreateUpdate.cs:197
 #. throw new InternalServerException(_t["Update profile failed"], result.GetErrors(_t));
 msgctxt ".UserService"
 msgid "Update profile failed"
 msgstr ""
 
-#: Infrastructure\Identity\User\UserService.cs:110
+#: Infrastructure\Identity\User\UserService.cs:113
 #. throw new UnauthorizedException(_t["Invalid Tenant."]);
 msgctxt ".UserService"
 msgid "Invalid Tenant."
 msgstr ""
 
-#: Infrastructure\Identity\User\UserService.cs:144
+#: Infrastructure\Identity\User\UserService.cs:147
 #. throw new ConflictException(_t["Administrators Profile's Status cannot be toggled"]);
 msgctxt ".UserService"
 msgid "Administrators Profile's Status cannot be toggled"
 msgstr ""
 
-#: Infrastructure\Identity\User\UserService.Password.cs:18
+#: Infrastructure\Identity\User\UserService.Password.cs:21
 #. throw new InternalServerException(_t["An Error has occurred!"]);
-#: Infrastructure\Identity\User\UserService.Password.cs:41
-#. _ = user ?? throw new InternalServerException(_t["An Error has occurred!"]);
 #: Infrastructure\Identity\User\UserService.Password.cs:47
+#. _ = user ?? throw new InternalServerException(_t["An Error has occurred!"]);
+#: Infrastructure\Identity\User\UserService.Password.cs:54
 #. : throw new InternalServerException(_t["An Error has occurred!"]);
 msgctxt ".UserService"
 msgid "An Error has occurred!"
 msgstr ""
 
-#: Infrastructure\Identity\User\UserService.Password.cs:29
+#: Infrastructure\Identity\User\UserService.Password.cs:35
 #. _t["Reset Password"],
 msgctxt ".UserService"
 msgid "Reset Password"
 msgstr ""
 
-#: Infrastructure\Identity\User\UserService.Password.cs:33
+#: Infrastructure\Identity\User\UserService.Password.cs:39
 #. return _t["Password Reset Mail has been sent to your authorized Email."];
 msgctxt ".UserService"
 msgid "Password Reset Mail has been sent to your authorized Email."
 msgstr ""
 
-#: Infrastructure\Identity\User\UserService.Password.cs:46
+#: Infrastructure\Identity\User\UserService.Password.cs:53
 #. ? _t["Password Reset Successful!"]
 msgctxt ".UserService"
 msgid "Password Reset Successful!"
 msgstr ""
 
-#: Infrastructure\Identity\User\UserService.Password.cs:60
+#: Infrastructure\Identity\User\UserService.Password.cs:67
 #. throw new InternalServerException(_t["Change password failed"], result.GetErrors(_t));
 msgctxt ".UserService"
 msgid "Change password failed"
 msgstr ""
 
-#: Infrastructure\Identity\User\UserService.Roles.cs:55
+#: Infrastructure\Identity\User\UserService.Roles.cs:57
 #. throw new ConflictException(_t["Cannot Remove Admin Role From Root Tenant Admin."]);
 msgctxt ".UserService"
 msgid "Cannot Remove Admin Role From Root Tenant Admin."
 msgstr ""
 
-#: Infrastructure\Identity\User\UserService.Roles.cs:60
+#: Infrastructure\Identity\User\UserService.Roles.cs:62
 #. throw new ConflictException(_t["Tenant should have at least 2 Admins."]);
 msgctxt ".UserService"
 msgid "Tenant should have at least 2 Admins."
 msgstr ""
 
-#: Infrastructure\Identity\User\UserService.Roles.cs:85
+#: Infrastructure\Identity\User\UserService.Roles.cs:87
 #. return _t["User Roles Updated Successfully."];
 msgctxt ".UserService"
 msgid "User Roles Updated Successfully."
@@ -330,37 +330,37 @@ msgctxt ".ExceptionMiddleware"
 msgid "Provide the ErrorId {0} to the support team for further analysis."
 msgstr ""
 
-#: Infrastructure\Multitenancy\TenantService.cs:78
+#: Infrastructure\Multitenancy\TenantService.cs:81
 #. throw new ConflictException(_t["Tenant is already Activated."]);
 msgctxt ".TenantService"
 msgid "Tenant is already Activated."
 msgstr ""
 
-#: Infrastructure\Multitenancy\TenantService.cs:85
+#: Infrastructure\Multitenancy\TenantService.cs:88
 #. return _t["Tenant {0} is now Activated.", id];
 msgctxt ".TenantService"
 msgid "Tenant {0} is now Activated."
 msgstr ""
 
-#: Infrastructure\Multitenancy\TenantService.cs:93
+#: Infrastructure\Multitenancy\TenantService.cs:96
 #. throw new ConflictException(_t["Tenant is already Deactivated."]);
 msgctxt ".TenantService"
 msgid "Tenant is already Deactivated."
 msgstr ""
 
-#: Infrastructure\Multitenancy\TenantService.cs:98
+#: Infrastructure\Multitenancy\TenantService.cs:101
 #. return _t["Tenant {0} is now Deactivated.", id];
 msgctxt ".TenantService"
 msgid "Tenant {0} is now Deactivated."
 msgstr ""
 
-#: Infrastructure\Multitenancy\TenantService.cs:106
+#: Infrastructure\Multitenancy\TenantService.cs:109
 #. return _t["Tenant {0}'s Subscription Upgraded. Now Valid till {1}.", id, tenant.ValidUpto];
 msgctxt ".TenantService"
 msgid "Tenant {0}'s Subscription Upgraded. Now Valid till {1}."
 msgstr ""
 
-#: Infrastructure\Multitenancy\TenantService.cs:111
+#: Infrastructure\Multitenancy\TenantService.cs:114
 #. ?? throw new NotFoundException(_t["{0} {1} Not Found.", typeof(ApplicationTenantInfo).Name, id]);
 msgctxt ".TenantService"
 msgid "{0} {1} Not Found."

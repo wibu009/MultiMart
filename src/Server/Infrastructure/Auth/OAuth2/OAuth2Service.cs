@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using MultiMart.Application.Common.Caching;
@@ -9,7 +10,6 @@ using MultiMart.Infrastructure.Auth.OAuth2.Facebook;
 using MultiMart.Infrastructure.Auth.OAuth2.Google;
 using MultiMart.Infrastructure.Common;
 using MultiMart.Infrastructure.Common.Extensions;
-using MultiMart.Infrastructure.Common.Settings;
 using MultiMart.Infrastructure.Identity.Token;
 using MultiMart.Infrastructure.Identity.User;
 using MultiMart.Infrastructure.Multitenancy;
@@ -26,7 +26,6 @@ public class OAuth2Service
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IStringLocalizer _t;
     private readonly ApplicationTenantInfo _currentTenant;
-    private readonly EncryptionSettings _encryptionSettings;
     private readonly ICacheService _cacheService;
     private readonly IEventPublisher _events;
 
@@ -37,7 +36,6 @@ public class OAuth2Service
         UserManager<ApplicationUser> userManager,
         IStringLocalizer<OAuth2Service> t,
         ApplicationTenantInfo currentTenant,
-        IOptions<EncryptionSettings> encryptionSettings,
         ICacheService cacheService,
         IEventPublisher events)
     {
@@ -54,7 +52,6 @@ public class OAuth2Service
             new FacebookOAuth2Service(
                 facebookSettings.Value,
                 $"{httpContextAccessor.HttpContext!.Request.Scheme}://{httpContextAccessor.HttpContext!.Request.Host}{facebookSettings.Value.CallBackPath}");
-        _encryptionSettings = encryptionSettings.Value;
     }
 
     public async Task<string> ExternalAuthAsync(string provider)
@@ -71,7 +68,7 @@ public class OAuth2Service
             _currentTenant.Id,
             cacheKey,
             DateTimeOffset.UtcNow.AddMinutes(2));
-        string state = stateData.Encrypt(_encryptionSettings.Key, _encryptionSettings.IV);
+        string state = stateData.ToBase64String();
 
         return await Task.FromResult(provider.ToLower() switch
         {
@@ -81,8 +78,7 @@ public class OAuth2Service
         });
     }
 
-    public async Task<string> ExternalAuthCallbackAsync(string provider, string code, string? error = "",
-        string? state = "")
+    public async Task<string> ExternalAuthCallbackAsync(string provider, string code, string? error = "", string? state = "")
     {
         dynamic user = provider.ToLower() switch
         {
@@ -96,27 +92,27 @@ public class OAuth2Service
             throw new BadRequestException(_t["External auth has failed."]);
         }
 
-        var stateData = state == null ? throw new BadRequestException(_t["Invalid state."]) : state.Decrypt<StateData<string>>(_encryptionSettings.Key, _encryptionSettings.IV);
+        var stateData = state == null ? throw new BadRequestException(_t["Invalid state."]) : state.FromBase64String<StateData<string>>();
         string tenantId = stateData.TenantId;
         (string clientUrl, string clientIp) = await _cacheService.GetAsync<Tuple<string, string>>(stateData.Data) ?? throw new BadRequestException(_t["Invalid state."]);
         await _cacheService.RemoveAsync(stateData.Data);
 
         dynamic? userExist = await _userManager.FindByEmailAsync(user.Email);
         string token;
-        string signInTokenCacheKey = TokenGenerator.GenerateToken();
+        string tokenCacheKey = TokenGenerator.GenerateToken();
         if (userExist != null)
         {
             await _cacheService.SetAsync(
-                signInTokenCacheKey,
+                tokenCacheKey,
                 Tuple.Create(userExist.Id, clientIp),
                 TimeSpan.FromMinutes(2));
 
             token = new StateData<string>(
-                tenantId,
-                signInTokenCacheKey,
-                DateTimeOffset.UtcNow.AddMinutes(2))
-                .Encrypt(_encryptionSettings.Key, _encryptionSettings.IV);
-            return clientUrl.AddQueryParam(QueryStringKeys.Token, token);
+                    tenantId,
+                    tokenCacheKey,
+                    DateTimeOffset.UtcNow.AddMinutes(2))
+                .ToBase64String();
+            return QueryHelpers.AddQueryString(clientUrl, QueryStringKeys.Token, token);
         }
 
         string[] nameParts = user.Name.Split(" ");
@@ -135,17 +131,17 @@ public class OAuth2Service
         await _userManager.AddToRoleAsync(appUser, ApplicationRoles.Basic);
 
         await _cacheService.SetAsync(
-            signInTokenCacheKey,
+            tokenCacheKey,
             Tuple.Create(appUser.Id, clientIp),
             TimeSpan.FromMinutes(2));
         token = new StateData<string>(
-            tenantId,
-            signInTokenCacheKey,
-            DateTimeOffset.UtcNow.AddMinutes(2))
-            .Encrypt(_encryptionSettings.Key, _encryptionSettings.IV);
+                tenantId,
+                tokenCacheKey,
+                DateTimeOffset.UtcNow.AddMinutes(2))
+            .ToBase64String();
 
         await _events.PublishAsync(new ApplicationUserCreatedEvent(appUser.Id));
 
-        return clientUrl.AddQueryParam(QueryStringKeys.Token, token);
+        return QueryHelpers.AddQueryString(clientUrl, QueryStringKeys.Token, token);
     }
 }

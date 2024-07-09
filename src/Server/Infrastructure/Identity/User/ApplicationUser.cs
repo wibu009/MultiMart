@@ -11,9 +11,9 @@ public class ApplicationUser : IdentityUser, IAuditableEntity
     public string? ImageUrl { get; set; }
     public bool IsActive { get; set; }
     public string? ObjectId { get; set; }
-    public Guid CreatedBy { get; set; }
+    public DefaultIdType CreatedBy { get; set; }
     public DateTime CreatedOn { get; set; }
-    public Guid LastModifiedBy { get; set; }
+    public DefaultIdType LastModifiedBy { get; set; }
     public DateTime? LastModifiedOn { get; set; }
     public ICollection<ApplicationUserRefreshToken> RefreshTokens { get; set; } = new List<ApplicationUserRefreshToken>();
 }

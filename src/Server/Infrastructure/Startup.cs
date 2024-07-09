@@ -50,13 +50,12 @@ public static class Startup
             .AddFileStorage(config)
             .AddMailing(config)
             .AddMediatR(Assembly.GetExecutingAssembly())
-            .AddMultitenancy(config)
+            .AddMultitenancy()
             .AddNotifications(config)
             .AddOpenApiDocumentation(config)
             .AddPersistence()
             .AddRequestLogging(config)
             .AddRouting(options => options.LowercaseUrls = true)
-            .AddSettings(config)
             .AddServices();
 
         MapsterSettings.Configure(services.BuildServiceProvider());

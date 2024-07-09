@@ -80,145 +80,145 @@ msgstr ""
 #. .WithMessage((_, id) => T["Brand {0} Not Found.", id]);
 msgctxt ".UpdateProductRequestValidator"
 msgid "Brand {0} Not Found."
-msgstr ""
+msgstr "Brand {0} Not Found."
 
 #: Application\Dashboard\GetStatsRequest.cs:58
 #. stats.DataEnterBarChart.Add(new ChartSeries { Name = _t["Products"], Data = productsFigure });
 msgctxt ".GetStatsRequestHandler"
 msgid "Products"
-msgstr ""
+msgstr "Products"
 
 #: Application\Dashboard\GetStatsRequest.cs:59
 #. stats.DataEnterBarChart.Add(new ChartSeries { Name = _t["Brands"], Data = brandsFigure });
 msgctxt ".GetStatsRequestHandler"
 msgid "Brands"
-msgstr ""
+msgstr "Brands"
 
 #: Application\Identity\Roles\Validations\CreateOrUpdateRoleRequestValidator.cs:13
 #. .WithMessage(T["Similar Role already exists."]);
 msgctxt ".CreateOrUpdateRoleRequestValidator"
 msgid "Similar Role already exists."
-msgstr ""
+msgstr "Similar Role already exists."
 
 #: Application\Identity\Tokens\Validations\TokenRequestValidator.cs:13
 #. .WithMessage(T["Username or Email is required."]);
 msgctxt ".TokenRequestValidator"
 msgid "Username or Email is required."
-msgstr ""
+msgstr "Username or Email is required."
 
 #: Application\Identity\Tokens\Validations\TokenRequestValidator.cs:17
 #. .WithMessage(T["Password is required."]);
 msgctxt ".TokenRequestValidator"
 msgid "Password is required."
-msgstr ""
+msgstr "Password is required."
 
 #: Application\Identity\Users\Validations\ChangePasswordRequestValidator.cs:18
 #. .WithMessage(T["Passwords do not match."]);
 msgctxt ".ChangePasswordRequestValidator"
 msgid "Passwords do not match."
-msgstr ""
+msgstr "Passwords do not match."
 
 #: Application\Identity\Users\Validations\CreateUserRequestValidator.cs:14
 #. .WithMessage(T["Invalid Email Address."])
 msgctxt ".CreateUserRequestValidator"
 msgid "Invalid Email Address."
-msgstr ""
+msgstr "Invalid Email Address."
 
 #: Application\Identity\Users\Validations\CreateUserRequestValidator.cs:16
 #. .WithMessage((_, email) => T["Email {0} is already registered.", email]);
 msgctxt ".CreateUserRequestValidator"
 msgid "Email {0} is already registered."
-msgstr ""
+msgstr "Email {0} is already registered."
 
 #: Application\Identity\Users\Validations\CreateUserRequestValidator.cs:22
 #. .WithMessage((_, name) => T["Username {0} is already taken.", name]);
 msgctxt ".CreateUserRequestValidator"
 msgid "Username {0} is already taken."
-msgstr ""
+msgstr "Username {0} is already taken."
 
 #: Application\Identity\Users\Validations\CreateUserRequestValidator.cs:26
 #. .WithMessage((_, phone) => T["Phone number {0} is already registered.", phone!])
 msgctxt ".CreateUserRequestValidator"
 msgid "Phone number {0} is already registered."
-msgstr ""
+msgstr "Phone number {0} is already registered."
 
 #: Application\Identity\Users\Validations\CreateUserRequestValidator.cs:38
 #. .Matches("[A-Z]+").WithMessage(T["Password must contain at least one uppercase letter."])
 msgctxt ".CreateUserRequestValidator"
 msgid "Password must contain at least one uppercase letter."
-msgstr ""
+msgstr "Password must contain at least one uppercase letter."
 
 #: Application\Identity\Users\Validations\CreateUserRequestValidator.cs:39
 #. .Matches("[a-z]+").WithMessage(T["Password must contain at least one lowercase letter."])
 msgctxt ".CreateUserRequestValidator"
 msgid "Password must contain at least one lowercase letter."
-msgstr ""
+msgstr "Password must contain at least one lowercase letter."
 
 #: Application\Identity\Users\Validations\CreateUserRequestValidator.cs:40
 #. .Matches("[0-9]+").WithMessage(T["Password must contain at least one number."])
 msgctxt ".CreateUserRequestValidator"
 msgid "Password must contain at least one number."
-msgstr ""
+msgstr "Password must contain at least one number."
 
 #: Application\Identity\Users\Validations\CreateUserRequestValidator.cs:41
 #. .Matches("[!@#$%^&*]+").WithMessage(T["Password must contain at least one special character."]);
 msgctxt ".CreateUserRequestValidator"
 msgid "Password must contain at least one special character."
-msgstr ""
+msgstr "Password must contain at least one special character."
 
 #: Application\Identity\Users\Validations\ForgotPasswordRequestValidator.cs:12
 #. .WithMessage(T["Invalid Email Address."]);
 msgctxt ".ForgotPasswordRequestValidator"
 msgid "Invalid Email Address."
-msgstr ""
+msgstr "Invalid Email Address."
 
 #: Application\Identity\Users\Validations\ResetPasswordRequestValidator.cs:16
 #. .Matches("[A-Z]+").WithMessage(T["Password must contain at least one uppercase letter."])
 msgctxt ".ResetPasswordRequestValidator"
 msgid "Password must contain at least one uppercase letter."
-msgstr ""
+msgstr "Password must contain at least one uppercase letter."
 
 #: Application\Identity\Users\Validations\ResetPasswordRequestValidator.cs:17
 #. .Matches("[a-z]+").WithMessage(T["Password must contain at least one lowercase letter."])
 msgctxt ".ResetPasswordRequestValidator"
 msgid "Password must contain at least one lowercase letter."
-msgstr ""
+msgstr "Password must contain at least one lowercase letter."
 
 #: Application\Identity\Users\Validations\ResetPasswordRequestValidator.cs:18
 #. .Matches("[0-9]+").WithMessage(T["Password must contain at least one number."])
 msgctxt ".ResetPasswordRequestValidator"
 msgid "Password must contain at least one number."
-msgstr ""
+msgstr "Password must contain at least one number."
 
 #: Application\Identity\Users\Validations\ResetPasswordRequestValidator.cs:19
 #. .Matches("[!@#$%^&*]+").WithMessage(T["Password must contain at least one special character."]);
 msgctxt ".ResetPasswordRequestValidator"
 msgid "Password must contain at least one special character."
-msgstr ""
+msgstr "Password must contain at least one special character."
 
 #: Application\Identity\Users\Validations\ResetPasswordRequestValidator.cs:24
 #. .WithMessage(T["Passwords do not match."]);
 msgctxt ".ResetPasswordRequestValidator"
 msgid "Passwords do not match."
-msgstr ""
+msgstr "Passwords do not match."
 
 #: Application\Identity\Users\Validations\UpdateUserRequestValidator.cs:25
 #. .WithMessage(T["Invalid Email Address."])
 msgctxt ".UpdateUserRequestValidator"
 msgid "Invalid Email Address."
-msgstr ""
+msgstr "Invalid Email Address."
 
 #: Application\Identity\Users\Validations\UpdateUserRequestValidator.cs:27
 #. .WithMessage((_, email) => string.Format(T["Email {0} is already registered."], email));
 msgctxt ".UpdateUserRequestValidator"
 msgid "Email {0} is already registered."
-msgstr ""
+msgstr "Email {0} is already registered."
 
 #: Application\Identity\Users\Validations\UpdateUserRequestValidator.cs:33
 #. .WithMessage((_, phone) => string.Format(T["Phone number {0} is already registered."], phone))
 msgctxt ".UpdateUserRequestValidator"
 msgid "Phone number {0} is already registered."
-msgstr ""
+msgstr "Phone number {0} is already registered."
 
 #: Application\Multitenancy\Validations\CreateTenantRequestValidator.cs:18
 #. .WithMessage((_, id) => T["Tenant {0} already exists.", id]);
@@ -226,17 +226,17 @@ msgstr ""
 #. .WithMessage((_, name) => T["Tenant {0} already exists.", name]);
 msgctxt ".CreateTenantRequestValidator"
 msgid "Tenant {0} already exists."
-msgstr ""
+msgstr "Tenant {0} already exists."
 
 #: Application\Multitenancy\Validations\CreateTenantRequestValidator.cs:31
 #. .WithMessage((_, _) => T["DbProvider must be one of the following: postgresql, mssql, mysql, oracle, sqlite"]);
 msgctxt ".CreateTenantRequestValidator"
 msgid "DbProvider must be one of the following: postgresql, mssql, mysql, oracle, sqlite"
-msgstr ""
+msgstr "DbProvider must be one of the following: postgresql, mssql, mysql, oracle, sqlite"
 
 #: Application\Multitenancy\Validations\CreateTenantRequestValidator.cs:35
 #. .WithMessage((_, _) => T["Invalid ConnectionString for the provided DbProvider"]);
 msgctxt ".CreateTenantRequestValidator"
 msgid "Invalid ConnectionString for the provided DbProvider"
-msgstr ""
+msgstr "Invalid ConnectionString for the provided DbProvider"
 

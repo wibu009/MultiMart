@@ -16,7 +16,13 @@ public class ApplicationDbContext : BaseDbContext
     {
     }
 
+    #region Product
+    public DbSet<ProductType> ProductTypes => Set<ProductType>();
     public DbSet<Product> Products => Set<Product>();
+    public DbSet<ProductDynamicProperty> ProductDynamicProperties => Set<ProductDynamicProperty>();
+    public DbSet<ProductDynamicPropertyValue> ProductDynamicPropertyValues => Set<ProductDynamicPropertyValue>();
+
+    #endregion
     public DbSet<Brand> Brands => Set<Brand>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

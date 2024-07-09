@@ -15,7 +15,8 @@ public class GoogleOAuth2Service
     {
         _googleSettings = googleSettings;
         _redirectUri = redirectUri;
-        //$"{httpContextAccessor.HttpContext!.Request.Scheme}://{httpContextAccessor.HttpContext!.Request.Host}{_googleSettings.CallBackPath}";
+
+        // $"{httpContextAccessor.HttpContext!.Request.Scheme}://{httpContextAccessor.HttpContext!.Request.Host}{_googleSettings.CallBackPath}";
     }
 
     public string GetLoginLinkUrl(string? state = null)
@@ -52,9 +53,9 @@ public class GoogleOAuth2Service
             Scopes = new[] { "email", "profile" },
         });
 
-        var token = await flow.ExchangeCodeForTokenAsync("", code, _redirectUri, CancellationToken.None);
+        var token = await flow.ExchangeCodeForTokenAsync(string.Empty, code, _redirectUri, CancellationToken.None);
 
-        var credentials = new UserCredential(flow, "", token);
+        var credentials = new UserCredential(flow, string.Empty, token);
 
         var service = new Oauth2Service(new BaseClientService.Initializer
         {

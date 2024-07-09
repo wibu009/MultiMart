@@ -13,7 +13,7 @@ public class TokenRequestValidator : CustomValidator<GetTokenRequest>
             .WithMessage(T["Username or Email is required."]);
 
         RuleFor(p => p.Password).Cascade(CascadeMode.Stop)
-            .MustAsync(async (request, password, _) => !string.IsNullOrEmpty(request.Token) || !string.IsNullOrEmpty(password))
+            .MustAsync((request, password, _) => Task.FromResult(!string.IsNullOrEmpty(request.Token) || !string.IsNullOrEmpty(password)))
                 .WithMessage(T["Password is required."]);
     }
 }

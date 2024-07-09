@@ -2,15 +2,11 @@ using Finbuckle.MultiTenant;
 using Finbuckle.MultiTenant.Stores;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Primitives;
-using MultiMart.Application.Multitenancy;
 using MultiMart.Application.Multitenancy.Interfaces;
 using MultiMart.Infrastructure.Auth.OAuth2;
 using MultiMart.Infrastructure.Common.Extensions;
-using MultiMart.Infrastructure.Common.Settings;
 using MultiMart.Infrastructure.Persistence;
 using MultiMart.Shared.Authorization;
 using MultiMart.Shared.Multitenancy;
@@ -19,7 +15,7 @@ namespace MultiMart.Infrastructure.Multitenancy;
 
 internal static class Startup
 {
-    internal static IServiceCollection AddMultitenancy(this IServiceCollection services, IConfiguration configuration)
+    internal static IServiceCollection AddMultitenancy(this IServiceCollection services)
     {
         return services
             .AddDbContext<TenantDbContext>((p, m) =>
@@ -46,7 +42,7 @@ internal static class Startup
             .WithClaimStrategy(ApplicationClaims.Tenant)
             .WithHeaderStrategy(MultitenancyConstants.TenantIdName)
             .WithQueryStringStrategy(MultitenancyConstants.TenantIdName)
-            .WithOAuthStateStrategy(configuration)
+            .WithOAuthStateStrategy()
             .WithDistributedCacheStore(TimeSpan.FromMinutes(60))
             .WithEFCoreStore<TenantDbContext, ApplicationTenantInfo>()
             .Services
@@ -64,13 +60,13 @@ internal static class Startup
                 return Task.FromResult((string?)null);
             }
 
-            httpContext.Request.Query.TryGetValue(queryStringKey, out StringValues tenantIdParam);
+            httpContext.Request.Query.TryGetValue(queryStringKey, out var tenantIdParam);
 
             return Task.FromResult((string?)tenantIdParam.ToString());
         });
 
     private static FinbuckleMultiTenantBuilder<ApplicationTenantInfo> WithOAuthStateStrategy(
-        this FinbuckleMultiTenantBuilder<ApplicationTenantInfo> builder, IConfiguration configuration)
+        this FinbuckleMultiTenantBuilder<ApplicationTenantInfo> builder)
     {
         return builder.WithDelegateStrategy(context =>
         {
@@ -85,8 +81,7 @@ internal static class Startup
                 return Task.FromResult((string?)null);
             }
 
-            var encryptionSettings = configuration.GetSection(nameof(EncryptionSettings)).Get<EncryptionSettings>();
-            var stateData = state.Decrypt<StateData<string>>(encryptionSettings.Key, encryptionSettings.IV);
+            var stateData = state.FromBase64String<StateData<string>>();
             return Task.FromResult(stateData?.TenantId);
         });
     }

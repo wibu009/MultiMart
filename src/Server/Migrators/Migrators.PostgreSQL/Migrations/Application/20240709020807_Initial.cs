@@ -64,6 +64,27 @@ namespace Migrators.PostgreSQL.Migrations.Application
                 });
 
             migrationBuilder.CreateTable(
+                name: "ProductTypes",
+                schema: "catalog",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "character varying(1024)", maxLength: 1024, nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    TenantId = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastModifiedBy = table.Column<Guid>(type: "uuid", nullable: false),
+                    LastModifiedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Roles",
                 schema: "identity",
                 columns: table => new
@@ -121,6 +142,36 @@ namespace Migrators.PostgreSQL.Migrations.Application
                 });
 
             migrationBuilder.CreateTable(
+                name: "ProductDynamicProperties",
+                schema: "catalog",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    ProductTypeId = table.Column<Guid>(type: "uuid", nullable: false),
+                    TenantId = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastModifiedBy = table.Column<Guid>(type: "uuid", nullable: false),
+                    LastModifiedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Type = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    IsRequired = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductDynamicProperties", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProductDynamicProperties_ProductTypes_ProductTypeId",
+                        column: x => x.ProductTypeId,
+                        principalSchema: "catalog",
+                        principalTable: "ProductTypes",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Products",
                 schema: "catalog",
                 columns: table => new
@@ -131,6 +182,7 @@ namespace Migrators.PostgreSQL.Migrations.Application
                     Rate = table.Column<decimal>(type: "numeric", nullable: false),
                     ImagePath = table.Column<string>(type: "character varying(2048)", maxLength: 2048, nullable: true),
                     BrandId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ProductTypeId = table.Column<Guid>(type: "uuid", nullable: false),
                     TenantId = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -149,6 +201,12 @@ namespace Migrators.PostgreSQL.Migrations.Application
                         principalTable: "Brands",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Products_ProductTypes_ProductTypeId",
+                        column: x => x.ProductTypeId,
+                        principalSchema: "catalog",
+                        principalTable: "ProductTypes",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -302,11 +360,69 @@ namespace Migrators.PostgreSQL.Migrations.Application
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ProductDynamicPropertyValues",
+                schema: "catalog",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uuid", nullable: false),
+                    TenantId = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastModifiedBy = table.Column<Guid>(type: "uuid", nullable: false),
+                    LastModifiedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true),
+                    DynamicPropertyId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Value = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductDynamicPropertyValues", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProductDynamicPropertyValues_ProductDynamicProperties_Dynam~",
+                        column: x => x.DynamicPropertyId,
+                        principalSchema: "catalog",
+                        principalTable: "ProductDynamicProperties",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_ProductDynamicPropertyValues_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalSchema: "catalog",
+                        principalTable: "Products",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductDynamicProperties_ProductTypeId",
+                schema: "catalog",
+                table: "ProductDynamicProperties",
+                column: "ProductTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductDynamicPropertyValues_DynamicPropertyId",
+                schema: "catalog",
+                table: "ProductDynamicPropertyValues",
+                column: "DynamicPropertyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductDynamicPropertyValues_ProductId",
+                schema: "catalog",
+                table: "ProductDynamicPropertyValues",
+                column: "ProductId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_Products_BrandId",
                 schema: "catalog",
                 table: "Products",
                 column: "BrandId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_ProductTypeId",
+                schema: "catalog",
+                table: "Products",
+                column: "ProductTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RoleClaims_RoleId",
@@ -374,7 +490,7 @@ namespace Migrators.PostgreSQL.Migrations.Application
                 schema: "auditing");
 
             migrationBuilder.DropTable(
-                name: "Products",
+                name: "ProductDynamicPropertyValues",
                 schema: "catalog");
 
             migrationBuilder.DropTable(
@@ -402,7 +518,11 @@ namespace Migrators.PostgreSQL.Migrations.Application
                 schema: "identity");
 
             migrationBuilder.DropTable(
-                name: "Brands",
+                name: "ProductDynamicProperties",
+                schema: "catalog");
+
+            migrationBuilder.DropTable(
+                name: "Products",
                 schema: "catalog");
 
             migrationBuilder.DropTable(
@@ -412,6 +532,14 @@ namespace Migrators.PostgreSQL.Migrations.Application
             migrationBuilder.DropTable(
                 name: "Users",
                 schema: "identity");
+
+            migrationBuilder.DropTable(
+                name: "Brands",
+                schema: "catalog");
+
+            migrationBuilder.DropTable(
+                name: "ProductTypes",
+                schema: "catalog");
         }
     }
 }

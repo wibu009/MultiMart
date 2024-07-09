@@ -31,9 +31,5 @@
       "ApiScope": "api://<Your ClientId of the AzureAd Server App Registration>/access_as_user",
       "OpenIdClientId": "<Your ClientId of the AzureAd Client App Registration>"
     }
-  },
-  "EncryptionSettings": {
-    "Key": "K1oNzOeJMmk+a20sygJVleEIxtSzoNkl9/X3KHiS4RE=",
-    "IV": "goprQ1n4n1d4BTvi9gU9Xw=="
   }
 }

@@ -6,12 +6,10 @@ using Hangfire.Console.Progress;
 using Hangfire.Server;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using MultiMart.Application.Catalog.Product;
 using MultiMart.Application.Catalog.Product.Interfaces;
 using MultiMart.Application.Catalog.Product.Requests.Commands;
 using MultiMart.Application.Common.Interfaces;
 using MultiMart.Application.Common.Persistence;
-using MultiMart.Infrastructure.Catalog.Brand;
 using MultiMart.Shared.Notifications;
 
 namespace MultiMart.Infrastructure.Catalog.Product;
@@ -22,7 +20,6 @@ public class ProductGeneratorJob : IProductGeneratorJob
     private readonly ISender _mediator;
     private readonly IReadRepository<Domain.Catalog.Product> _productRepository;
     private readonly IReadRepository<Domain.Catalog.Brand> _brandRepository;
-    private readonly IProgressBarFactory _progressBar;
     private readonly PerformingContext _performingContext;
     private readonly INotificationSender _notifications;
     private readonly ICurrentUser _currentUser;
@@ -41,12 +38,11 @@ public class ProductGeneratorJob : IProductGeneratorJob
         _logger = logger;
         _mediator = mediator;
         _productRepository = productRepository;
-        _progressBar = progressBar;
         _performingContext = performingContext;
         _notifications = notifications;
         _currentUser = currentUser;
         _brandRepository = brandRepository;
-        _progress = _progressBar.Create();
+        _progress = progressBar.Create();
     }
 
     private async Task NotifyAsync(string message, int progress, CancellationToken cancellationToken)
@@ -66,10 +62,10 @@ public class ProductGeneratorJob : IProductGeneratorJob
     [Queue("notdefault")]
     public async Task GenerateAsync(int nSeed, CancellationToken cancellationToken)
     {
-        //get all brands
+        // get all brands
         var brands = await _brandRepository.ListAsync(cancellationToken);
 
-        //generate products using bogus
+        // generate products using bogus
         var createProductRequests = new Faker<CreateProductRequest>()
             .RuleFor(p => p.Name, f => "Product Random - " + f.Commerce.ProductName())
             .RuleFor(p => p.Description, f => f.Commerce.ProductDescription())

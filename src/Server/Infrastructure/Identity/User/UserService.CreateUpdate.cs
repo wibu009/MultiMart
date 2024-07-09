@@ -6,8 +6,6 @@ using Microsoft.Identity.Web;
 using MultiMart.Application.Common.Exceptions;
 using MultiMart.Application.Common.FileStorage;
 using MultiMart.Application.Common.Mailing;
-using MultiMart.Application.Identity.Users;
-using MultiMart.Application.Identity.Users.Requests.Commands;
 using MultiMart.Domain.Identity;
 using MultiMart.Shared.Authorization;
 
@@ -33,7 +31,7 @@ internal partial class UserService
         var user = await _userManager.Users.Where(u => u.ObjectId == objectId).FirstOrDefaultAsync()
             ?? await CreateOrUpdateFromPrincipalAsync(principal);
 
-        if (principal.FindFirstValue(ClaimTypes.Role) is string role &&
+        if (principal.FindFirstValue(ClaimTypes.Role) is { } role &&
             await _roleManager.RoleExistsAsync(role) &&
             !await _userManager.IsInRoleAsync(user, role))
         {

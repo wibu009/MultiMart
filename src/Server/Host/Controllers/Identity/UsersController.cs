@@ -1,3 +1,4 @@
+using MultiMart.Application.Common.Models;
 using MultiMart.Application.Identity.Users.Models;
 using MultiMart.Application.Identity.Users.Requests.Commands;
 using MultiMart.Application.Identity.Users.Requests.Queries;
@@ -9,11 +10,11 @@ namespace MultiMart.Host.Controllers.Identity;
 
 public class UsersController : VersionNeutralApiController
 {
-    [HttpGet]
+    [HttpPost("search")]
     [RequiresPermission(ApplicationAction.View, ApplicationResource.Users)]
-    [SwaggerOperation("Get list of all users.", "")]
-    public Task<List<UserDetailsDto>> GetListAsync(CancellationToken cancellationToken)
-        => Mediator.Send(new GetAllUserRequest(), cancellationToken);
+    [SwaggerOperation("Search for users.", "")]
+    public Task<PaginationResponse<UserDetailsDto>> SearchAsync(SearchUserRequest request, CancellationToken cancellationToken)
+        => Mediator.Send(request, cancellationToken);
 
     [HttpGet("{id}")]
     [RequiresPermission(ApplicationAction.View, ApplicationResource.Users)]

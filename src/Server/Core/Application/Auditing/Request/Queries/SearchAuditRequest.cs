@@ -1,16 +1,20 @@
-﻿using MultiMart.Application.Auditing.Models;
+﻿using MultiMart.Application.Auditing.Interfaces;
+using MultiMart.Application.Auditing.Models;
 using MultiMart.Application.Common.Models;
 
 namespace MultiMart.Application.Auditing.Request.Queries;
 
-public class SearchAuditRequest : IRequest<PaginationResponse<AuditDto>>
+public class SearchAuditRequest : AuditListFilter, IRequest<PaginationResponse<AuditDto>>
 {
-    public int PageNumber { get; set; }
-    public int PageSize { get; set; } = int.MaxValue;
-    public Guid? UserId { get; set; }
-    public string? Type { get; set; }
-    public string? TableName { get; set; }
-    public DateTime? StartDate { get; set; }
-    public DateTime? EndDate { get; set; }
-    public string[]? OrderBy { get; set; }
+}
+
+public class SearchAuditRequestHandler : IRequestHandler<SearchAuditRequest, PaginationResponse<AuditDto>>
+{
+    private readonly IAuditService _auditService;
+
+    public SearchAuditRequestHandler(IAuditService auditService) =>
+        _auditService = auditService;
+
+    public Task<PaginationResponse<AuditDto>> Handle(SearchAuditRequest request, CancellationToken cancellationToken) =>
+        _auditService.SearchAsync(request);
 }

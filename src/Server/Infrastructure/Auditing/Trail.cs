@@ -4,7 +4,7 @@ namespace MultiMart.Infrastructure.Auditing;
 
 public class Trail : BaseEntity
 {
-    public Guid UserId { get; set; }
+    public DefaultIdType UserId { get; set; }
     public string? Type { get; set; }
     public string? TableName { get; set; }
     public DateTime DateTime { get; set; }

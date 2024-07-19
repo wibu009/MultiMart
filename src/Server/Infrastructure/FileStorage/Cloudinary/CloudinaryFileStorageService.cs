@@ -5,6 +5,7 @@ using CloudinaryDotNet.Actions;
 using Microsoft.Extensions.Options;
 using MultiMart.Application.Common.FileStorage;
 using MultiMart.Application.Common.FileStorage.Cloudinary;
+using MultiMart.Domain.Common.Enums;
 using MultiMart.Infrastructure.Common.Extensions;
 
 namespace MultiMart.Infrastructure.FileStorage.Cloudinary;

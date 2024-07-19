@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using MultiMart.Domain.Common.Contracts;
+using MultiMart.Domain.Common.Enums;
 using MultiMart.Infrastructure.Identity.Token;
 
 namespace MultiMart.Infrastructure.Identity.User;
@@ -8,6 +9,9 @@ public class ApplicationUser : IdentityUser, IAuditableEntity
 {
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
+    public Gender Gender { get; set; }
+    public UserType Type { get; set; }
+    public DateTime? DateOfBirth { get; set; }
     public string? ImageUrl { get; set; }
     public bool IsActive { get; set; }
     public string? ObjectId { get; set; }

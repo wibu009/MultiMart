@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace MultiMart.Domain.Common;
+namespace MultiMart.Domain.Common.Enums;
 
 public enum FileType
 {

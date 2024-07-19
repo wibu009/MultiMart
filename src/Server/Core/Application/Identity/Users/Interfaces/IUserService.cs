@@ -4,6 +4,7 @@ using MultiMart.Application.Common.Interfaces;
 using MultiMart.Application.Common.Models;
 using MultiMart.Application.Identity.Users.Models;
 using MultiMart.Application.Identity.Users.Requests.Commands;
+using MultiMart.Domain.Common.Enums;
 
 namespace MultiMart.Application.Identity.Users.Interfaces;
 
@@ -24,11 +25,11 @@ public interface IUserService : ITransientService
     Task InvalidatePermissionCacheAsync(string userId, CancellationToken cancellationToken);
     Task ToggleStatusAsync(bool activateUser, string userId, CancellationToken cancellationToken);
     Task<string> GetOrCreateFromPrincipalAsync(ClaimsPrincipal principal);
-    Task<string> CreateAsync(string firstName, string lastName, string email, string userName, string password, string? phoneNumber, string? origin, CancellationToken cancellationToken);
-    Task UpdateAsync(string id, string? firstName, string? lastName, string? phoneNumber, string? email, FileUploadRequest? image, bool deleteCurrentImage, CancellationToken cancellationToken);
+    Task<string> CreateAsync(CreateUserRequest request, CancellationToken cancellationToken);
+    Task UpdateAsync(UpdateUserRequest request, CancellationToken cancellationToken);
     Task<string> ConfirmEmailAsync(string userId, string token, CancellationToken cancellationToken);
     Task<string> ConfirmPhoneNumberAsync(string userId, string token);
-    Task<string> ForgotPasswordAsync(string email, string? origin, CancellationToken cancellationToken = default);
+    Task<string> ForgotPasswordAsync(string email, string? origin, CancellationToken cancellationToken);
     Task<string> ResetPasswordAsync(string userId, string? password, string? token);
     Task ChangePasswordAsync(string password, string newPassword, string userId);
 }

@@ -1,4 +1,5 @@
 using MultiMart.Application.Common.Interfaces;
+using MultiMart.Domain.Common.Enums;
 
 namespace MultiMart.Application.Common.FileStorage.LocalStorage;
 

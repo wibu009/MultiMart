@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using MultiMart.Application.Identity.Users.Interfaces;
+using MultiMart.Domain.Common.Enums;
 
 namespace MultiMart.Application.Identity.Users.Requests.Commands;
 
@@ -9,6 +10,9 @@ public class CreateUserRequest : IRequest<string>
     public string LastName { get; set; } = default!;
     public string Email { get; set; } = default!;
     public string UserName { get; set; } = default!;
+    public DateTime DateOfBirth { get; set; }
+    public Gender Gender { get; set; }
+    public UserType Type { get; set; }
     public string Password { get; set; } = default!;
     public string ConfirmPassword { get; set; } = default!;
     public string? PhoneNumber { get; set; }
@@ -27,6 +31,6 @@ public class CreateUserRequestHandler : IRequestHandler<CreateUserRequest, strin
 
     public async Task<string> Handle(CreateUserRequest request, CancellationToken cancellationToken)
     {
-        return await _userService.CreateAsync(request.FirstName, request.LastName, request.Email, request.UserName, request.Password, request.PhoneNumber, request.Origin, cancellationToken);
+        return await _userService.CreateAsync(request, cancellationToken);
     }
 }

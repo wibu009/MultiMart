@@ -2,6 +2,7 @@ using MultiMart.Application.Common.Exceptions;
 using MultiMart.Application.Common.FileStorage;
 using MultiMart.Application.Common.FileStorage.LocalStorage;
 using MultiMart.Application.Common.Persistence;
+using MultiMart.Domain.Common.Enums;
 using MultiMart.Domain.Common.Events;
 
 namespace MultiMart.Application.Catalog.Product.Requests.Commands;

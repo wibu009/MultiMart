@@ -5,6 +5,7 @@ using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using MultiMart.Application.Common.Caching;
 using MultiMart.Application.Common.Events;
+using MultiMart.Domain.Common.Enums;
 using MultiMart.Domain.Identity;
 using MultiMart.Infrastructure.Auth.OAuth2.Facebook;
 using MultiMart.Infrastructure.Auth.OAuth2.Google;
@@ -118,10 +119,13 @@ public class OAuth2Service
         string[] nameParts = user.Name.Split(" ");
         var appUser = new ApplicationUser
         {
-            Id = Guid.NewGuid().ToString(),
+            Id = DefaultIdType.NewGuid().ToString(),
             UserName = user.Email,
             Email = user.Email,
             FirstName = nameParts[0],
+            Gender = Gender.NotKnown,
+            Type = UserType.Customer,
+            DateOfBirth = null,
             LastName = nameParts.Length > 1 ? string.Join(" ", nameParts.Skip(1)) : string.Empty,
             ImageUrl = user.Picture,
             EmailConfirmed = false,

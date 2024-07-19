@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using MultiMart.Domain.Common.Enums;
 using MultiMart.Infrastructure.Identity.Role;
 using MultiMart.Infrastructure.Identity.User;
 using MultiMart.Infrastructure.Multitenancy;
@@ -106,13 +107,16 @@ internal class ApplicationDbSeeder
         }
 
         if (await _userManager.Users.FirstOrDefaultAsync(u => u.Email == _currentTenant.AdminEmail)
-            is not ApplicationUser adminUser)
+            is not { } adminUser)
         {
             string adminUserName = $"{_currentTenant.Id.Trim()}.{ApplicationRoles.Admin}".ToLowerInvariant();
             adminUser = new ApplicationUser
             {
                 FirstName = _currentTenant.Id.Trim().ToLowerInvariant(),
                 LastName = ApplicationRoles.Admin,
+                Gender = Gender.NotKnown,
+                Type = UserType.Employee,
+                DateOfBirth = null,
                 Email = _currentTenant.AdminEmail,
                 UserName = adminUserName,
                 EmailConfirmed = true,

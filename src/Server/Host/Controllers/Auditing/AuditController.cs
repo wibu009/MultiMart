@@ -8,14 +8,9 @@ namespace MultiMart.Host.Controllers.Auditing;
 
 public class AuditController : VersionNeutralApiController
 {
-    private readonly IAuditService _auditService;
-
-    public AuditController(IAuditService auditService) =>
-        _auditService = auditService;
-
     [HttpPost("search")]
     [RequiresPermission(ApplicationAction.Search, ApplicationResource.AuditLogs)]
     [SwaggerOperation("Search audit logs using available filters.", "")]
-    public async Task<ActionResult<PaginationResponse<AuditDto>>> SearchAsync(SearchAuditRequest request) =>
-        await _auditService.SearchAsync(request);
+    public async Task<ActionResult<PaginationResponse<AuditDto>>> SearchAsync(SearchAuditRequest request)
+        => await Mediator.Send(request);
 }

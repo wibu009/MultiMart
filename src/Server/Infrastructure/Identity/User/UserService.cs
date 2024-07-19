@@ -76,13 +76,16 @@ internal partial class UserService : IUserService
 
     public async Task<PaginationResponse<UserDetailsDto>> SearchAsync(UserListFilter filter, CancellationToken cancellationToken)
     {
-        var spec = new EntitiesByPaginationFilterSpec<ApplicationUser>(filter);
+        var pagingSpec = new EntitiesByPaginationFilterSpec<ApplicationUser>(filter);
 
         var users = await _userManager.Users
-            .WithSpecification(spec)
+            .WithSpecification(pagingSpec)
             .ProjectToType<UserDetailsDto>()
             .ToListAsync(cancellationToken);
+
+        var filterSpec = new EntitiesByBaseFilterSpec<ApplicationUser>(filter);
         int count = await _userManager.Users
+            .WithSpecification(filterSpec)
             .CountAsync(cancellationToken);
 
         return new PaginationResponse<UserDetailsDto>(users, count, filter.PageNumber, filter.PageSize);

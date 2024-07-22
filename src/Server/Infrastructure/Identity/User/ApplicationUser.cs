@@ -21,3 +21,15 @@ public class ApplicationUser : IdentityUser, IAuditableEntity
     public DateTime? LastModifiedOn { get; set; }
     public ICollection<ApplicationUserRefreshToken> RefreshTokens { get; set; } = new List<ApplicationUserRefreshToken>();
 }
+
+public class Customer : ApplicationUser
+{
+    public int LoyaltyPoints { get; set; }
+}
+
+public class Employee : ApplicationUser
+{
+    public string? Position { get; set; }
+    public string? Department { get; set; }
+    public DateTime? HireDate { get; set; }
+}

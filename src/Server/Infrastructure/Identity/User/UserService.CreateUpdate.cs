@@ -1,11 +1,9 @@
 ﻿using System.Security.Claims;
 using Mapster;
-using MultiMart.Domain.Common;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 using MultiMart.Application.Common.Exceptions;
-using MultiMart.Application.Common.FileStorage;
 using MultiMart.Application.Common.Mailing;
 using MultiMart.Application.Identity.Users.Requests.Commands;
 using MultiMart.Domain.Common.Enums;

@@ -23,6 +23,8 @@
         </PackageReference>
     </ItemGroup>
     <ItemGroup>
-      <Folder Include="Catalog\" />
+      <Folder Include="Catalog\Brand\" />
+      <Folder Include="Catalog\Category\" />
+      <Folder Include="Catalog\Product\" />
     </ItemGroup>
 </Project>

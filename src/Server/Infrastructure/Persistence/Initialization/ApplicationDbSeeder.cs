@@ -115,7 +115,6 @@ internal class ApplicationDbSeeder
                 FirstName = _currentTenant.Id.Trim().ToLowerInvariant(),
                 LastName = ApplicationRoles.Admin,
                 Gender = Gender.NotKnown,
-                Type = UserType.Employee,
                 DateOfBirth = null,
                 Email = _currentTenant.AdminEmail,
                 UserName = adminUserName,

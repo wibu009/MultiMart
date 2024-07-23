@@ -82,7 +82,6 @@ internal partial class UserService
                 FirstName = principal.FindFirstValue(ClaimTypes.GivenName),
                 LastName = principal.FindFirstValue(ClaimTypes.Surname),
                 Gender = Gender.NotKnown,
-                Type = UserType.Customer,
                 Email = email,
                 NormalizedEmail = email.ToUpperInvariant(),
                 UserName = username,

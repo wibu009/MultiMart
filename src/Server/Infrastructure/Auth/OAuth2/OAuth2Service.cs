@@ -124,7 +124,6 @@ public class OAuth2Service
             Email = user.Email,
             FirstName = nameParts[0],
             Gender = Gender.NotKnown,
-            Type = UserType.Customer,
             DateOfBirth = null,
             LastName = nameParts.Length > 1 ? string.Join(" ", nameParts.Skip(1)) : string.Empty,
             ImageUrl = user.Picture,

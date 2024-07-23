@@ -1,7 +1,7 @@
 ﻿namespace MultiMart.Domain.Common.Enums;
 
-public enum UserType
+public enum OrderType
 {
-    Customer,
-    Employee
+    Offline,
+    Online
 }

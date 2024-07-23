@@ -12,7 +12,6 @@ public class CreateUserRequest : IRequest<string>
     public string UserName { get; set; } = default!;
     public DateTime DateOfBirth { get; set; }
     public Gender Gender { get; set; }
-    public UserType Type { get; set; }
     public string Password { get; set; } = default!;
     public string ConfirmPassword { get; set; } = default!;
     public string? PhoneNumber { get; set; }

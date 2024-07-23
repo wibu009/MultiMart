@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using MultiMart.Application.Identity.Users.Interfaces;
 
-namespace MultiMart.Application.Identity.Users.Requests.Commands;
+namespace MultiMart.Application.Identity.Users.Requests;
 
 public class ForgotPasswordRequest : IRequest<string>
 {

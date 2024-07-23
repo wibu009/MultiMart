@@ -126,7 +126,7 @@ public class OAuth2Service
             Gender = Gender.NotKnown,
             DateOfBirth = null,
             LastName = nameParts.Length > 1 ? string.Join(" ", nameParts.Skip(1)) : string.Empty,
-            ImageUrl = user.Picture,
+            Avatar = user.Picture,
             EmailConfirmed = false,
         };
 

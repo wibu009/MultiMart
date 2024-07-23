@@ -1,6 +1,6 @@
 ﻿using MultiMart.Application.Identity.Users.Interfaces;
 
-namespace MultiMart.Application.Identity.Users.Requests.Queries;
+namespace MultiMart.Application.Identity.Users.Requests;
 
 public class GetUserPermissionsRequest : IRequest<List<string>>
 {

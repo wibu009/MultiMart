@@ -2,14 +2,14 @@ using MultiMart.Application.Common.Validation;
 
 namespace MultiMart.Application.Common.FileStorage;
 
-public class FileUploadRequest
+public class FileUpload
 {
     public string Name { get; set; } = default!;
     public string Extension { get; set; } = default!;
     public string Data { get; set; } = default!;
 }
 
-public class FileUploadRequestValidator : CustomValidator<FileUploadRequest>
+public class FileUploadRequestValidator : CustomValidator<FileUpload>
 {
     public FileUploadRequestValidator(IStringLocalizer<FileUploadRequestValidator> t)
     {

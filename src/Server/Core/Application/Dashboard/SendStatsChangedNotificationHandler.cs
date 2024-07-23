@@ -9,6 +9,8 @@ using MultiMart.Shared.Notifications;
 namespace MultiMart.Application.Dashboard;
 
 public class SendStatsChangedNotificationHandler :
+    IEventNotificationHandler<EntityCreatedEvent<Brand>>,
+    IEventNotificationHandler<EntityDeletedEvent<Brand>>,
     IEventNotificationHandler<ApplicationRoleCreatedEvent>,
     IEventNotificationHandler<ApplicationRoleDeletedEvent>,
     IEventNotificationHandler<ApplicationUserCreatedEvent>
@@ -18,12 +20,25 @@ public class SendStatsChangedNotificationHandler :
 
     public SendStatsChangedNotificationHandler(ILogger<SendStatsChangedNotificationHandler> logger, INotificationSender notifications) =>
         (_logger, _notifications) = (logger, notifications);
+
+    #region Brand
+    public Task Handle(EventNotification<EntityCreatedEvent<Brand>> notification, CancellationToken cancellationToken) =>
+        SendStatsChangedNotification(notification.Event, cancellationToken);
+    public Task Handle(EventNotification<EntityDeletedEvent<Brand>> notification, CancellationToken cancellationToken) =>
+        SendStatsChangedNotification(notification.Event, cancellationToken);
+    #endregion
+
+    #region Role
     public Task Handle(EventNotification<ApplicationRoleCreatedEvent> notification, CancellationToken cancellationToken) =>
         SendStatsChangedNotification(notification.Event, cancellationToken);
     public Task Handle(EventNotification<ApplicationRoleDeletedEvent> notification, CancellationToken cancellationToken) =>
         SendStatsChangedNotification(notification.Event, cancellationToken);
+    #endregion
+
+    #region User
     public Task Handle(EventNotification<ApplicationUserCreatedEvent> notification, CancellationToken cancellationToken) =>
         SendStatsChangedNotification(notification.Event, cancellationToken);
+    #endregion
 
     private Task SendStatsChangedNotification(IEvent @event, CancellationToken cancellationToken)
     {

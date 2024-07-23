@@ -1,7 +1,7 @@
 ﻿using MultiMart.Application.Identity.Users.Interfaces;
 using MultiMart.Application.Identity.Users.Models;
 
-namespace MultiMart.Application.Identity.Users.Requests.Queries;
+namespace MultiMart.Application.Identity.Users.Requests;
 
 public class GetUserRequest : IRequest<UserDetailsDto>
 {

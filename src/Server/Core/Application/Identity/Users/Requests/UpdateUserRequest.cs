@@ -3,7 +3,7 @@ using MultiMart.Application.Common.FileStorage;
 using MultiMart.Application.Identity.Users.Interfaces;
 using MultiMart.Domain.Common.Enums;
 
-namespace MultiMart.Application.Identity.Users.Requests.Commands;
+namespace MultiMart.Application.Identity.Users.Requests;
 
 public class UpdateUserRequest : IRequest<Unit>
 {
@@ -15,7 +15,7 @@ public class UpdateUserRequest : IRequest<Unit>
     public Gender Gender { get; set; }
     public string? PhoneNumber { get; set; }
     public string? Email { get; set; }
-    public FileUploadRequest? Image { get; set; }
+    public FileUpload? Image { get; set; }
     public bool DeleteCurrentImage { get; set; } = false;
 }
 

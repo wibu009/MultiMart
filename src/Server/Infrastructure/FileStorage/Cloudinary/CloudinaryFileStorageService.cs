@@ -20,48 +20,53 @@ public class CloudinaryFileStorageService : ICloudinaryFileStorageService
         _cloudinary = new CloudinaryDotNet.Cloudinary(account);
     }
 
-    public async Task<CloudinaryUploadResult> UploadAsync(FileUploadRequest? request, FileType supportedFileType, string? folderName = null, CancellationToken cancellationToken = default)
+    public async Task<CloudinaryUploadResult> UploadAsync(FileUpload? file, FileType supportedFileType, string? folderName = null, CancellationToken cancellationToken = default)
     {
-        if (request?.Data == null)
+        if (file?.Data == null)
         {
             throw new InvalidOperationException("Data is required.");
         }
 
-        if (!supportedFileType.GetDescriptionList().Contains(request.Extension.ToLower(System.Globalization.CultureInfo.CurrentCulture)))
+        if (!supportedFileType.GetDescriptionList().Contains(file.Extension.ToLower(System.Globalization.CultureInfo.CurrentCulture)))
             throw new InvalidOperationException("File Format Not Supported.");
-        if (request.Name is null)
+        if (file.Name is null)
             throw new InvalidOperationException("Name is required.");
 
-        string base64Data = Regex.Match(request.Data, "data:(?<type>.+?);base64,(?<data>.+)").Groups["data"].Value;
+        string base64Data = Regex.Match(file.Data, "data:(?<type>.+?);base64,(?<data>.+)").Groups["data"].Value;
         byte[] fileData = Convert.FromBase64String(base64Data);
 
         var uploadParams = supportedFileType switch
         {
             FileType.Image => new ImageUploadParams
             {
-                File = new FileDescription(request.Name, new MemoryStream(fileData)),
+                File = new FileDescription(file.Name, new MemoryStream(fileData)),
                 Folder = folderName,
                 Transformation = new Transformation().Crop("scale").Gravity("face"),
             },
             FileType.Video => new VideoUploadParams
             {
-                File = new FileDescription(request.Name, new MemoryStream(fileData)),
+                File = new FileDescription(file.Name, new MemoryStream(fileData)),
                 Folder = folderName,
             },
             FileType.Audio => new RawUploadParams
             {
-                File = new FileDescription(request.Name, new MemoryStream(fileData)),
+                File = new FileDescription(file.Name, new MemoryStream(fileData)),
                 Folder = folderName,
             },
             FileType.Document => new RawUploadParams
             {
-                File = new FileDescription(request.Name, new MemoryStream(fileData)),
+                File = new FileDescription(file.Name, new MemoryStream(fileData)),
                 Folder = folderName,
             },
             _ => throw new InvalidOperationException("File Format Not Supported.")
         };
 
         var result = await _cloudinary.UploadAsync(uploadParams);
+        if (result.Error != null)
+        {
+            throw new InvalidOperationException(result.Error.Message);
+        }
+
         return new CloudinaryUploadResult
         {
             PublicId = result.PublicId,
@@ -79,7 +84,12 @@ public class CloudinaryFileStorageService : ICloudinaryFileStorageService
         string publicId = idOrUrl.Contains("http") ? GetIdFromUrl(idOrUrl, folder ?? throw new ArgumentNullException(nameof(folder))) : idOrUrl;
         var deletionParams = new DeletionParams(publicId);
         var result = await _cloudinary.DestroyAsync(deletionParams);
-        return result.Result == "ok" ? result.Result : string.Empty;
+        if (result.Error != null)
+        {
+            throw new InvalidOperationException(result.Error.Message);
+        }
+
+        return result.Result;
     }
 
     private string GetIdFromUrl(string url, string folder)

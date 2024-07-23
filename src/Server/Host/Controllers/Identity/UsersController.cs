@@ -1,10 +1,8 @@
 using MultiMart.Application.Common.Models;
 using MultiMart.Application.Identity.Users.Models;
-using MultiMart.Application.Identity.Users.Requests.Commands;
-using MultiMart.Application.Identity.Users.Requests.Queries;
+using MultiMart.Application.Identity.Users.Requests;
 using MultiMart.Infrastructure.Common.Extensions;
 using MultiMart.Infrastructure.OpenApi;
-using MultiMart.Shared.Authorization;
 
 namespace MultiMart.Host.Controllers.Identity;
 

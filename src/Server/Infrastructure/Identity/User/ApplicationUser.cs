@@ -13,15 +13,15 @@ public class ApplicationUser : IdentityUser, IAuditableEntity
     public string? LastName { get; set; }
     public Gender Gender { get; set; }
     public DateTime? DateOfBirth { get; set; }
-    public string? ImageUrl { get; set; }
+    public string? Avatar { get; set; }
     public bool IsActive { get; set; }
     public string? ObjectId { get; set; }
     public DefaultIdType CreatedBy { get; set; }
     public DateTime CreatedOn { get; set; }
     public DefaultIdType LastModifiedBy { get; set; }
     public DateTime? LastModifiedOn { get; set; }
-    public ICollection<Address> Addresses { get; set; } = new List<Address>();
-    public ICollection<ApplicationUserRefreshToken> RefreshTokens { get; set; } = new List<ApplicationUserRefreshToken>();
+    public List<UserAddress> Addresses { get; set; } = new();
+    public List<ApplicationUserRefreshToken> RefreshTokens { get; set; } = new();
 }
 
 public class Customer : ApplicationUser

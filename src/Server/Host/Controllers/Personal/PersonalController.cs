@@ -2,10 +2,8 @@ using MultiMart.Application.Auditing.Models;
 using MultiMart.Application.Auditing.Request.Queries;
 using MultiMart.Application.Identity.Users.Interfaces;
 using MultiMart.Application.Identity.Users.Models;
-using MultiMart.Application.Identity.Users.Requests.Commands;
-using MultiMart.Application.Identity.Users.Requests.Queries;
+using MultiMart.Application.Identity.Users.Requests;
 using MultiMart.Infrastructure.Common.Extensions;
-using MultiMart.Shared.Authorization;
 
 namespace MultiMart.Host.Controllers.Personal;
 

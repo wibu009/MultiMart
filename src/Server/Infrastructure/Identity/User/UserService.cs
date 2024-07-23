@@ -16,7 +16,6 @@ using MultiMart.Application.Common.Specification;
 using MultiMart.Application.Identity.Users;
 using MultiMart.Application.Identity.Users.Interfaces;
 using MultiMart.Application.Identity.Users.Models;
-using MultiMart.Application.Identity.Users.Requests.Commands;
 using MultiMart.Domain.Identity;
 using MultiMart.Infrastructure.Auth;
 using MultiMart.Infrastructure.Identity.Role;

@@ -2,7 +2,6 @@ using MultiMart.Application.Multitenancy;
 using MultiMart.Application.Multitenancy.Models;
 using MultiMart.Application.Multitenancy.Requests.Commands;
 using MultiMart.Application.Multitenancy.Requests.Queries;
-using MultiMart.Shared.Authorization;
 
 namespace MultiMart.Host.Controllers.Multitenancy;
 

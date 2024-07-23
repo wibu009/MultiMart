@@ -1,5 +1,4 @@
 using MultiMart.Application.Dashboard;
-using MultiMart.Shared.Authorization;
 
 namespace MultiMart.Host.Controllers.Dashboard;
 

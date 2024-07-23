@@ -4,7 +4,6 @@ using MultiMart.Application.Identity.Roles.Models;
 using MultiMart.Application.Identity.Roles.Requests.Commands;
 using MultiMart.Application.Identity.Roles.Requests.Queries;
 using MultiMart.Infrastructure.Common.Extensions;
-using MultiMart.Shared.Authorization;
 
 namespace MultiMart.Host.Controllers.Identity;
 

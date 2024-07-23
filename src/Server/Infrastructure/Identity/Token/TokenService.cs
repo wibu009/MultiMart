@@ -255,7 +255,7 @@ internal class TokenService : ITokenService
             new(ClaimTypes.Surname, user.LastName ?? string.Empty),
             new(ApplicationClaims.IpAddress, ipAddress),
             new(ApplicationClaims.Tenant, _currentTenant!.Id),
-            new(ApplicationClaims.ImageUrl, user.ImageUrl ?? string.Empty),
+            new(ApplicationClaims.ImageUrl, user.Avatar ?? string.Empty),
             new(ClaimTypes.MobilePhone, user.PhoneNumber ?? string.Empty)
         };
 

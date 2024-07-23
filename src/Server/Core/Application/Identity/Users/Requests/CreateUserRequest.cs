@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 using MultiMart.Application.Identity.Users.Interfaces;
 using MultiMart.Domain.Common.Enums;
 
-namespace MultiMart.Application.Identity.Users.Requests.Commands;
+namespace MultiMart.Application.Identity.Users.Requests;
 
 public class CreateUserRequest : IRequest<string>
 {

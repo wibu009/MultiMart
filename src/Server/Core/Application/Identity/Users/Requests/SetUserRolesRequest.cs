@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 using MultiMart.Application.Identity.Users.Interfaces;
 using MultiMart.Application.Identity.Users.Models;
 
-namespace MultiMart.Application.Identity.Users.Requests.Commands;
+namespace MultiMart.Application.Identity.Users.Requests;
 
 public class UserRolesRequest : IRequest<string>
 {

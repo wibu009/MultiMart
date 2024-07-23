@@ -2,8 +2,6 @@
 using MultiMart.Application.Common.Exceptions;
 using MultiMart.Application.Identity.Users;
 using MultiMart.Application.Identity.Users.Models;
-using MultiMart.Application.Identity.Users.Requests.Commands;
-using MultiMart.Application.Identity.Users.Requests.Queries;
 using MultiMart.Domain.Identity;
 using MultiMart.Shared.Authorization;
 using MultiMart.Shared.Multitenancy;

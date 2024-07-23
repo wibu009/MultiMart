@@ -2,7 +2,6 @@
 using MultiMart.Application.Auditing.Models;
 using MultiMart.Application.Auditing.Request.Queries;
 using MultiMart.Application.Common.Models;
-using MultiMart.Shared.Authorization;
 
 namespace MultiMart.Host.Controllers.Auditing;
 

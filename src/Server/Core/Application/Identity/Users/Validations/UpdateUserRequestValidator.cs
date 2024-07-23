@@ -1,6 +1,6 @@
 using MultiMart.Application.Common.Validation;
 using MultiMart.Application.Identity.Users.Interfaces;
-using MultiMart.Application.Identity.Users.Requests.Commands;
+using MultiMart.Application.Identity.Users.Requests;
 
 namespace MultiMart.Application.Identity.Users.Validations;
 

@@ -10,20 +10,20 @@ namespace MultiMart.Infrastructure.FileStorage.LocalStorage;
 
 public class LocalFileStorageService : ILocalFileStorageService
 {
-    public async Task<string> UploadAsync<T>(FileUploadRequest? request, FileType supportedFileType, CancellationToken cancellationToken = default)
+    public async Task<string> UploadAsync<T>(FileUpload? file, FileType supportedFileType, CancellationToken cancellationToken = default)
     where T : class
     {
-        if (request?.Data == null)
+        if (file?.Data == null)
         {
             return string.Empty;
         }
 
-        if (request.Extension is null || !supportedFileType.GetDescriptionList().Contains(request.Extension.ToLower(System.Globalization.CultureInfo.CurrentCulture)))
+        if (file.Extension is null || !supportedFileType.GetDescriptionList().Contains(file.Extension.ToLower(System.Globalization.CultureInfo.CurrentCulture)))
             throw new InvalidOperationException("File Format Not Supported.");
-        if (request.Name is null)
+        if (file.Name is null)
             throw new InvalidOperationException("Name is required.");
 
-        string base64Data = Regex.Match(request.Data, "data:image/(?<type>.+?),(?<data>.+)").Groups["data"].Value;
+        string base64Data = Regex.Match(file.Data, "data:image/(?<type>.+?),(?<data>.+)").Groups["data"].Value;
 
         var streamData = new MemoryStream(Convert.FromBase64String(base64Data));
         if (streamData.Length > 0)
@@ -42,10 +42,10 @@ public class LocalFileStorageService : ILocalFileStorageService
             string pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
             Directory.CreateDirectory(pathToSave);
 
-            string fileName = request.Name.Trim('"');
+            string fileName = file.Name.Trim('"');
             fileName = RemoveSpecialCharacters(fileName);
             fileName = fileName.ReplaceWhitespace("-");
-            fileName += request.Extension.Trim();
+            fileName += file.Extension.Trim();
             string fullPath = Path.Combine(pathToSave, fileName);
             string dbPath = Path.Combine(folderName, fileName);
             if (File.Exists(dbPath))

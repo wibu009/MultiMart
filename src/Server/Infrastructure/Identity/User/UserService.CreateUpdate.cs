@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 using MultiMart.Application.Common.Exceptions;
 using MultiMart.Application.Common.Mailing;
-using MultiMart.Application.Identity.Users.Requests.Commands;
+using MultiMart.Application.Identity.Users.Requests;
 using MultiMart.Domain.Common.Enums;
 using MultiMart.Domain.Identity;
 using MultiMart.Shared.Authorization;
@@ -146,10 +146,10 @@ internal partial class UserService
 
         _ = user ?? throw new NotFoundException(_t["User Not Found."]);
 
-        string currentImage = user.ImageUrl ?? string.Empty;
+        string currentImage = user.Avatar ?? string.Empty;
         if (request.Image != null || request.DeleteCurrentImage)
         {
-            user.ImageUrl = await _localFileStorage.UploadAsync<ApplicationUser>(request.Image, FileType.Image, cancellationToken);
+            user.Avatar = await _localFileStorage.UploadAsync<ApplicationUser>(request.Image, FileType.Image, cancellationToken);
             if (request.DeleteCurrentImage && !string.IsNullOrEmpty(currentImage))
             {
                 string root = Directory.GetCurrentDirectory();

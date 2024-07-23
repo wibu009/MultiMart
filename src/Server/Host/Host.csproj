@@ -48,7 +48,6 @@
         </None>
     </ItemGroup>
     <ItemGroup>
-        <Folder Include="Controllers\Catalog\" />
         <Folder Include="Databases\Host\"/>
         <Folder Include="Localization\vi\" />
     </ItemGroup>

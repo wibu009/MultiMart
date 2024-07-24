@@ -20,7 +20,7 @@ public class ApplicationUser : IdentityUser, IAuditableEntity
     public DateTime CreatedOn { get; set; }
     public DefaultIdType LastModifiedBy { get; set; }
     public DateTime? LastModifiedOn { get; set; }
-    public List<UserAddress> Addresses { get; set; } = new();
+    public List<Address> Addresses { get; set; } = new();
     public List<ApplicationUserRefreshToken> RefreshTokens { get; set; } = new();
 }
 

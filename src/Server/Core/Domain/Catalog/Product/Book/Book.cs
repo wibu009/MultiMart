@@ -11,6 +11,8 @@ public class Book : Product
     public string? Dimensions { get; set; }
     public string? Format { get; set; }
     public DefaultIdType? AuthorId { get; set; }
-    public Author Author { get; set; } = default!;
+    public Author? Author { get; set; }
+    public DefaultIdType? SeriesId { get; set; }
+    public Series? Series { get; set; }
     public List<Genre> Genres { get; set; } = new();
 }

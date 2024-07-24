@@ -1,6 +1,6 @@
 ﻿namespace MultiMart.Domain.Common.Enums;
 
-public enum UserAddressType
+public enum AddressType
 {
     Home,
     Office,

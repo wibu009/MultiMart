@@ -1,7 +1,5 @@
-﻿using Mapster;
-using MultiMart.Application.Catalog.Brand.Requests;
+﻿using MultiMart.Application.Catalog.Brand.Requests;
 using MultiMart.Application.Common.FileStorage.Cloudinary;
-using MultiMart.Application.Common.Persistence;
 using MultiMart.Domain.Common.Enums;
 
 namespace MultiMart.Application.Catalog.Brand.RequestHandlers;

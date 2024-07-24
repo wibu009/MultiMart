@@ -1,6 +1,5 @@
 ﻿using MultiMart.Application.Catalog.Brand.Requests;
 using MultiMart.Application.Catalog.Brand.Specifications;
-using MultiMart.Application.Common.Persistence;
 using MultiMart.Application.Common.Validation;
 
 namespace MultiMart.Application.Catalog.Brand.Validations;

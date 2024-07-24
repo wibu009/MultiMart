@@ -1,4 +1,3 @@
-using MultiMart.Application.Common.Persistence;
 using MultiMart.Application.Common.Validation;
 using MultiMart.Application.Multitenancy.Interfaces;
 using MultiMart.Application.Multitenancy.Requests.Commands;

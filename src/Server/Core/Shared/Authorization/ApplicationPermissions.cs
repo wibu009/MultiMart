@@ -27,6 +27,9 @@ public static class ApplicationResource
     public const string RoleClaims = nameof(RoleClaims);
     public const string Products = nameof(Products);
     public const string Brands = nameof(Brands);
+    public const string Categories = nameof(Categories);
+    public const string Genres = nameof(Genres);
+    public const string Authors = nameof(Authors);
 }
 
 public static class ApplicationPermissions
@@ -98,6 +101,16 @@ public static class ApplicationPermissions
         new(ApplicationAction.Delete, ApplicationResource.Brands),
         new(ApplicationAction.Generate, ApplicationResource.Brands),
         new(ApplicationAction.Clean, ApplicationResource.Brands),
+        #endregion
+
+        #region Categories
+        new(ApplicationAction.View, ApplicationResource.Categories, IsBasic: true),
+        new(ApplicationAction.Search, ApplicationResource.Categories, IsBasic: true),
+        new(ApplicationAction.Create, ApplicationResource.Categories),
+        new(ApplicationAction.Update, ApplicationResource.Categories),
+        new(ApplicationAction.Delete, ApplicationResource.Categories),
+        new(ApplicationAction.Generate, ApplicationResource.Categories),
+        new(ApplicationAction.Clean, ApplicationResource.Categories),
         #endregion
     };
 

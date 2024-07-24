@@ -1,6 +1,5 @@
 ﻿using MultiMart.Application.Catalog.Brand.Requests;
 using MultiMart.Application.Common.FileStorage.Cloudinary;
-using MultiMart.Application.Common.Persistence;
 
 namespace MultiMart.Application.Catalog.Brand.RequestHandlers;
 

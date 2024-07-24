@@ -2,7 +2,6 @@
 using MultiMart.Application.Catalog.Brand.Requests;
 using MultiMart.Application.Catalog.Brand.Specifications;
 using MultiMart.Application.Common.Models;
-using MultiMart.Application.Common.Persistence;
 
 namespace MultiMart.Application.Catalog.Brand.RequestHandlers;
 

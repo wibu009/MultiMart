@@ -4,6 +4,7 @@ namespace MultiMart.Domain.Catalog.Shipping;
 
 public class ShippingRate : AuditableEntity, IAggregateRoot
 {
+    public string Name { get; set; } = default!;
     public decimal WeightFrom { get; set; }
     public decimal WeightTo { get; set; }
     public decimal Distance { get; set; }

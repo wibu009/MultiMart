@@ -5,7 +5,6 @@ namespace MultiMart.Domain.Catalog.Shipping;
 public class Delivery : AuditableEntity, IAggregateRoot
 {
     public string TrackingNumber { get; set; } = default!;
-    public string? Carrier { get; set; }
     public DateTime? EstimatedDelivery { get; set; }
     public DateTime? ActualDelivery { get; set; }
     public string AddressLine1 { get; set; } = default!;
@@ -15,6 +14,7 @@ public class Delivery : AuditableEntity, IAggregateRoot
     public string PostalCode { get; set; } = default!;
     public string Country { get; set; } = default!;
     public string ContactPhone { get; set; } = default!;
+    public string? ContactEmail { get; set; }
     public DefaultIdType OrderId { get; set; }
     public Order.Order Order { get; set; } = default!;
 }

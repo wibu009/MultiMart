@@ -7,9 +7,9 @@ public class Product : AuditableEntity, IAggregateRoot
 {
     public string Name { get; set; } = default!;
     public string? Description { get; set; }
-    public decimal Price { get; set; }
-    public int Quantity { get; set; }
-    public string SKU { get; set; } = default!;
+    public decimal? Price { get; set; }
+    public int? Quantity { get; set; }
+    public string? SKU { get; set; }
     public bool IsPublished { get; set; }
     public int? MinimumOrderQuantity { get; set; }
     public int? MaximumOrderQuantity { get; set; }

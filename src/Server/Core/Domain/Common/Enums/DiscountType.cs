@@ -3,6 +3,5 @@
 public enum DiscountType
 {
     Fixed,
-    Percentage,
-    FreeShipping
+    Percentage
 }

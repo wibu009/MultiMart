@@ -1,4 +1,5 @@
-﻿using MultiMart.Domain.Common.Contracts;
+﻿using MultiMart.Domain.Catalog.Products;
+using MultiMart.Domain.Common.Contracts;
 
 namespace MultiMart.Domain.Catalog;
 
@@ -10,5 +11,5 @@ public class Brand : AuditableEntity, IAggregateRoot
     public string? WebsiteUrl { get; set; }
     public string? Email { get; set; }
     public string? PhoneNumber { get; set; }
-    public List<Product.Product> Products { get; set; } = new();
+    public List<Product> Products { get; set; } = new();
 }

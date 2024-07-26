@@ -1,6 +1,6 @@
 ﻿using MultiMart.Domain.Common.Contracts;
 
-namespace MultiMart.Domain.Catalog.Product.Book;
+namespace MultiMart.Domain.Catalog.Characteristic.Book;
 
 public class Author : AuditableEntity, IAggregateRoot
 {
@@ -9,5 +9,5 @@ public class Author : AuditableEntity, IAggregateRoot
     public string? ImageUrl { get; set; }
     public DateTime? DateOfBirth { get; set; }
     public DateTime? DateOfDeath { get; set; }
-    public List<Book> Books { get; set; } = new();
+    public List<Products.Book> Books { get; set; } = new();
 }

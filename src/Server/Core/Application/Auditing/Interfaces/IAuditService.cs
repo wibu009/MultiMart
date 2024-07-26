@@ -7,6 +7,6 @@ namespace MultiMart.Application.Auditing.Interfaces;
 
 public interface IAuditService : ITransientService
 {
-    Task<List<AuditDto>> GetUserTrailsAsync(Guid userId);
+    Task<List<AuditDto>> GetUserTrailsAsync(DefaultIdType userId);
     Task<PaginationResponse<AuditDto>> SearchAsync(AuditListFilter filter);
 }

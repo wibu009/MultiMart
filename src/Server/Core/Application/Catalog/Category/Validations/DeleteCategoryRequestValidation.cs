@@ -1,7 +1,7 @@
 ﻿using MultiMart.Application.Catalog.Category.Requests;
 using MultiMart.Application.Catalog.Category.Specifications;
 using MultiMart.Application.Common.Validation;
-using MultiMart.Domain.Catalog.Product;
+using MultiMart.Domain.Catalog.Products;
 
 namespace MultiMart.Application.Catalog.Category.Validations;
 

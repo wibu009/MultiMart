@@ -1,4 +1,5 @@
-﻿using MultiMart.Domain.Common.Contracts;
+﻿using MultiMart.Domain.Catalog.Products;
+using MultiMart.Domain.Common.Contracts;
 
 namespace MultiMart.Domain.Catalog;
 
@@ -9,5 +10,5 @@ public class Category : AuditableEntity, IAggregateRoot
     public DefaultIdType? ParentId { get; set; }
     public Category? Parent { get; set; }
     public List<Category> Children { get; set; } = new();
-    public List<Product.Product> Products { get; set; } = new();
+    public List<Product> Products { get; set; } = new();
 }

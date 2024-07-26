@@ -1,8 +1,9 @@
-﻿using MultiMart.Domain.Catalog.Shipping;
+﻿using MultiMart.Domain.Catalog.Deliveries;
+using MultiMart.Domain.Catalog.Returns;
 using MultiMart.Domain.Common.Contracts;
 using MultiMart.Domain.Common.Enums;
 
-namespace MultiMart.Domain.Catalog.Order;
+namespace MultiMart.Domain.Catalog.Orders;
 
 public class Order : AuditableEntity, IAggregateRoot
 {
@@ -14,8 +15,8 @@ public class Order : AuditableEntity, IAggregateRoot
     public string? Note { get; set; }
     public string? CustomerId { get; set; }
     public DefaultIdType? ReturnId { get; set; }
-    public Return.Return? Return { get; set; }
+    public Return Return { get; set; } = new();
     public string? DeliveryId { get; set; }
-    public Delivery? Delivery { get; set; }
+    public Delivery Delivery { get; set; } = new();
     public List<OrderItem> OrderItems { get; set; } = new();
 }

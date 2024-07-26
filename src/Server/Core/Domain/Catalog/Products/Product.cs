@@ -1,15 +1,18 @@
-﻿using MultiMart.Domain.Catalog.Order;
+﻿using MultiMart.Domain.Catalog.Orders;
 using MultiMart.Domain.Common.Contracts;
 
-namespace MultiMart.Domain.Catalog.Product;
+namespace MultiMart.Domain.Catalog.Products;
 
 public class Product : AuditableEntity, IAggregateRoot
 {
     public string Name { get; set; } = default!;
     public string? Description { get; set; }
-    public decimal? Price { get; set; }
+    public decimal? BasePrice { get; set; }
     public int? Quantity { get; set; }
+    public string? MeasurementUnit { get; set; }
     public string? SKU { get; set; }
+    public decimal? Weight { get; set; }
+    public string? Dimensions { get; set; }
     public bool IsPublished { get; set; }
     public int? MinimumOrderQuantity { get; set; }
     public int? MaximumOrderQuantity { get; set; }

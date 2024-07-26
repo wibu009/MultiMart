@@ -1,7 +1,7 @@
 ﻿using MultiMart.Domain.Common.Contracts;
 using MultiMart.Domain.Common.Enums;
 
-namespace MultiMart.Domain.Catalog.Discount;
+namespace MultiMart.Domain.Catalog.Discounts;
 
 public class Discount : AuditableEntity, IAggregateRoot
 {
@@ -15,4 +15,6 @@ public class Discount : AuditableEntity, IAggregateRoot
     public int? UsageLimit { get; set; }
     public int? UsageCount { get; set; }
     public bool IsActive { get; set; }
+    public List<UserDiscount> UserDiscounts { get; set; } = new();
+    public List<ProductDiscount> ProductDiscounts { get; set; } = new();
 }

@@ -1,6 +1,7 @@
-﻿using MultiMart.Domain.Common.Contracts;
+﻿using MultiMart.Domain.Catalog.Products;
+using MultiMart.Domain.Common.Contracts;
 
-namespace MultiMart.Domain.Catalog.Order;
+namespace MultiMart.Domain.Catalog.Orders;
 
 public class OrderItem : AuditableEntity, IAggregateRoot
 {
@@ -10,5 +11,5 @@ public class OrderItem : AuditableEntity, IAggregateRoot
     public string? OrderId { get; set; }
     public Order Order { get; set; } = default!;
     public string? ProductId { get; set; }
-    public Product.Product Product { get; set; } = default!;
+    public Product Product { get; set; } = default!;
 }

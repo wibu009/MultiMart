@@ -10,11 +10,11 @@ public class BrandMappingConfig : IRegister
     {
         config.NewConfig<Domain.Catalog.Brand, BrandDto>();
         config.NewConfig<CreateBrandRequest, Domain.Catalog.Brand>()
-            .Ignore(dest => dest.LogoUrl ?? string.Empty)
+            .Ignore(dest => dest.LogoUrl!)
             .IgnoreNullValues(true);
         config.NewConfig<UpdateBrandRequest, Domain.Catalog.Brand>()
             .Ignore(dest => dest.Id)
-            .Ignore(dest => dest.LogoUrl ?? string.Empty)
+            .Ignore(dest => dest.LogoUrl!)
             .IgnoreNullValues(true);
     }
 }

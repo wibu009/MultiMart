@@ -37,10 +37,17 @@ internal static class Program
             app.MapEndpoints();
             await app.RunAsync().ConfigureAwait(false);
         }
-        catch (Exception ex) when (!ex.GetType().Name.Equals("StopTheHostException", StringComparison.Ordinal))
+        catch (Exception ex)
         {
             StaticLogger.EnsureInitialized();
-            Log.Fatal(ex, "Unhandled exception");
+            if (ex is HostAbortedException)
+            {
+                Log.Warning(ex, "Host Aborted");
+            }
+            else
+            {
+                Log.Fatal(ex, "Unhandled exception");
+            }
         }
         finally
         {

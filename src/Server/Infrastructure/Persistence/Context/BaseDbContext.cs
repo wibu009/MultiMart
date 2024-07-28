@@ -2,14 +2,12 @@ using System.Data;
 using Finbuckle.MultiTenant;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using MultiMart.Application.Common.Events;
 using MultiMart.Application.Common.Interfaces;
 using MultiMart.Domain.Common.Contracts;
 using MultiMart.Infrastructure.Auditing;
 using MultiMart.Infrastructure.Identity.Role;
 using MultiMart.Infrastructure.Identity.User;
-using MultiMart.Infrastructure.Multitenancy;
 
 namespace MultiMart.Infrastructure.Persistence.Context;
 

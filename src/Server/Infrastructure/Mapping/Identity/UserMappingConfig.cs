@@ -12,8 +12,8 @@ public class UserMappingConfig : IRegister
             .IgnoreNullValues(true);
         config.NewConfig<UpdateUserRequest, ApplicationUser>()
             .Ignore(dest => dest.Id)
-            .Ignore(dest => dest.PhoneNumber ?? string.Empty)
-            .Ignore(dest => dest.Email ?? string.Empty)
+            .Ignore(dest => dest.PhoneNumber!)
+            .Ignore(dest => dest.Email!)
             .IgnoreNullValues(true);
     }
 }

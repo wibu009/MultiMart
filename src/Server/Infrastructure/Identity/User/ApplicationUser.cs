@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using MultiMart.Domain.Catalog;
+using MultiMart.Domain.Catalog.Addresses;
+using MultiMart.Domain.Catalog.Discounts;
 using MultiMart.Domain.Catalog.Orders;
 using MultiMart.Domain.Common.Contracts;
 using MultiMart.Domain.Common.Enums;
@@ -20,7 +22,7 @@ public class ApplicationUser : IdentityUser, IAuditableEntity
     public DateTime CreatedOn { get; set; }
     public DefaultIdType LastModifiedBy { get; set; }
     public DateTime? LastModifiedOn { get; set; }
-    public List<Address> Addresses { get; set; } = new();
+    public List<UserAddress> Addresses { get; set; } = new();
     public List<ApplicationUserRefreshToken> RefreshTokens { get; set; } = new();
 }
 
@@ -28,6 +30,8 @@ public class Customer : ApplicationUser
 {
     public int LoyaltyPoints { get; set; }
     public List<Order> Orders { get; set; } = new();
+    public List<CustomerDiscount> Discounts { get; set; } = new();
+    public List<Review> Reviews { get; set; } = new();
 }
 
 public class Employee : ApplicationUser

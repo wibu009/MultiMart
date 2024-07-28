@@ -2,7 +2,7 @@
 
 namespace MultiMart.Domain.Catalog.Deliveries;
 
-public class ShippingRate : AuditableEntity, IAggregateRoot
+public class DeliveryRate : AuditableEntity, IAggregateRoot
 {
     public string Name { get; set; } = default!;
     public string WeightUnit { get; set; } = default!;
@@ -15,8 +15,8 @@ public class ShippingRate : AuditableEntity, IAggregateRoot
     public decimal PricePerDistance { get; set; }
     public decimal BasePrice { get; set; }
     public string Currency { get; set; } = default!;
-    public DefaultIdType ShippingCompanyId { get; set; }
-    public ShippingCompany ShippingCompany { get; set; } = default!;
+    public DefaultIdType? DeliveryCompanyId { get; set; }
+    public DeliveryCompany DeliveryCompany { get; set; } = default!;
     public List<Delivery> Deliveries { get; set; } = new();
 
     public decimal Calculate(decimal packageWeight, decimal shippingDistance)

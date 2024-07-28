@@ -5,5 +5,5 @@ public enum AddressType
     Home,
     Office,
     Permanent,
-    Temporary
+    Temporary,
 }

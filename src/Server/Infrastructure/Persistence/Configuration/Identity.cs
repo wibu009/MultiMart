@@ -13,7 +13,8 @@ public class ApplicationUserConfig : IEntityTypeConfiguration<ApplicationUser>
 {
     public void Configure(EntityTypeBuilder<ApplicationUser> builder)
     {
-        builder.UseTpcMappingStrategy();
+        builder.ToTable("Users", SchemaNames.Identity);
+        builder.UseTptMappingStrategy();
 
         builder
             .Property(u => u.ObjectId)
@@ -23,7 +24,7 @@ public class ApplicationUserConfig : IEntityTypeConfiguration<ApplicationUser>
             .HasMany(u => u.Addresses)
             .WithOne()
             .HasForeignKey(a => a.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }
 
@@ -57,7 +58,7 @@ public class EmployeeConfig : IEntityTypeConfiguration<Employee>
             .HasOne(e => e.Manager)
             .WithMany()
             .HasForeignKey(e => e.ManagerId)
-            .OnDelete(DeleteBehavior.NoAction);
+            .OnDelete(DeleteBehavior.SetNull);
     }
 }
 #endregion

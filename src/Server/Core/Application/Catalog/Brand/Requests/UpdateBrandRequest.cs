@@ -11,7 +11,4 @@ public class UpdateBrandRequest : IRequest<string>
     public string? Description { get; set; }
     public FileUpload? Logo { get; set; }
     public bool DeleteCurrentLogo { get; set; }
-    public string? WebsiteUrl { get; set; }
-    public string? Email { get; set; }
-    public string? PhoneNumber { get; set; }
 }

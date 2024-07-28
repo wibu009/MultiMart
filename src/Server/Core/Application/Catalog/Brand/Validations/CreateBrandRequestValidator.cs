@@ -19,22 +19,5 @@ public class CreateBrandRequestValidator : CustomValidator<CreateBrandRequest>
         RuleFor(p => p.Description)
             .MaximumLength(2000)
             .WithMessage(t["Description is too long."]);
-
-        RuleFor(p => p.WebsiteUrl)
-            .MaximumLength(500)
-            .When(p => !string.IsNullOrWhiteSpace(p.WebsiteUrl))
-            .WithMessage(t["Website URL is not valid."]);
-
-        RuleFor(p => p.Email)
-            .MaximumLength(500)
-            .EmailAddress()
-            .When(p => !string.IsNullOrWhiteSpace(p.Email))
-            .WithMessage(t["Email is not valid."]);
-
-        RuleFor(p => p.PhoneNumber)
-            .MaximumLength(20)
-            .Matches(@"\+?[1-9]\d{1,14}|\(?\d{1,4}\)?[\s.-]?\d{1,4}[\s.-]?\d{1,4}[\s.-]?\d{1,9}")
-            .When(p => !string.IsNullOrWhiteSpace(p.PhoneNumber))
-            .WithMessage(t["Phone number is not valid."]);
     }
 }

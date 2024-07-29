@@ -5,12 +5,12 @@ using MultiMart.Application.Common.Events;
 using MultiMart.Application.Common.Interfaces;
 using MultiMart.Domain.Catalog;
 using MultiMart.Domain.Catalog.Addresses;
-using MultiMart.Domain.Catalog.Characteristic.Book;
-using MultiMart.Domain.Catalog.Deliveries;
-using MultiMart.Domain.Catalog.Discounts;
-using MultiMart.Domain.Catalog.Orders;
+using MultiMart.Domain.Catalog.Characteristics.Book;
 using MultiMart.Domain.Catalog.Products;
-using MultiMart.Domain.Catalog.Returns;
+using MultiMart.Domain.Sales.Deliveries;
+using MultiMart.Domain.Sales.Discounts;
+using MultiMart.Domain.Sales.Orders;
+using MultiMart.Domain.Sales.Returns;
 using MultiMart.Infrastructure.Identity.Token;
 using MultiMart.Infrastructure.Identity.User;
 using MultiMart.Infrastructure.Persistence.Configuration;
@@ -45,11 +45,15 @@ public class ApplicationDbContext : BaseDbContext
     public virtual DbSet<Category> Categories { get; set; } = default!;
     public virtual DbSet<Supplier> Suppliers { get; set; } = default!;
     public virtual DbSet<Genre> Genres { get; set; } = default!;
+    public virtual DbSet<BookGenre> BookGenres { get; set; } = default!;
     public virtual DbSet<Author> Authors { get; set; } = default!;
     public virtual DbSet<Series> Series { get; set; } = default!;
     public virtual DbSet<Product> Products { get; set; } = default!;
     public virtual DbSet<Book> Books { get; set; } = default!;
     public virtual DbSet<Review> Reviews { get; set; } = default!;
+    #endregion
+
+    #region Sales
     public virtual DbSet<Order> Orders { get; set; } = default!;
     public virtual DbSet<OrderItem> OrderItems { get; set; } = default!;
     public virtual DbSet<Return> Returns { get; set; } = default!;

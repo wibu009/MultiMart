@@ -1,6 +1,6 @@
 ﻿using MultiMart.Domain.Common.Contracts;
 
-namespace MultiMart.Domain.Catalog.Characteristic.Book;
+namespace MultiMart.Domain.Catalog.Characteristics.Book;
 
 public class Author : AuditableEntity, IAggregateRoot
 {

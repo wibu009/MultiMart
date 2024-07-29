@@ -13,15 +13,3 @@ public class Address : AuditableEntity, IAggregateRoot
     public string Country { get; set; } = default!;
     public AddressType Type { get; set; }
 }
-
-public class UserAddress : Address
-{
-    public string? UserId { get; set; }
-    public bool IsDefault { get; set; }
-}
-
-public class SupplierAddress : Address
-{
-    public DefaultIdType? SupplierId { get; set; }
-    public Supplier Supplier { get; set; } = default!;
-}

@@ -1,4 +1,4 @@
-﻿using MultiMart.Domain.Catalog.Characteristic.Book;
+﻿using MultiMart.Domain.Catalog.Characteristics.Book;
 
 namespace MultiMart.Domain.Catalog.Products;
 
@@ -14,5 +14,5 @@ public class Book : Product
     public Author Author { get; set; } = default!;
     public DefaultIdType? SeriesId { get; set; }
     public Series Series { get; set; } = default!;
-    public List<Genre> Genres { get; set; } = new();
+    public List<BookGenre> Genres { get; set; } = new();
 }

@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Identity;
 using MultiMart.Domain.Catalog;
 using MultiMart.Domain.Catalog.Addresses;
-using MultiMart.Domain.Catalog.Discounts;
-using MultiMart.Domain.Catalog.Orders;
 using MultiMart.Domain.Common.Contracts;
 using MultiMart.Domain.Common.Enums;
+using MultiMart.Domain.Sales.Discounts;
+using MultiMart.Domain.Sales.Orders;
 using MultiMart.Infrastructure.Identity.Token;
 
 namespace MultiMart.Infrastructure.Identity.User;

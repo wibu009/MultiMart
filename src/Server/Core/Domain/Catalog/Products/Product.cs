@@ -1,6 +1,6 @@
-﻿using MultiMart.Domain.Catalog.Discounts;
-using MultiMart.Domain.Catalog.Orders;
-using MultiMart.Domain.Common.Contracts;
+﻿using MultiMart.Domain.Common.Contracts;
+using MultiMart.Domain.Sales.Discounts;
+using MultiMart.Domain.Sales.Orders;
 
 namespace MultiMart.Domain.Catalog.Products;
 

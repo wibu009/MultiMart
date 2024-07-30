@@ -1,6 +1,6 @@
 ﻿using MultiMart.Application.Common.Interfaces;
 
-namespace MultiMart.Application.Catalog.Brand.Interfaces;
+namespace MultiMart.Application.Catalog.Brand;
 
 public interface IBrandGeneratorJob : IScopedService
 {

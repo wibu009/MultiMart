@@ -6,17 +6,19 @@ namespace MultiMart.Infrastructure.Mapping;
 
 public class MapsterSettings
 {
-    public static void Configure(IServiceProvider serviceProvider)
+    public static void Configure(IServiceProvider serviceProvider, params Assembly[] assemblies)
     {
         var config = TypeAdapterConfig.GlobalSettings;
 
-        var assembly = Assembly.GetExecutingAssembly();
-        var types = assembly.GetTypes()
-            .Where(t => t.GetInterfaces().Contains(typeof(IRegister)) && t is { IsInterface: false, IsAbstract: false });
-        foreach (var type in types)
+        foreach (var assembly in assemblies)
         {
-            var register = (IRegister)ActivatorUtilities.CreateInstance(serviceProvider, type);
-            register.Register(config);
+            var types = assembly.GetTypes()
+                .Where(t => t.GetInterfaces().Contains(typeof(IRegister)) && t is { IsInterface: false, IsAbstract: false });
+            foreach (var type in types)
+            {
+                var register = (IRegister)ActivatorUtilities.CreateInstance(serviceProvider, type);
+                register.Register(config);
+            }
         }
     }
 }

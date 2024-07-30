@@ -22,8 +22,6 @@ using MultiMart.Infrastructure.OpenApi;
 using MultiMart.Infrastructure.Persistence;
 using MultiMart.Infrastructure.Persistence.Initialization;
 using MultiMart.Infrastructure.Security;
-using MultiMart.Infrastructure.Security.Cors;
-using MultiMart.Infrastructure.Security.Header;
 using MultiMart.Infrastructure.Validations;
 
 [assembly: InternalsVisibleTo("Infrastructure.Test")]
@@ -35,6 +33,7 @@ public static class Startup
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration config, IHostEnvironment env)
     {
         var applicationAssembly = typeof(MultiMart.Application.Startup).GetTypeInfo().Assembly;
+        var infrastructureAssembly = Assembly.GetExecutingAssembly();
 
         services
             .AddHttpContextAccessor()
@@ -58,7 +57,7 @@ public static class Startup
             .AddRouting(options => options.LowercaseUrls = true)
             .AddServices();
 
-        MapsterSettings.Configure(services.BuildServiceProvider());
+        MapsterSettings.Configure(services.BuildServiceProvider(), applicationAssembly, infrastructureAssembly);
 
         return services;
     }

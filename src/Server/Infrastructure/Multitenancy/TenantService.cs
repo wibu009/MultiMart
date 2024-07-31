@@ -5,9 +5,7 @@ using Microsoft.Extensions.Options;
 using MultiMart.Application.Common.Exceptions;
 using MultiMart.Application.Common.Persistence;
 using MultiMart.Application.Multitenancy;
-using MultiMart.Application.Multitenancy.Interfaces;
-using MultiMart.Application.Multitenancy.Models;
-using MultiMart.Application.Multitenancy.Requests.Commands;
+using MultiMart.Application.Multitenancy.Create;
 using MultiMart.Infrastructure.Persistence;
 using MultiMart.Infrastructure.Persistence.Initialization;
 

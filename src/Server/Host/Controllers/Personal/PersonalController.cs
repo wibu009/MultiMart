@@ -1,8 +1,10 @@
-using MultiMart.Application.Auditing.Models;
-using MultiMart.Application.Auditing.Request.Queries;
-using MultiMart.Application.Identity.Users.Interfaces;
-using MultiMart.Application.Identity.Users.Models;
-using MultiMart.Application.Identity.Users.Requests;
+using MultiMart.Application.Auditing;
+using MultiMart.Application.Auditing.Get;
+using MultiMart.Application.Identity.Users;
+using MultiMart.Application.Identity.Users.ChangePassword;
+using MultiMart.Application.Identity.Users.Get;
+using MultiMart.Application.Identity.Users.GetUserPermissions;
+using MultiMart.Application.Identity.Users.Update;
 using MultiMart.Infrastructure.Common.Extensions;
 
 namespace MultiMart.Host.Controllers.Personal;

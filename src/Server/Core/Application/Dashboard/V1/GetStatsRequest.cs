@@ -1,5 +1,5 @@
-﻿using MultiMart.Application.Identity.Roles.Interfaces;
-using MultiMart.Application.Identity.Users.Interfaces;
+﻿using MultiMart.Application.Identity.Roles;
+using MultiMart.Application.Identity.Users;
 
 namespace MultiMart.Application.Dashboard.V1;
 

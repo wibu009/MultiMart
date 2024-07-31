@@ -1,5 +1,5 @@
 ﻿using Mapster;
-using MultiMart.Application.Identity.Roles.Models;
+using MultiMart.Application.Identity.Roles;
 using MultiMart.Infrastructure.Identity.Role;
 using MultiMart.Shared.Authorization;
 

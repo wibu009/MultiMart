@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using MultiMart.Application.Common.Events;
 using MultiMart.Application.Identity.Users;
-using MultiMart.Application.Identity.Users.Interfaces;
 using MultiMart.Domain.Identity;
 
 namespace MultiMart.Infrastructure.Identity.User;

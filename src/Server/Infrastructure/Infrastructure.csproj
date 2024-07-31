@@ -3,6 +3,7 @@
         <TargetFramework>net7.0</TargetFramework>
         <RootNamespace>MultiMart.Infrastructure</RootNamespace>
         <AssemblyName>MultiMart.Infrastructure</AssemblyName>
+        <NoWarn>NU1701</NoWarn>
     </PropertyGroup>
     <ItemGroup>
         <FrameworkReference Include="Microsoft.AspNetCore.App"/>
@@ -85,6 +86,7 @@
         </PackageReference>
     </ItemGroup>
     <ItemGroup>
-      <Folder Include="Catalog\V1\" />
+      <Folder Include="Catalog\V1\Brand\" />
+      <Folder Include="Catalog\V1\Category\" />
     </ItemGroup>
 </Project>

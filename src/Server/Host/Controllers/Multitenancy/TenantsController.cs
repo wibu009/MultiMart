@@ -1,7 +1,10 @@
 using MultiMart.Application.Multitenancy;
-using MultiMart.Application.Multitenancy.Models;
-using MultiMart.Application.Multitenancy.Requests.Commands;
-using MultiMart.Application.Multitenancy.Requests.Queries;
+using MultiMart.Application.Multitenancy.Activate;
+using MultiMart.Application.Multitenancy.Create;
+using MultiMart.Application.Multitenancy.Deactivate;
+using MultiMart.Application.Multitenancy.Get;
+using MultiMart.Application.Multitenancy.GetAll;
+using MultiMart.Application.Multitenancy.UpgradeSubscription;
 
 namespace MultiMart.Host.Controllers.Multitenancy;
 

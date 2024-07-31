@@ -1,5 +1,7 @@
-using MultiMart.Application.Identity.Tokens.Models;
-using MultiMart.Application.Identity.Tokens.Requests;
+using MultiMart.Application.Identity.Tokens;
+using MultiMart.Application.Identity.Tokens.Get;
+using MultiMart.Application.Identity.Tokens.Refresh;
+using MultiMart.Application.Identity.Tokens.Revoke;
 using MultiMart.Infrastructure.Common.Extensions;
 using MultiMart.Infrastructure.OpenApi;
 
@@ -30,5 +32,5 @@ public sealed class TokensController : VersionNeutralApiController
     [HttpPost("revoke")]
     [SwaggerOperation("Revoke current user's refresh token.", "")]
     public async Task<IActionResult> RevokeAsync()
-    => Redirect(await Mediator.Send(new RevokeRefreshTokenRequest()));
+    => RedirectIfNotSwagger(await Mediator.Send(new RevokeRefreshTokenRequest()));
 }

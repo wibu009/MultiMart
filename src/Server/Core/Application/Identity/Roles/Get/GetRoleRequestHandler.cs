@@ -1,0 +1,11 @@
+﻿namespace MultiMart.Application.Identity.Roles.Get;
+
+public class GetRoleRequestHandler : IRequestHandler<GetRoleRequest, RoleDto>
+{
+    private readonly IRoleService _roleService;
+
+    public GetRoleRequestHandler(IRoleService roleService) => _roleService = roleService;
+
+    public Task<RoleDto> Handle(GetRoleRequest request, CancellationToken cancellationToken)
+        => _roleService.GetByIdAsync(request.Id);
+}

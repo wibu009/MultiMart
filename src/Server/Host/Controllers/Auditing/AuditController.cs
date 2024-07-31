@@ -1,6 +1,5 @@
-﻿using MultiMart.Application.Auditing.Interfaces;
-using MultiMart.Application.Auditing.Models;
-using MultiMart.Application.Auditing.Request.Queries;
+﻿using MultiMart.Application.Auditing;
+using MultiMart.Application.Auditing.Search;
 using MultiMart.Application.Common.Models;
 
 namespace MultiMart.Host.Controllers.Auditing;

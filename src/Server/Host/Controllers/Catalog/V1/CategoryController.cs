@@ -1,5 +1,8 @@
-﻿using MultiMart.Application.Catalog.Category.Models;
-using MultiMart.Application.Catalog.Category.Requests;
+﻿using MultiMart.Application.Catalog.V1.Category.Create;
+using MultiMart.Application.Catalog.V1.Category.Delete;
+using MultiMart.Application.Catalog.V1.Category.Get;
+using MultiMart.Application.Catalog.V1.Category.Search;
+using MultiMart.Application.Catalog.V1.Category.Update;
 using MultiMart.Application.Common.Models;
 using MultiMart.Infrastructure.Common.Extensions;
 
@@ -10,30 +13,30 @@ public class CategoryController : VersionedApiController
     [HttpPost("search")]
     [RequiresPermission(ApplicationAction.Search, ApplicationResource.Categories)]
     [SwaggerOperation("Search categories using available filters.", "")]
-    public async Task<PaginationResponse<CategoryDto>> SearchAsync(SearchCategoryRequest request)
+    public async Task<PaginationResponse<SearchCategoryResponseItem>> SearchAsync(SearchCategoryRequest request)
         => await Mediator.Send(request);
 
     [HttpGet("{id:guid}")]
     [RequiresPermission(ApplicationAction.View, ApplicationResource.Categories)]
     [SwaggerOperation("Get category details.", "")]
-    public async Task<CategoryDto> GetAsync(DefaultIdType id)
-        => await Mediator.Send(new GetCategoryByIdRequest(id));
+    public async Task<GetCategoryResponse> GetAsync(DefaultIdType id)
+        => await Mediator.Send(new GetCategoryRequest(id));
 
     [HttpPost]
     [RequiresPermission(ApplicationAction.Create, ApplicationResource.Categories)]
     [SwaggerOperation("Create a new category.", "")]
-    public async Task<string> CreateAsync(CreateCategoryRequest request)
+    public async Task<CreateCategoryResponse> CreateAsync(CreateCategoryRequest request)
         => await Mediator.Send(request);
 
     [HttpPut("{id:guid}")]
     [RequiresPermission(ApplicationAction.Update, ApplicationResource.Categories)]
     [SwaggerOperation("Update an existing category.", "")]
-    public async Task<string> UpdateAsync(DefaultIdType id, UpdateCategoryRequest request)
+    public async Task<UpdateCategoryResponse> UpdateAsync(DefaultIdType id, UpdateCategoryRequest request)
         => await Mediator.Send(request.SetPropertyValue(nameof(request.Id), id));
 
     [HttpDelete("{id:guid}")]
     [RequiresPermission(ApplicationAction.Delete, ApplicationResource.Categories)]
     [SwaggerOperation("Delete an existing category.", "")]
-    public async Task<string> DeleteAsync(DefaultIdType id)
+    public async Task<DeleteCategoryResponse> DeleteAsync(DefaultIdType id)
         => await Mediator.Send(new DeleteCategoryRequest(id));
 }

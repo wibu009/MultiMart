@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MultiMart.Application.Common.Exceptions;
 using MultiMart.Application.Identity.Users;
-using MultiMart.Application.Identity.Users.Models;
 using MultiMart.Domain.Identity;
 using MultiMart.Shared.Authorization;
 using MultiMart.Shared.Multitenancy;

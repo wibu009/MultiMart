@@ -1,5 +1,6 @@
 ﻿using Mapster;
-using MultiMart.Application.Identity.Users.Requests;
+using MultiMart.Application.Identity.Users.Create;
+using MultiMart.Application.Identity.Users.Update;
 using MultiMart.Infrastructure.Identity.User;
 
 namespace MultiMart.Infrastructure.Mapping.Identity;

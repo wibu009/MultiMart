@@ -7,7 +7,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Identity.Web;
 using MultiMart.Application.Common.Exceptions;
 using MultiMart.Application.Identity.Users;
-using MultiMart.Application.Identity.Users.Interfaces;
 using MultiMart.Infrastructure.Multitenancy;
 using MultiMart.Shared.Authorization;
 using MultiMart.Shared.Multitenancy;

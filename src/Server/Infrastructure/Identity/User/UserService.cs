@@ -14,8 +14,7 @@ using MultiMart.Application.Common.Mailing;
 using MultiMart.Application.Common.Models;
 using MultiMart.Application.Common.Specification;
 using MultiMart.Application.Identity.Users;
-using MultiMart.Application.Identity.Users.Interfaces;
-using MultiMart.Application.Identity.Users.Models;
+using MultiMart.Application.Identity.Users.Search;
 using MultiMart.Domain.Identity;
 using MultiMart.Infrastructure.Auth;
 using MultiMart.Infrastructure.Identity.Role;
@@ -73,21 +72,21 @@ internal partial class UserService : IUserService
         _securitySettings = securitySettings.Value;
     }
 
-    public async Task<PaginationResponse<UserDetailsDto>> SearchAsync(UserListFilter filter, CancellationToken cancellationToken)
+    public async Task<PaginationResponse<UserDetailsDto>> SearchAsync(SearchUserRequest request, CancellationToken cancellationToken)
     {
-        var pagingSpec = new EntitiesByPaginationFilterSpec<ApplicationUser>(filter);
+        var pagingSpec = new EntitiesByPaginationFilterSpec<ApplicationUser>(request);
 
         var users = await _userManager.Users
             .WithSpecification(pagingSpec)
             .ProjectToType<UserDetailsDto>()
             .ToListAsync(cancellationToken);
 
-        var filterSpec = new EntitiesByBaseFilterSpec<ApplicationUser>(filter);
+        var filterSpec = new EntitiesByBaseFilterSpec<ApplicationUser>(request);
         int count = await _userManager.Users
             .WithSpecification(filterSpec)
             .CountAsync(cancellationToken);
 
-        return new PaginationResponse<UserDetailsDto>(users, count, filter.PageNumber, filter.PageSize);
+        return new PaginationResponse<UserDetailsDto>(users, count, request.PageNumber, request.PageSize);
     }
 
     public async Task<bool> ExistsWithNameAsync(string name)
@@ -99,18 +98,18 @@ internal partial class UserService : IUserService
     public async Task<bool> ExistsWithEmailAsync(string email, string? exceptId = null)
     {
         EnsureValidTenant();
-        return await _userManager.FindByEmailAsync(email.Normalize()) is ApplicationUser user && user.Id != exceptId;
+        return await _userManager.FindByEmailAsync(email.Normalize()) is { } user && user.Id != exceptId;
     }
 
     public async Task<bool> ExistsWithPhoneNumberAsync(string phoneNumber, string? exceptId = null)
     {
         EnsureValidTenant();
-        return await _userManager.Users.FirstOrDefaultAsync(x => x.PhoneNumber == phoneNumber) is ApplicationUser user && user.Id != exceptId;
+        return await _userManager.Users.FirstOrDefaultAsync(x => x.PhoneNumber == phoneNumber) is { } user && user.Id != exceptId;
     }
 
     private void EnsureValidTenant()
     {
-        if (string.IsNullOrWhiteSpace(_currentTenant?.Id))
+        if (string.IsNullOrWhiteSpace(_currentTenant.Id))
         {
             throw new UnauthorizedException(_t["Invalid Tenant."]);
         }

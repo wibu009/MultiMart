@@ -1,6 +1,15 @@
 using MultiMart.Application.Common.Models;
-using MultiMart.Application.Identity.Users.Models;
-using MultiMart.Application.Identity.Users.Requests;
+using MultiMart.Application.Identity.Users;
+using MultiMart.Application.Identity.Users.ConfirmEmail;
+using MultiMart.Application.Identity.Users.ConfirmPhoneNumber;
+using MultiMart.Application.Identity.Users.Create;
+using MultiMart.Application.Identity.Users.ForgotPassword;
+using MultiMart.Application.Identity.Users.Get;
+using MultiMart.Application.Identity.Users.GetUserRole;
+using MultiMart.Application.Identity.Users.ResetPassword;
+using MultiMart.Application.Identity.Users.Search;
+using MultiMart.Application.Identity.Users.SetUserRole;
+using MultiMart.Application.Identity.Users.ToggleUserStatus;
 using MultiMart.Infrastructure.Common.Extensions;
 using MultiMart.Infrastructure.OpenApi;
 
@@ -30,7 +39,7 @@ public class UsersController : VersionNeutralApiController
     [ApiConventionMethod(typeof(ApplicationApiConventions), nameof(ApplicationApiConventions.Register))]
     [RequiresPermission(ApplicationAction.Update, ApplicationResource.UserRoles)]
     [SwaggerOperation("Update a user's assigned roles.", "")]
-    public async Task<string> AssignRolesAsync(string id, UserRolesRequest request, CancellationToken cancellationToken)
+    public async Task<string> AssignRolesAsync(string id, SetUserRolesRequest request, CancellationToken cancellationToken)
         => await Mediator.Send(request.SetPropertyValue(nameof(request.UserId), id), cancellationToken);
 
     [HttpPost]

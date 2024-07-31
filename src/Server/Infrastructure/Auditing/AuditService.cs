@@ -1,8 +1,8 @@
 using Ardalis.Specification.EntityFrameworkCore;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
-using MultiMart.Application.Auditing.Interfaces;
-using MultiMart.Application.Auditing.Models;
+using MultiMart.Application.Auditing;
+using MultiMart.Application.Auditing.Search;
 using MultiMart.Application.Common.Models;
 using MultiMart.Application.Common.Specification;
 using MultiMart.Infrastructure.Persistence.Context;
@@ -26,7 +26,7 @@ public class AuditService : IAuditService
         return trails.Adapt<List<AuditDto>>();
     }
 
-    public async Task<PaginationResponse<AuditDto>> SearchAsync(AuditListFilter filter)
+    public async Task<PaginationResponse<AuditDto>> SearchAsync(SearchAuditRequest filter)
     {
         var pagingSpec = new EntitiesByPaginationFilterSpec<Trail>(filter);
         var trails = await _context.AuditTrails

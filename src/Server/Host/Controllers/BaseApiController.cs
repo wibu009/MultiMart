@@ -9,13 +9,13 @@ public class BaseApiController : ControllerBase
 
     protected ISender Mediator => _mediator ??= HttpContext.RequestServices.GetRequiredService<ISender>();
 
-    protected IActionResult Redirect(string url)
+    protected IActionResult RedirectIfNotSwagger(string url)
     {
         if (Request.Headers["Referer"].ToString().Contains("swagger", StringComparison.OrdinalIgnoreCase))
         {
             return Ok(url);
         }
 
-        return base.Redirect(url);
+        return Redirect(url);
     }
 }

@@ -5,7 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 using MultiMart.Application.Common.Exceptions;
 using MultiMart.Application.Common.Mailing;
-using MultiMart.Application.Identity.Users.Requests;
+using MultiMart.Application.Identity.Users.Create;
+using MultiMart.Application.Identity.Users.Update;
 using MultiMart.Domain.Common.Enums;
 using MultiMart.Domain.Identity;
 using MultiMart.Shared.Authorization;
@@ -121,10 +122,10 @@ internal partial class UserService
         {
             // send verification email
             string emailVerificationUri = await GetEmailVerificationUriAsync(user, request.Origin!);
-            var emailModel = new UserEmailTemplateModel()
+            var emailModel = new UserEmailTemplateModel
             {
                 Email = user.Email,
-                UserName = user.UserName,
+                UserName = user.UserName!,
                 Url = emailVerificationUri
             };
             var mailRequest = new MailRequest(

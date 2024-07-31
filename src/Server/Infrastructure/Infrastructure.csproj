@@ -85,6 +85,6 @@
         </PackageReference>
     </ItemGroup>
     <ItemGroup>
-      <Folder Include="Catalog\" />
+      <Folder Include="Catalog\V1\" />
     </ItemGroup>
 </Project>

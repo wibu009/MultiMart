@@ -1,5 +1,4 @@
-﻿using MultiMart.Application.Common.Models;
-using MultiMart.Application.Identity.Users.Interfaces;
+﻿using MultiMart.Application.Identity.Users.Interfaces;
 using MultiMart.Application.Identity.Users.Models;
 
 namespace MultiMart.Application.Identity.Users.Requests;

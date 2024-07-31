@@ -1,7 +1,6 @@
 using System.Security.Claims;
 using MultiMart.Application.Common.FileStorage;
 using MultiMart.Application.Common.Interfaces;
-using MultiMart.Application.Common.Models;
 using MultiMart.Application.Identity.Users.Models;
 using MultiMart.Application.Identity.Users.Requests;
 using MultiMart.Domain.Common.Enums;

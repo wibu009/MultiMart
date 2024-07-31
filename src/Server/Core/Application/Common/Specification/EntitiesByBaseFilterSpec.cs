@@ -1,6 +1,4 @@
-﻿using MultiMart.Application.Common.Models;
-
-namespace MultiMart.Application.Common.Specification;
+﻿namespace MultiMart.Application.Common.Specification;
 
 public class EntitiesByBaseFilterSpec<T, TResult> : Specification<T, TResult>
 {

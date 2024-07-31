@@ -6,4 +6,6 @@ global using MultiMart.Domain.Common;
 global using MediatR;
 global using Microsoft.Extensions.Localization;
 global using Microsoft.Extensions.Logging;
+global using MultiMart.Application.Common.Models;
 global using MultiMart.Application.Common.Persistence;
+global using MultiMart.Application.Common.Specification;

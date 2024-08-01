@@ -1,14 +1,13 @@
 ﻿using Mapster;
 using MultiMart.Application.Common.Persistence;
 using MultiMart.Application.Multitenancy;
-using MultiMart.Infrastructure.Multitenancy;
 
-namespace MultiMart.Infrastructure.Mapping.Multitenancy;
+namespace MultiMart.Infrastructure.Multitenancy;
 
-public class TenantMappingConfig : IRegister
+public class TenantMappingProfile : IRegister
 {
     private readonly IConnectionStringSecurer _connectionStringSecurer;
-    public TenantMappingConfig(IConnectionStringSecurer connectionStringSecurer)
+    public TenantMappingProfile(IConnectionStringSecurer connectionStringSecurer)
     {
         _connectionStringSecurer = connectionStringSecurer;
     }

@@ -39,8 +39,8 @@ public class ApplicationDbContext : BaseDbContext
 
     #region Catalog
     public virtual DbSet<Address> Addresses { get; set; } = default!;
-    public virtual DbSet<UserAddress> UserAddresses { get; set; } = default!;
-    public virtual DbSet<SupplierAddress> SupplierAddresses { get; set; } = default!;
+    public virtual DbSet<AddressOfUser> UserAddresses { get; set; } = default!;
+    public virtual DbSet<AddressOfSupplier> SupplierAddresses { get; set; } = default!;
     public virtual DbSet<Brand> Brands { get; set; } = default!;
     public virtual DbSet<Category> Categories { get; set; } = default!;
     public virtual DbSet<Supplier> Suppliers { get; set; } = default!;
@@ -59,8 +59,8 @@ public class ApplicationDbContext : BaseDbContext
     public virtual DbSet<Return> Returns { get; set; } = default!;
     public virtual DbSet<ReturnItem> ReturnItems { get; set; } = default!;
     public virtual DbSet<Discount> Discounts { get; set; } = default!;
-    public virtual DbSet<CustomerDiscount> CustomerDiscounts { get; set; } = default!;
-    public virtual DbSet<ProductDiscount> ProductDiscounts { get; set; } = default!;
+    public virtual DbSet<DiscountOnCustomer> CustomerDiscounts { get; set; } = default!;
+    public virtual DbSet<DiscountOnProduct> ProductDiscounts { get; set; } = default!;
     public virtual DbSet<Delivery> Deliveries { get; set; } = default!;
     public virtual DbSet<DeliveryCompany> DeliveryCompanies { get; set; } = default!;
     public virtual DbSet<DeliveryRate> DeliveryRates { get; set; } = default!;

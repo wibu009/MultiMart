@@ -18,7 +18,7 @@ namespace Migrators.MSSQL.Migrations.Application
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("catalog")
-                .HasAnnotation("ProductVersion", "7.0.4")
+                .HasAnnotation("ProductVersion", "7.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -548,9 +548,6 @@ namespace Migrators.MSSQL.Migrations.Application
                     b.Property<string>("CustomerId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("CustomerId1")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<Guid?>("DeletedBy")
                         .HasColumnType("uniqueidentifier");
 
@@ -577,8 +574,6 @@ namespace Migrators.MSSQL.Migrations.Application
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
-
-                    b.HasIndex("CustomerId1");
 
                     b.HasIndex("ProductId");
 
@@ -926,9 +921,6 @@ namespace Migrators.MSSQL.Migrations.Application
                     b.Property<string>("CustomerId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("CustomerId1")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<Guid?>("DeletedBy")
                         .HasColumnType("uniqueidentifier");
 
@@ -969,8 +961,6 @@ namespace Migrators.MSSQL.Migrations.Application
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
-
-                    b.HasIndex("CustomerId1");
 
                     b.HasIndex("DeliveryId")
                         .IsUnique()
@@ -1449,7 +1439,7 @@ namespace Migrators.MSSQL.Migrations.Application
                     b.UseTptMappingStrategy();
                 });
 
-            modelBuilder.Entity("MultiMart.Domain.Catalog.Addresses.SupplierAddress", b =>
+            modelBuilder.Entity("MultiMart.Domain.Catalog.Addresses.AddressOfSupplier", b =>
                 {
                     b.HasBaseType("MultiMart.Domain.Catalog.Addresses.Address");
 
@@ -1458,10 +1448,10 @@ namespace Migrators.MSSQL.Migrations.Application
 
                     b.HasIndex("SupplierId");
 
-                    b.ToTable("SupplierAddresses", "catalog");
+                    b.ToTable("AddressOfSuppliers", "catalog");
                 });
 
-            modelBuilder.Entity("MultiMart.Domain.Catalog.Addresses.UserAddress", b =>
+            modelBuilder.Entity("MultiMart.Domain.Catalog.Addresses.AddressOfUser", b =>
                 {
                     b.HasBaseType("MultiMart.Domain.Catalog.Addresses.Address");
 
@@ -1473,7 +1463,7 @@ namespace Migrators.MSSQL.Migrations.Application
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserAddresses", "catalog");
+                    b.ToTable("AddressOfUsers", "catalog");
                 });
 
             modelBuilder.Entity("MultiMart.Domain.Catalog.Products.Book", b =>
@@ -1515,24 +1505,19 @@ namespace Migrators.MSSQL.Migrations.Application
                     b.ToTable("Books", "catalog");
                 });
 
-            modelBuilder.Entity("MultiMart.Domain.Sales.Discounts.CustomerDiscount", b =>
+            modelBuilder.Entity("MultiMart.Domain.Sales.Discounts.DiscountOnCustomer", b =>
                 {
                     b.HasBaseType("MultiMart.Domain.Sales.Discounts.Discount");
 
                     b.Property<string>("CustomerId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("CustomerId1")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasIndex("CustomerId");
 
-                    b.HasIndex("CustomerId1");
-
-                    b.ToTable("CustomerDiscounts", "sales");
+                    b.ToTable("DiscountOnCustomers", "sales");
                 });
 
-            modelBuilder.Entity("MultiMart.Domain.Sales.Discounts.ProductDiscount", b =>
+            modelBuilder.Entity("MultiMart.Domain.Sales.Discounts.DiscountOnProduct", b =>
                 {
                     b.HasBaseType("MultiMart.Domain.Sales.Discounts.Discount");
 
@@ -1541,7 +1526,7 @@ namespace Migrators.MSSQL.Migrations.Application
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductDiscounts", "sales");
+                    b.ToTable("DiscountOnProducts", "sales");
                 });
 
             modelBuilder.Entity("MultiMart.Infrastructure.Identity.User.Customer", b =>
@@ -1679,13 +1664,8 @@ namespace Migrators.MSSQL.Migrations.Application
             modelBuilder.Entity("MultiMart.Domain.Catalog.Review", b =>
                 {
                     b.HasOne("MultiMart.Infrastructure.Identity.User.Customer", null)
-                        .WithMany()
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("MultiMart.Infrastructure.Identity.User.Customer", null)
                         .WithMany("Reviews")
-                        .HasForeignKey("CustomerId1");
+                        .HasForeignKey("CustomerId");
 
                     b.HasOne("MultiMart.Domain.Catalog.Products.Product", "Product")
                         .WithMany("Reviews")
@@ -1721,13 +1701,8 @@ namespace Migrators.MSSQL.Migrations.Application
             modelBuilder.Entity("MultiMart.Domain.Sales.Orders.Order", b =>
                 {
                     b.HasOne("MultiMart.Infrastructure.Identity.User.Customer", null)
-                        .WithMany()
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.HasOne("MultiMart.Infrastructure.Identity.User.Customer", null)
                         .WithMany("Orders")
-                        .HasForeignKey("CustomerId1");
+                        .HasForeignKey("CustomerId");
 
                     b.HasOne("MultiMart.Domain.Sales.Deliveries.Delivery", "Delivery")
                         .WithOne("Order")
@@ -1747,7 +1722,7 @@ namespace Migrators.MSSQL.Migrations.Application
 
             modelBuilder.Entity("MultiMart.Domain.Sales.Orders.OrderDiscount", b =>
                 {
-                    b.HasOne("MultiMart.Domain.Sales.Discounts.CustomerDiscount", "Discount")
+                    b.HasOne("MultiMart.Domain.Sales.Discounts.DiscountOnCustomer", "Discount")
                         .WithMany("Order")
                         .HasForeignKey("DiscountId")
                         .OnDelete(DeleteBehavior.SetNull)
@@ -1822,11 +1797,11 @@ namespace Migrators.MSSQL.Migrations.Application
                     b.Navigation("ApplicationUser");
                 });
 
-            modelBuilder.Entity("MultiMart.Domain.Catalog.Addresses.SupplierAddress", b =>
+            modelBuilder.Entity("MultiMart.Domain.Catalog.Addresses.AddressOfSupplier", b =>
                 {
                     b.HasOne("MultiMart.Domain.Catalog.Addresses.Address", null)
                         .WithOne()
-                        .HasForeignKey("MultiMart.Domain.Catalog.Addresses.SupplierAddress", "Id")
+                        .HasForeignKey("MultiMart.Domain.Catalog.Addresses.AddressOfSupplier", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1839,11 +1814,11 @@ namespace Migrators.MSSQL.Migrations.Application
                     b.Navigation("Supplier");
                 });
 
-            modelBuilder.Entity("MultiMart.Domain.Catalog.Addresses.UserAddress", b =>
+            modelBuilder.Entity("MultiMart.Domain.Catalog.Addresses.AddressOfUser", b =>
                 {
                     b.HasOne("MultiMart.Domain.Catalog.Addresses.Address", null)
                         .WithOne()
-                        .HasForeignKey("MultiMart.Domain.Catalog.Addresses.UserAddress", "Id")
+                        .HasForeignKey("MultiMart.Domain.Catalog.Addresses.AddressOfUser", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1878,29 +1853,24 @@ namespace Migrators.MSSQL.Migrations.Application
                     b.Navigation("Series");
                 });
 
-            modelBuilder.Entity("MultiMart.Domain.Sales.Discounts.CustomerDiscount", b =>
+            modelBuilder.Entity("MultiMart.Domain.Sales.Discounts.DiscountOnCustomer", b =>
                 {
                     b.HasOne("MultiMart.Infrastructure.Identity.User.Customer", null)
-                        .WithMany()
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("MultiMart.Infrastructure.Identity.User.Customer", null)
                         .WithMany("Discounts")
-                        .HasForeignKey("CustomerId1");
+                        .HasForeignKey("CustomerId");
 
                     b.HasOne("MultiMart.Domain.Sales.Discounts.Discount", null)
                         .WithOne()
-                        .HasForeignKey("MultiMart.Domain.Sales.Discounts.CustomerDiscount", "Id")
+                        .HasForeignKey("MultiMart.Domain.Sales.Discounts.DiscountOnCustomer", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MultiMart.Domain.Sales.Discounts.ProductDiscount", b =>
+            modelBuilder.Entity("MultiMart.Domain.Sales.Discounts.DiscountOnProduct", b =>
                 {
                     b.HasOne("MultiMart.Domain.Sales.Discounts.Discount", null)
                         .WithOne()
-                        .HasForeignKey("MultiMart.Domain.Sales.Discounts.ProductDiscount", "Id")
+                        .HasForeignKey("MultiMart.Domain.Sales.Discounts.DiscountOnProduct", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -2030,7 +2000,7 @@ namespace Migrators.MSSQL.Migrations.Application
                     b.Navigation("Genres");
                 });
 
-            modelBuilder.Entity("MultiMart.Domain.Sales.Discounts.CustomerDiscount", b =>
+            modelBuilder.Entity("MultiMart.Domain.Sales.Discounts.DiscountOnCustomer", b =>
                 {
                     b.Navigation("Order");
                 });

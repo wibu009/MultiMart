@@ -9,9 +9,9 @@ public class DiscountConfig : IEntityTypeConfiguration<Discount>
 {
     public void Configure(EntityTypeBuilder<Discount> builder)
     {
-        builder.ToTable("Discounts", SchemaNames.Sales);
-
         builder.UseTptMappingStrategy();
+
+        builder.ToTable("Discounts", SchemaNames.Sales);
 
         builder.Property(d => d.Name)
             .HasMaxLength(256)
@@ -25,31 +25,22 @@ public class DiscountConfig : IEntityTypeConfiguration<Discount>
     }
 }
 
-public class CustomerDiscountConfig : IEntityTypeConfiguration<CustomerDiscount>
+public class CustomerDiscountConfig : IEntityTypeConfiguration<DiscountOnCustomer>
 {
-    public void Configure(EntityTypeBuilder<CustomerDiscount> builder)
+    public void Configure(EntityTypeBuilder<DiscountOnCustomer> builder)
     {
-        builder.ToTable("CustomerDiscounts", SchemaNames.Sales);
-
-        builder.HasBaseType<Discount>();
+        builder.ToTable("DiscountOnCustomers", SchemaNames.Sales);
 
         builder.Property(cd => cd.CustomerId)
             .IsRequired(false);
-
-        builder.HasOne<Customer>()
-            .WithMany()
-            .HasForeignKey(cd => cd.CustomerId)
-            .OnDelete(DeleteBehavior.Cascade);
     }
 }
 
-public class ProductDiscountConfig : IEntityTypeConfiguration<ProductDiscount>
+public class ProductDiscountConfig : IEntityTypeConfiguration<DiscountOnProduct>
 {
-    public void Configure(EntityTypeBuilder<ProductDiscount> builder)
+    public void Configure(EntityTypeBuilder<DiscountOnProduct> builder)
     {
-        builder.ToTable("ProductDiscounts", SchemaNames.Sales);
-
-        builder.HasBaseType<Discount>();
+        builder.ToTable("DiscountOnProducts", SchemaNames.Sales);
 
         builder.Property(pd => pd.ProductId)
             .IsRequired(false);

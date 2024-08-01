@@ -2,7 +2,7 @@
 
 namespace MultiMart.Domain.Sales.Discounts;
 
-public class CustomerDiscount : Discount
+public class DiscountOnCustomer : Discount
 {
     public string? CustomerId { get; set; }
     public List<OrderDiscount> Order { get; set; } = new();

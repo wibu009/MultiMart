@@ -1,11 +1,10 @@
 ﻿using Mapster;
 using MultiMart.Application.Identity.Users.Create;
 using MultiMart.Application.Identity.Users.Update;
-using MultiMart.Infrastructure.Identity.User;
 
-namespace MultiMart.Infrastructure.Mapping.Identity;
+namespace MultiMart.Infrastructure.Identity.User;
 
-public class UserMappingConfig : IRegister
+public class UserMappingProfile : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {

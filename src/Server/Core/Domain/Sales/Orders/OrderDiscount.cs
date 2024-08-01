@@ -10,7 +10,7 @@ public class OrderDiscount : AuditableEntity, IAggregateRoot
     public decimal Value { get; set; }
     public DiscountType Type { get; set; }
     public DefaultIdType? DiscountId { get; set; }
-    public CustomerDiscount Discount { get; set; } = default!;
+    public DiscountOnCustomer Discount { get; set; } = default!;
     public DefaultIdType? OrderId { get; set; }
     public Order Order { get; set; } = default!;
 }

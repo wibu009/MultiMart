@@ -22,4 +22,18 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Catalog\V1\Address\" />
+      <Folder Include="Catalog\V1\Characteristics\Author\" />
+      <Folder Include="Catalog\V1\Characteristics\Genre\" />
+      <Folder Include="Catalog\V1\Characteristics\Series\" />
+      <Folder Include="Catalog\V1\Product\" />
+      <Folder Include="Catalog\V1\Review\" />
+      <Folder Include="Catalog\V1\Supplier\Create\" />
+      <Folder Include="Catalog\V1\Supplier\Delete\" />
+      <Folder Include="Catalog\V1\Supplier\Get\" />
+      <Folder Include="Catalog\V1\Supplier\Search\" />
+      <Folder Include="Catalog\V1\Supplier\Update\" />
+      <Folder Include="Sales\V1\" />
+    </ItemGroup>
 </Project>

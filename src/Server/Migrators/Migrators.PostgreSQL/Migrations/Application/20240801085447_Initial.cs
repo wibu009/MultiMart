@@ -19,10 +19,10 @@ namespace Migrators.PostgreSQL.Migrations.Application
                 name: "auditing");
 
             migrationBuilder.EnsureSchema(
-                name: "sales");
+                name: "identity");
 
             migrationBuilder.EnsureSchema(
-                name: "identity");
+                name: "sales");
 
             migrationBuilder.CreateTable(
                 name: "Addresses",
@@ -434,6 +434,33 @@ namespace Migrators.PostgreSQL.Migrations.Application
                 });
 
             migrationBuilder.CreateTable(
+                name: "AddressOfSuppliers",
+                schema: "catalog",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    SupplierId = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AddressOfSuppliers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AddressOfSuppliers_Addresses_Id",
+                        column: x => x.Id,
+                        principalSchema: "catalog",
+                        principalTable: "Addresses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AddressOfSuppliers_Suppliers_SupplierId",
+                        column: x => x.SupplierId,
+                        principalSchema: "catalog",
+                        principalTable: "Suppliers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Products",
                 schema: "catalog",
                 columns: table => new
@@ -489,30 +516,30 @@ namespace Migrators.PostgreSQL.Migrations.Application
                 });
 
             migrationBuilder.CreateTable(
-                name: "SupplierAddresses",
+                name: "AddressOfUsers",
                 schema: "catalog",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    SupplierId = table.Column<Guid>(type: "uuid", nullable: true)
+                    UserId = table.Column<string>(type: "text", nullable: true),
+                    IsDefault = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SupplierAddresses", x => x.Id);
+                    table.PrimaryKey("PK_AddressOfUsers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SupplierAddresses_Addresses_Id",
+                        name: "FK_AddressOfUsers_Addresses_Id",
                         column: x => x.Id,
                         principalSchema: "catalog",
                         principalTable: "Addresses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_SupplierAddresses_Suppliers_SupplierId",
-                        column: x => x.SupplierId,
-                        principalSchema: "catalog",
-                        principalTable: "Suppliers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        name: "FK_AddressOfUsers_Users_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "identity",
+                        principalTable: "Users",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -562,33 +589,6 @@ namespace Migrators.PostgreSQL.Migrations.Application
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserAddresses",
-                schema: "catalog",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    UserId = table.Column<string>(type: "text", nullable: true),
-                    IsDefault = table.Column<bool>(type: "boolean", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserAddresses", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UserAddresses_Addresses_Id",
-                        column: x => x.Id,
-                        principalSchema: "catalog",
-                        principalTable: "Addresses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UserAddresses_Users_UserId",
-                        column: x => x.UserId,
-                        principalSchema: "identity",
-                        principalTable: "Users",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -797,7 +797,7 @@ namespace Migrators.PostgreSQL.Migrations.Application
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductDiscounts",
+                name: "DiscountOnProducts",
                 schema: "sales",
                 columns: table => new
                 {
@@ -806,16 +806,16 @@ namespace Migrators.PostgreSQL.Migrations.Application
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductDiscounts", x => x.Id);
+                    table.PrimaryKey("PK_DiscountOnProducts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProductDiscounts_Discounts_Id",
+                        name: "FK_DiscountOnProducts_Discounts_Id",
                         column: x => x.Id,
                         principalSchema: "sales",
                         principalTable: "Discounts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ProductDiscounts_Products_ProductId",
+                        name: "FK_DiscountOnProducts_Products_ProductId",
                         column: x => x.ProductId,
                         principalSchema: "catalog",
                         principalTable: "Products",
@@ -824,32 +824,24 @@ namespace Migrators.PostgreSQL.Migrations.Application
                 });
 
             migrationBuilder.CreateTable(
-                name: "CustomerDiscounts",
+                name: "DiscountOnCustomers",
                 schema: "sales",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    CustomerId = table.Column<string>(type: "text", nullable: true),
-                    CustomerId1 = table.Column<string>(type: "text", nullable: true)
+                    CustomerId = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CustomerDiscounts", x => x.Id);
+                    table.PrimaryKey("PK_DiscountOnCustomers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CustomerDiscounts_Customers_CustomerId",
+                        name: "FK_DiscountOnCustomers_Customers_CustomerId",
                         column: x => x.CustomerId,
-                        principalSchema: "identity",
-                        principalTable: "Customers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CustomerDiscounts_Customers_CustomerId1",
-                        column: x => x.CustomerId1,
                         principalSchema: "identity",
                         principalTable: "Customers",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_CustomerDiscounts_Discounts_Id",
+                        name: "FK_DiscountOnCustomers_Discounts_Id",
                         column: x => x.Id,
                         principalSchema: "sales",
                         principalTable: "Discounts",
@@ -868,7 +860,6 @@ namespace Migrators.PostgreSQL.Migrations.Application
                     Rating = table.Column<decimal>(type: "numeric", nullable: false),
                     CustomerId = table.Column<string>(type: "text", nullable: true),
                     ProductId = table.Column<Guid>(type: "uuid", nullable: true),
-                    CustomerId1 = table.Column<string>(type: "text", nullable: true),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     LastModifiedBy = table.Column<Guid>(type: "uuid", nullable: false),
@@ -882,13 +873,6 @@ namespace Migrators.PostgreSQL.Migrations.Application
                     table.ForeignKey(
                         name: "FK_Reviews_Customers_CustomerId",
                         column: x => x.CustomerId,
-                        principalSchema: "identity",
-                        principalTable: "Customers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Reviews_Customers_CustomerId1",
-                        column: x => x.CustomerId1,
                         principalSchema: "identity",
                         principalTable: "Customers",
                         principalColumn: "Id");
@@ -917,7 +901,6 @@ namespace Migrators.PostgreSQL.Migrations.Application
                     CustomerId = table.Column<string>(type: "text", nullable: true),
                     ReturnId = table.Column<Guid>(type: "uuid", nullable: true),
                     DeliveryId = table.Column<Guid>(type: "uuid", nullable: true),
-                    CustomerId1 = table.Column<string>(type: "text", nullable: true),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     LastModifiedBy = table.Column<Guid>(type: "uuid", nullable: false),
@@ -931,13 +914,6 @@ namespace Migrators.PostgreSQL.Migrations.Application
                     table.ForeignKey(
                         name: "FK_Orders_Customers_CustomerId",
                         column: x => x.CustomerId,
-                        principalSchema: "identity",
-                        principalTable: "Customers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
-                    table.ForeignKey(
-                        name: "FK_Orders_Customers_CustomerId1",
-                        column: x => x.CustomerId1,
                         principalSchema: "identity",
                         principalTable: "Customers",
                         principalColumn: "Id");
@@ -1013,10 +989,10 @@ namespace Migrators.PostgreSQL.Migrations.Application
                 {
                     table.PrimaryKey("PK_OrderDiscounts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OrderDiscounts_CustomerDiscounts_DiscountId",
+                        name: "FK_OrderDiscounts_DiscountOnCustomers_DiscountId",
                         column: x => x.DiscountId,
                         principalSchema: "sales",
-                        principalTable: "CustomerDiscounts",
+                        principalTable: "DiscountOnCustomers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
@@ -1074,6 +1050,18 @@ namespace Migrators.PostgreSQL.Migrations.Application
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_AddressOfSuppliers_SupplierId",
+                schema: "catalog",
+                table: "AddressOfSuppliers",
+                column: "SupplierId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AddressOfUsers_UserId",
+                schema: "catalog",
+                table: "AddressOfUsers",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_BookGenres_BookId",
                 schema: "catalog",
                 table: "BookGenres",
@@ -1104,18 +1092,6 @@ namespace Migrators.PostgreSQL.Migrations.Application
                 column: "ParentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CustomerDiscounts_CustomerId",
-                schema: "sales",
-                table: "CustomerDiscounts",
-                column: "CustomerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CustomerDiscounts_CustomerId1",
-                schema: "sales",
-                table: "CustomerDiscounts",
-                column: "CustomerId1");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Deliveries_DeliveryRateId",
                 schema: "sales",
                 table: "Deliveries",
@@ -1126,6 +1102,18 @@ namespace Migrators.PostgreSQL.Migrations.Application
                 schema: "sales",
                 table: "DeliveryRates",
                 column: "DeliveryCompanyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DiscountOnCustomers_CustomerId",
+                schema: "sales",
+                table: "DiscountOnCustomers",
+                column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DiscountOnProducts_ProductId",
+                schema: "sales",
+                table: "DiscountOnProducts",
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Employees_ManagerId",
@@ -1170,12 +1158,6 @@ namespace Migrators.PostgreSQL.Migrations.Application
                 column: "CustomerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_CustomerId1",
-                schema: "sales",
-                table: "Orders",
-                column: "CustomerId1");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Orders_DeliveryId",
                 schema: "sales",
                 table: "Orders",
@@ -1188,12 +1170,6 @@ namespace Migrators.PostgreSQL.Migrations.Application
                 table: "Orders",
                 column: "ReturnId",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ProductDiscounts_ProductId",
-                schema: "sales",
-                table: "ProductDiscounts",
-                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_BrandId",
@@ -1226,12 +1202,6 @@ namespace Migrators.PostgreSQL.Migrations.Application
                 column: "CustomerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reviews_CustomerId1",
-                schema: "catalog",
-                table: "Reviews",
-                column: "CustomerId1");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Reviews_ProductId",
                 schema: "catalog",
                 table: "Reviews",
@@ -1249,18 +1219,6 @@ namespace Migrators.PostgreSQL.Migrations.Application
                 table: "Roles",
                 columns: new[] { "NormalizedName", "TenantId" },
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SupplierAddresses_SupplierId",
-                schema: "catalog",
-                table: "SupplierAddresses",
-                column: "SupplierId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserAddresses_UserId",
-                schema: "catalog",
-                table: "UserAddresses",
-                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserClaims_UserId",
@@ -1311,12 +1269,24 @@ namespace Migrators.PostgreSQL.Migrations.Application
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "AddressOfSuppliers",
+                schema: "catalog");
+
+            migrationBuilder.DropTable(
+                name: "AddressOfUsers",
+                schema: "catalog");
+
+            migrationBuilder.DropTable(
                 name: "AuditTrails",
                 schema: "auditing");
 
             migrationBuilder.DropTable(
                 name: "BookGenres",
                 schema: "catalog");
+
+            migrationBuilder.DropTable(
+                name: "DiscountOnProducts",
+                schema: "sales");
 
             migrationBuilder.DropTable(
                 name: "Employees",
@@ -1331,24 +1301,12 @@ namespace Migrators.PostgreSQL.Migrations.Application
                 schema: "sales");
 
             migrationBuilder.DropTable(
-                name: "ProductDiscounts",
-                schema: "sales");
-
-            migrationBuilder.DropTable(
                 name: "Reviews",
                 schema: "catalog");
 
             migrationBuilder.DropTable(
                 name: "RoleClaims",
                 schema: "identity");
-
-            migrationBuilder.DropTable(
-                name: "SupplierAddresses",
-                schema: "catalog");
-
-            migrationBuilder.DropTable(
-                name: "UserAddresses",
-                schema: "catalog");
 
             migrationBuilder.DropTable(
                 name: "UserClaims",
@@ -1371,6 +1329,10 @@ namespace Migrators.PostgreSQL.Migrations.Application
                 schema: "identity");
 
             migrationBuilder.DropTable(
+                name: "Addresses",
+                schema: "catalog");
+
+            migrationBuilder.DropTable(
                 name: "Books",
                 schema: "catalog");
 
@@ -1379,7 +1341,7 @@ namespace Migrators.PostgreSQL.Migrations.Application
                 schema: "catalog");
 
             migrationBuilder.DropTable(
-                name: "CustomerDiscounts",
+                name: "DiscountOnCustomers",
                 schema: "sales");
 
             migrationBuilder.DropTable(
@@ -1389,10 +1351,6 @@ namespace Migrators.PostgreSQL.Migrations.Application
             migrationBuilder.DropTable(
                 name: "ReturnItems",
                 schema: "sales");
-
-            migrationBuilder.DropTable(
-                name: "Addresses",
-                schema: "catalog");
 
             migrationBuilder.DropTable(
                 name: "Roles",

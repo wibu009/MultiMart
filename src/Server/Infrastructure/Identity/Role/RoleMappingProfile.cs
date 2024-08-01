@@ -1,11 +1,10 @@
 ﻿using Mapster;
 using MultiMart.Application.Identity.Roles;
-using MultiMart.Infrastructure.Identity.Role;
 using MultiMart.Shared.Authorization;
 
-namespace MultiMart.Infrastructure.Mapping.Identity;
+namespace MultiMart.Infrastructure.Identity.Role;
 
-public class RoleMappingConfig : IRegister
+public class RoleMappingProfile : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {

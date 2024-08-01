@@ -8,8 +8,9 @@ public class ApplicationUserConfig : IEntityTypeConfiguration<ApplicationUser>
 {
     public void Configure(EntityTypeBuilder<ApplicationUser> builder)
     {
-        builder.ToTable("Users", SchemaNames.Identity);
         builder.UseTptMappingStrategy();
+
+        builder.ToTable("Users", SchemaNames.Identity);
 
         builder
             .Property(u => u.ObjectId)
@@ -28,7 +29,6 @@ public class CustomerConfig : IEntityTypeConfiguration<Customer>
     public void Configure(EntityTypeBuilder<Customer> builder)
     {
         builder.ToTable("Customers", SchemaNames.Identity);
-        builder.HasBaseType<ApplicationUser>();
         builder
             .Property(c => c.LoyaltyPoints)
             .HasDefaultValue(0);
@@ -40,7 +40,6 @@ public class EmployeeConfig : IEntityTypeConfiguration<Employee>
     public void Configure(EntityTypeBuilder<Employee> builder)
     {
         builder.ToTable("Employees", SchemaNames.Identity);
-        builder.HasBaseType<ApplicationUser>();
 
         builder
             .Property(e => e.Position)

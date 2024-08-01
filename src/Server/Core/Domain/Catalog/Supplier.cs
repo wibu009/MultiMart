@@ -15,6 +15,6 @@ public class Supplier : AuditableEntity, IAggregateRoot
     public string? Email { get; set; }
     public string? PhoneNumber { get; set; }
     public string? FaxNumber { get; set; }
-    public List<SupplierAddress> Addresses { get; set; } = new();
+    public List<AddressOfSupplier> Addresses { get; set; } = new();
     public List<Product> Products { get; set; } = new();
 }

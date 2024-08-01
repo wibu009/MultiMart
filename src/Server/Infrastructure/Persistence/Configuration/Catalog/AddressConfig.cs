@@ -9,38 +9,29 @@ public class AddressConfig : IEntityTypeConfiguration<Address>
 {
     public void Configure(EntityTypeBuilder<Address> builder)
     {
-        builder.ToTable("Addresses", SchemaNames.Catalog);
         builder.UseTptMappingStrategy();
+
+        builder.ToTable("Addresses", SchemaNames.Catalog);
 
         builder.HasKey(a => a.Id);
     }
 }
 
-public class UserAddressConfig : IEntityTypeConfiguration<UserAddress>
+public class AddressOfUserConfig : IEntityTypeConfiguration<AddressOfUser>
 {
-    public void Configure(EntityTypeBuilder<UserAddress> builder)
+    public void Configure(EntityTypeBuilder<AddressOfUser> builder)
     {
-        builder.ToTable("UserAddresses", SchemaNames.Catalog);
-
-        builder.HasBaseType<Address>();
-
+        builder.ToTable("AddressOfUsers", SchemaNames.Catalog);
         builder.Property(ua => ua.UserId)
             .IsRequired(false);
-
-        builder.HasOne<ApplicationUser>()
-            .WithMany()
-            .HasForeignKey(ua => ua.UserId)
-            .OnDelete(DeleteBehavior.SetNull);
     }
 }
 
-public class SupplierAddressConfig : IEntityTypeConfiguration<SupplierAddress>
+public class AddressOfSupplierConfig : IEntityTypeConfiguration<AddressOfSupplier>
 {
-    public void Configure(EntityTypeBuilder<SupplierAddress> builder)
+    public void Configure(EntityTypeBuilder<AddressOfSupplier> builder)
     {
-        builder.ToTable("SupplierAddresses", SchemaNames.Catalog);
-
-        builder.HasBaseType<Address>();
+        builder.ToTable("AddressOfSuppliers", SchemaNames.Catalog);
 
         builder.Property(sa => sa.SupplierId)
             .IsRequired(false);

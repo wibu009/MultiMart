@@ -88,5 +88,7 @@
     <ItemGroup>
       <Folder Include="Catalog\V1\Brand\" />
       <Folder Include="Catalog\V1\Category\" />
+      <Folder Include="Mapping\Identity\" />
+      <Folder Include="Mapping\Multitenancy\" />
     </ItemGroup>
 </Project>

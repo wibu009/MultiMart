@@ -26,6 +26,6 @@ public class Product : AuditableEntity, IAggregateRoot
     public DefaultIdType? SupplierId { get; set; }
     public Supplier Supplier { get; set; } = default!;
     public List<OrderItem> OrderItems { get; set; } = new();
-    public List<ProductDiscount> Discounts { get; set; } = new();
+    public List<DiscountOnProduct> Discounts { get; set; } = new();
     public List<Review> Reviews { get; set; } = new();
 }

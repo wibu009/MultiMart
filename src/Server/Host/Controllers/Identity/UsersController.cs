@@ -46,7 +46,7 @@ public class UsersController : VersionNeutralApiController
     [RequiresPermission(ApplicationAction.Create, ApplicationResource.Users)]
     [SwaggerOperation("Creates a new user.", "")]
     public async Task<string> CreateAsync(CreateUserRequest request)
-        => await Mediator.Send(request);
+        => await Mediator.Send(request.SetPropertyValue(nameof(request.Origin), GetOriginFromRequest()));
 
     [HttpPost("self-register")]
     [TenantIdHeader]
@@ -54,7 +54,7 @@ public class UsersController : VersionNeutralApiController
     [SwaggerOperation("Anonymous user creates a user.", "")]
     [ApiConventionMethod(typeof(ApplicationApiConventions), nameof(ApplicationApiConventions.Register))]
     public async Task<string> SelfRegisterAsync(CreateUserRequest request)
-        => await Mediator.Send(request);
+        => await Mediator.Send(request.SetPropertyValue(nameof(request.Origin), GetOriginFromRequest()));
 
     [HttpPost("{id}/toggle-status")]
     [RequiresPermission(ApplicationAction.Update, ApplicationResource.Users)]

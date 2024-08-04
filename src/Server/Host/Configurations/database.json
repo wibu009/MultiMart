@@ -1,14 +1,10 @@
 {
     "DatabaseSettings": {
-        "DBProvider": "postgresql",
-        "ConnectionString": "Host=localhost;Port=5432;Database=MultiMartRootDB;Username=postgres;Password=admin;Include Error Detail=true"
+      //"DBProvider": "postgresql",
+      //"ConnectionString": "Host=localhost;Port=5432;Database=MultiMartRootDB;Username=postgres;Password=admin;Include Error Detail=true"
       //"DBProvider": "mssql",
       //"ConnectionString": "Server=localhost;Database=MultiMartRootDB;User Id=sa;Password=P@ssw0rd;TrustServerCertificate=True"
-      //"DBProvider": "sqlite",
-      //"ConnectionString": "Data Source=MultiMartRootDB.db"
-      //"DBProvider": "mysql",
-      //"ConnectionString": "Server=localhost;Database=MultiMartRootDB;Uid=root;Pwd=admin"
-      //"DBProvider": "oracle",
-      //"ConnectionString": "Data Source=localhost;User Id=system;Password=admin"
+      "DBProvider": "mysql",
+      "ConnectionString": "Server=localhost;Database=MultiMartRootDB;Uid=root;Pwd=admin"
     }
 }

@@ -20,8 +20,6 @@
       "WorkerCount": 5
     },
     "Storage": {
-      "StorageProvider": "mssql",
-      "ConnectionString": "Server=(localdb)\\mssqllocaldb;Database=MultiMartRootDB;Trusted_Connection=True;MultipleActiveResultSets=true",
       "Options": {
         "CommandBatchMaxTimeout": "00:05:00",
         "QueuePollInterval": "00:00:01",

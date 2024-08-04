@@ -1,3 +1,4 @@
+using Finbuckle.MultiTenant;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -16,12 +17,26 @@ namespace MultiMart.Infrastructure.Persistence;
 
 internal static class Startup
 {
-    private static readonly ILogger _logger = Log.ForContext(typeof(Startup));
+    private static readonly ILogger Logger = Log.ForContext(typeof(Startup));
 
     internal static IServiceCollection AddPersistence(this IServiceCollection services)
     {
         services.AddOptions<DatabaseSettings>()
             .BindConfiguration(nameof(DatabaseSettings))
+            .PostConfigure(options =>
+            {
+                if (string.IsNullOrWhiteSpace(options.DBProvider))
+                {
+                    Logger.Warning("Database DBProvider is not configured.");
+                }
+
+                if (string.IsNullOrWhiteSpace(options.ConnectionString))
+                {
+                    Logger.Warning("Database ConnectionString is not configured.");
+                }
+
+
+            })
             .ValidateDataAnnotations()
             .ValidateOnStart();
 
@@ -29,15 +44,10 @@ internal static class Startup
             .AddDbContext<ApplicationDbContext>((p, m) =>
             {
                 var databaseSettings = p.GetRequiredService<IOptions<DatabaseSettings>>().Value;
-                var applicationTenantInfo = p.GetService<ApplicationTenantInfo>();
-                if (applicationTenantInfo is not null && !string.IsNullOrWhiteSpace(applicationTenantInfo.DbProvider) && !string.IsNullOrWhiteSpace(applicationTenantInfo.ConnectionString))
-                {
-                    m.UseDatabase(applicationTenantInfo.DbProvider, applicationTenantInfo.ConnectionString);
-                }
-                else
-                {
-                    m.UseDatabase(databaseSettings.DBProvider, databaseSettings.ConnectionString);
-                }
+                var applicationTenantInfo = p.GetService<IMultiTenantContextAccessor<ApplicationTenantInfo>>()?.MultiTenantContext?.TenantInfo;
+                string dbProvider = !string.IsNullOrWhiteSpace(applicationTenantInfo?.DbProvider) ? applicationTenantInfo.DbProvider : databaseSettings.DBProvider;
+                string connectionString = !string.IsNullOrWhiteSpace(applicationTenantInfo?.ConnectionString) ? applicationTenantInfo.ConnectionString : databaseSettings.ConnectionString;
+                m.UseDatabase(dbProvider, connectionString);
             })
 
             .AddTransient<IDatabaseInitializer, DatabaseInitializer>()

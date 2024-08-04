@@ -20,7 +20,7 @@ public class UpdateCategoryRequestValidator : CustomValidator<UpdateCategoryRequ
             .WithMessage(t["Name is required."])
             .MaximumLength(255)
             .WithMessage(t["Name must not exceed 255 characters."])
-            .MustAsync(async (request, name, token) => await repository
+            .MustAsync(async (request, name, token) => !await repository
                 .AnyAsync(LambdaSpecification<Domain.Catalog.Category>.Create(spec => spec.Query.Where(c => c.Name == name && c.Id != request.Id)), token))
             .WithMessage((_, name) => t["Category {0} already exists.", name]);
 
@@ -29,7 +29,7 @@ public class UpdateCategoryRequestValidator : CustomValidator<UpdateCategoryRequ
             .WithMessage(t["Description must not exceed 2000 characters."]);
 
         RuleFor(x => x.ParentId)
-            .MustAsync(async (id, token) => id is null || await repository.AnyAsync(LambdaSpecification<Domain.Catalog.Category>.Create(spec => spec.Query.Where(c => c.Id == id)), token))
+            .MustAsync(async (id, token) => id is null || !await repository.AnyAsync(LambdaSpecification<Domain.Catalog.Category>.Create(spec => spec.Query.Where(c => c.Id == id)), token))
             .WithMessage(t["Parent category does not exist."]);
     }
 }

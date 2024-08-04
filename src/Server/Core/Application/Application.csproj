@@ -29,7 +29,6 @@
       <Folder Include="Catalog\V1\Characteristics\Series\" />
       <Folder Include="Catalog\V1\Product\" />
       <Folder Include="Catalog\V1\Review\" />
-      <Folder Include="Catalog\V1\Supplier\Create\" />
       <Folder Include="Catalog\V1\Supplier\Delete\" />
       <Folder Include="Catalog\V1\Supplier\Get\" />
       <Folder Include="Catalog\V1\Supplier\Search\" />

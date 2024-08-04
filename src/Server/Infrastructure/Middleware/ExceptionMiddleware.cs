@@ -16,11 +16,11 @@ internal class ExceptionMiddleware : IMiddleware
 
     public ExceptionMiddleware(
         ICurrentUser currentUser,
-        IStringLocalizer<ExceptionMiddleware> localizer,
+        IStringLocalizer<ExceptionMiddleware> t,
         ISerializerService jsonSerializer)
     {
         _currentUser = currentUser;
-        _t = localizer;
+        _t = t;
         _jsonSerializer = jsonSerializer;
     }
 
@@ -32,7 +32,7 @@ internal class ExceptionMiddleware : IMiddleware
         }
         catch (Exception exception)
         {
-            string email = _currentUser.GetUserEmail() is string userEmail ? userEmail : "Anonymous";
+            string email = _currentUser.GetUserEmail() is { } userEmail ? userEmail : "Anonymous";
             var userId = _currentUser.GetUserId();
             string tenant = _currentUser.GetTenant() ?? string.Empty;
             if (userId != DefaultIdType.Empty) LogContext.PushProperty("UserId", userId);
@@ -62,7 +62,11 @@ internal class ExceptionMiddleware : IMiddleware
                 errorResult.Exception = "One or More Validations failed.";
                 foreach (var error in fluentException.Errors)
                 {
-                    errorResult.Messages.Add(error.ErrorMessage);
+                    errorResult.Messages.Add(
+                        new
+                        {
+                            error.PropertyName, error.ErrorMessage
+                        }.ToString() ?? _t["Validation failed"]);
                 }
             }
 

@@ -10,13 +10,14 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MultiMart.Infrastructure.BackgroundJobs.Hangfire;
+using MultiMart.Infrastructure.Persistence;
 using Serilog;
 
 namespace MultiMart.Infrastructure.BackgroundJobs;
 
 internal static class Startup
 {
-    private static readonly ILogger _logger = Log.ForContext(typeof(Startup));
+    private static readonly ILogger Logger = Log.ForContext(typeof(Startup));
 
     internal static IServiceCollection AddBackgroundJobs(this IServiceCollection services, IConfiguration config)
     {
@@ -24,17 +25,17 @@ internal static class Startup
 
         services.AddHangfireConsoleExtensions();
 
-        var storageSettings = config.GetSection("HangfireSettings:Storage").Get<HangfireStorageSettings>();
+        var storageSettings = config.GetSection(nameof(DatabaseSettings)).Get<DatabaseSettings>();
         if (storageSettings is null) throw new Exception("Hangfire Storage Provider is not configured.");
-        if (string.IsNullOrEmpty(storageSettings.StorageProvider)) throw new Exception("Hangfire Storage Provider is not configured.");
+        if (string.IsNullOrEmpty(storageSettings.DBProvider)) throw new Exception("Hangfire Storage Provider is not configured.");
         if (string.IsNullOrEmpty(storageSettings.ConnectionString)) throw new Exception("Hangfire Storage Provider ConnectionString is not configured.");
-        _logger.Information($"Hangfire: Current Storage Provider : {storageSettings.StorageProvider}");
-        _logger.Information("For more Hangfire storage, visit https://www.hangfire.io/extensions.html");
+        Logger.Information($"Hangfire: Current Storage Provider : {storageSettings.DBProvider}");
+        Logger.Information("For more Hangfire storage, visit https://www.hangfire.io/extensions.html");
 
         services.AddSingleton<JobActivator, ApplicationJobActivator>();
 
         services.AddHangfire((provider, hangfireConfig) => hangfireConfig
-            .UseDatabase(storageSettings.StorageProvider, storageSettings.ConnectionString, config)
+            .UseDatabase(storageSettings.DBProvider, storageSettings.ConnectionString, config)
             .UseFilter(new ApplicationJobFilter(provider))
             .UseFilter(new LogJobFilter())
             .UseConsole());

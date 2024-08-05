@@ -17,3 +17,17 @@ public class UserDetailsDto : IDto
     public bool EmailConfirmed { get; set; }
     public string? PhoneNumber { get; set; }
 }
+
+public class CustomerDetailsDto : UserDetailsDto
+{
+    public int LoyaltyPoints { get; set; }
+}
+
+public class EmployeeDetailsDto : UserDetailsDto
+{
+    public string? Position { get; set; }
+    public string? Department { get; set; }
+    public DateTime? HireDate { get; set; }
+    public string? ManagerId { get; set; }
+    public string? ManagerName { get; set; }
+}

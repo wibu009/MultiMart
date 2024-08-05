@@ -17,3 +17,15 @@ public class CreateUserRequest : IRequest<string>
     [JsonIgnore]
     public string? Origin { get; set; }
 }
+
+public class CreateCustomerRequest : CreateUserRequest
+{
+}
+
+public class CreateEmployeeRequest : CreateUserRequest
+{
+    public string Position { get; set; } = default!;
+    public string Department { get; set; } = default!;
+    public DateTime HireDate { get; set; }
+    public string? ManagerId { get; set; }
+}

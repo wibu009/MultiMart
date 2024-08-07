@@ -1,0 +1,229 @@
+@use "sass:map";
+@import "style/pages/theme";
+
+@mixin header-small-device {
+
+    .header__top,
+    .header__menu,
+    .header__cart {
+        display: none;
+
+        
+    }
+
+    .humberger__open {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        height: 100%;
+
+        svg {
+            font-size: 30px;
+            color: map.get($theme-colors, "normal-text");
+        }
+    }
+
+    .humberger__menu__overlay {
+        position: fixed;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        content: "";
+        z-index: 98;
+        visibility: hidden;
+        -webkit-transition: all, 0.6s;
+        -moz-transition: all, 0.6s;
+        -ms-transition: all, 0.6s;
+        -o-transition: all, 0.6s;
+        transition: all, 0.6s;
+    }
+
+    .humberger__menu__overlay {
+        &.active {
+            visibility: visible !important;
+        }
+    }
+
+    .humberger__menu__wrapper {
+        width: 300px;
+        background: #ffffff;
+        position: fixed;
+        height: 100%;
+        overflow-y: auto;
+        z-index: -9999;
+        padding: 30px;
+        padding-top: 50px;
+        opacity: 0;
+        display: block;
+        transition: all, 0.6s;
+    }
+
+    .humberger__menu__wrapper {
+        &.show__humberger__menu__wrapper {
+            opacity: 1;
+            left: 0;
+            z-index: 9999;
+        }
+    }
+
+    .header__logo {
+        margin-bottom: 20px;
+        cursor: pointer !important;
+    }
+
+    .humberger__menu__cart {
+        display: flex;
+        margin-bottom: 25px;
+
+        .header__cart__price {
+            font-size: 14px;
+            color: #6f6f6f;
+
+            span {
+                color: map.get($theme-colors, "bold-text");
+                font-weight: 700;
+            }
+        }
+    }
+
+    .humberger__menu__cart ul {
+        list-style: none;
+        display: inline-block;
+        margin-right: 15px;
+
+        li:last-child {
+            margin-right: 0;
+        }
+
+        li {
+            position: relative;
+
+            a {
+                font-size: 18px;
+                color: map.get($theme-colors, "normal-text");
+
+                span {
+                    color: white;
+                    background: map.get($theme-colors, "main");
+                    height: 20px;
+                    left: 10px;
+                    top: -10px;
+                    border-radius: 40px;
+                    display: inline-block;
+                    text-align: center;
+                    line-height: 20px;
+                    font-size: 13px;
+                    font-weight: 500;
+                    position: absolute;
+                    padding: 0px 7px;
+                }
+            }
+        }
+    }
+
+    .humberger__menu__widget {
+        margin-bottom: 20px;
+
+        .header__top__right__auth a {
+            display: block;
+            font-size: 14px;
+            color: map.get($theme-colors, "normal-text");
+            text-decoration: none;
+        }
+    }
+
+    .humberger__menu__nav {
+        margin-bottom: 20px;
+
+        ul {
+            list-style: none;
+
+            li {
+                padding: 8px 0;
+                border-bottom: 1px solid #e1e1e1;
+
+                a {
+                    color: map.get($theme-colors, "normal-text");
+                    font-size: 16px;
+                    font-weight: 500;
+                    margin: 0;
+                    text-decoration: none;
+
+                    svg {
+                        vertical-align: middle;
+                    }
+                }
+            }
+        }
+    }
+
+    .header__menu__dropdown {
+        z-index: 9;
+        padding: 5px 0;
+        display: none;
+
+        li {
+            margin-right: 0;
+            display: block;
+            margin-left: 10px;
+        }
+
+        li:last-child {
+            border-bottom: unset;
+        }
+    }
+
+    .show__submenu {
+        display: block;
+    }
+
+    .header__top__right__social {
+        display: block;
+        margin-right: 0;
+        margin-bottom: 20px;
+
+        a {
+            font-size: 14px;
+            display: inline-block;
+            color: map.get($theme-colors, "normal-text");
+            margin-right: 15px;
+
+            svg {
+                font-size: 20px;
+            }
+        }
+    }
+
+    .humberger__menu__contact {
+        ul li {
+            font-size: 14px;
+            display: inline-block;
+            color: map.get($theme-colors, "normal-text");
+            margin-bottom: 10px;
+        }
+    }
+
+    .hero__categories_container {
+        min-width: 100% !important;
+
+        .hero__categories {
+            margin-bottom: 30px;
+        }
+    }
+
+    .hero__search {
+        padding-left: unset;
+    }
+
+    .hero__search__form {
+        width: 580px !important;
+    }
+
+    .hero__item {
+        margin-left: unset;
+        min-width: 675px;
+        background-size: contain;
+    }
+}

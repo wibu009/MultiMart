@@ -1,0 +1,110 @@
+@use "sass:map";
+@import "style/pages/all";
+
+.product__details__pic {
+    display: flex;
+    column-gap: 10px;
+
+    img {
+        flex: 0 0 65%;
+        object-fit: cover;
+        width: 50%;
+    }
+
+    .main {
+        flex: 0 0 40%;
+        display: grid;
+        align-items: stretch;
+
+        img {
+            width: 60%;
+            object-fit: cover;
+
+            &:not(:first-child) {
+                padding-top: 5px;
+            }
+        }
+    }
+}
+
+.product__details__text {
+    h2 {
+        color: #252525;
+        font-weight: 700;
+    }
+
+    .seen-icon {
+        display: flex;
+        align-items: center;
+        font-size: 13px;
+        line-height: 30px;
+        column-gap: 5px;
+    }
+
+    p {
+        margin: 10px 0;
+        line-height: 25px;
+    }
+
+    ul {
+        margin: 20px 0;
+        border-top: 1px solid #eee;
+        padding-top: 20px;
+
+        li {
+            list-style: none;
+            display: flex;
+            column-gap: 20px;
+            line-height: 35px;
+
+            b {
+                width: 150px;
+            }
+
+            span {
+                display: flex;
+                column-gap: 10px;
+                align-items: center;
+
+                svg {
+                    font-size: 20px;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}
+
+.product__details__tab {
+    margin: 20px 0;
+
+    h4 {
+        text-align: center;
+        position: relative;
+        margin-bottom: 20px;
+
+        &::after {
+            position: absolute;
+            right: 0;
+            top: 12px;
+            height: 1px;
+            width: 43%;
+            background: #ebebeb;
+            content: "";
+        }
+
+        &::before {
+            position: absolute;
+            left: 0;
+            top: 12px;
+            height: 1px;
+            width: 43%;
+            background: #ebebeb;
+            content: "";
+        }
+    }
+    ul li {
+        list-style: none;
+        line-height: 40px;
+    }
+}

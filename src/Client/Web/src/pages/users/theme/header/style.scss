@@ -1,0 +1,540 @@
+@use "sass:map";
+@use 'header';
+@import "style/pages/all";
+
+$bannerImg: "/assets/users/images/hero/banner3.jpg";
+
+.header__top {
+    background: #f5f5f5;
+
+    .container {
+        padding: unset;
+        padding-top: 10px;
+    }
+}
+
+.header__top__left {
+    display: flex;
+    padding: 10px 0 13px;
+
+    ul {
+        display: flex;
+
+        li {
+            list-style: none;
+            font-size: 14px;
+            color: map.get($theme-colors, "normal-text");
+            display: flex;
+            align-items: center;
+            margin-right: 45px;
+            position: relative;
+
+            svg {
+                margin-right: 2px;
+                margin-top: 1px;
+                font-size: 20px;
+            }
+        }
+
+        li:first-child {
+            &:after {
+                position: absolute;
+                right: -25px;
+                top: 1px;
+                height: 20px;
+                width: 1px;
+                background: #000000;
+                opacity: 0.1;
+                content: "";
+            }
+        }
+    }
+}
+
+.header__top__right {
+    padding: 10px 0 13px;
+
+    .header__top__right__social {
+        ul {
+            display: flex;
+            align-items: center;
+            list-style: none;
+            justify-content: right;
+
+            a:-webkit-any-link {
+                text-decoration: none;
+                color: #000000;
+            }
+
+            li:last-child {
+                margin-left: 10px;
+                cursor: pointer;
+                
+
+
+                span {
+                    vertical-align: text-top;
+                    font-size: 14px;
+                    margin-left: 2px;
+                }
+            }
+        }
+
+        svg {
+            color: map.get($theme-colors, "normal-text");
+            margin-left: 5px;
+        }
+
+        .logout-link {
+            display: flex;
+            align-items: center;
+            
+            .logout-text {
+              visibility: hidden;
+              opacity: 0;
+              margin-left: 8px;
+              transition: visibility 0s, opacity 0.3s;
+            }
+        
+            &:hover .logout-text {
+              visibility: visible;
+              opacity: 1;
+            }
+          }
+    }
+}
+
+.header__logo {
+    padding: 15px 0;
+    cursor: pointer !important;
+}
+
+.header__menu {
+    padding: 24px 0;
+
+    ul {
+        display: flex;
+        justify-content: space-between;
+
+        li {
+            list-style: none;
+            position: relative;
+
+            a {
+                text-decoration: none;
+                font-size: 14px;
+                color: map.get($theme-colors, "bold-text");
+                text-transform: uppercase;
+                font-weight: bold;
+                letter-spacing: 2px;
+                transition: all, 0.3s;
+                padding: 5px 0;
+                display: block;
+            }
+        }
+
+        .selected a, .selected-dropdown a {
+            color:  map.get($theme-colors, "main") !important;
+        }
+
+        .header__menu__dropdown {
+            display: block;
+            position: absolute;
+            left: 0;
+            background: #222222;
+            width: 180px;
+            z-index: 9;
+            padding: 5px 0;
+            transition: all, 0.3s;
+            opacity: 0;
+            visibility: hidden;
+
+            li {
+                a {
+                    text-transform: capitalize;
+                    color: #ffffff;
+                    font-weight: 400;
+                    padding: 5px 15px;
+                }
+
+                :hover {
+                    color: map.get($theme-colors, "main");
+                }
+            }
+        }
+
+        li:hover .header__menu__dropdown {
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+    }
+}
+
+.header__cart {
+    display: flex;
+    padding: 24px 0;
+    justify-content: right;
+    align-items: center;
+
+    ul {
+        display: flex;
+        margin-right: 25px;
+
+        li {
+            list-style: none;
+            position: relative;
+            margin-left: 20px;
+
+            svg {
+                font-size: 25px;
+                color: map.get($theme-colors, "normal-text");
+            }
+
+            span {
+                color: white;
+                background: map.get($theme-colors, "main");
+                height: 20px;
+                left: 20px;
+                top: -2px;
+                border-radius: 40px;
+                display: inline-block;
+                text-align: center;
+                line-height: 20px;
+                font-size: 13px;
+                font-weight: 500;
+                position: absolute;
+                padding: 0px 7px;
+            }
+        }
+    }
+
+    .header__cart__price {
+        display: flex;
+        margin-left: 10px;
+        width: 100%;
+        justify-content: right;
+        overflow: hidden;
+    }
+}
+.header__noti {
+    display: flex;
+    padding: 24px 0;
+    justify-content: right;
+    align-items: center;
+
+    ul {
+        display: flex;
+        margin-right: 25px;
+
+        li {
+            list-style: none;
+            position: relative;
+            margin-left: 20px;
+
+            svg {
+                font-size: 25px;
+                color: map.get($theme-colors, "normal-text");
+            }
+
+            span {
+                color: white;
+                background: map.get($theme-colors, "main");
+                height: 20px;
+                left: 20px;
+                top: -2px;
+                border-radius: 40px;
+                display: inline-block;
+                text-align: center;
+                line-height: 20px;
+                font-size: 13px;
+                font-weight: 500;
+                position: absolute;
+                padding: 0px 7px;
+            }
+        }
+    }
+}
+
+.humberger__open,
+.humberger__menu__wrapper {
+    display: none;
+}
+
+.hero__categories {
+    position: relative;
+
+    .hero__categories__all {
+        background: map.get($theme-colors, "main");
+        padding: 15px 25px 15px 40px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+
+        svg,
+        span {
+            font-size: 16px;
+            color: #ffffff;
+            margin-right: 5px;
+            font-weight: 700;
+        }
+
+        svg {
+            font-size: 20px;
+            font-weight: bold;
+        }
+    }
+
+    ul {
+        border: 1px solid #ebebeb;
+        position: absolute;
+        width: 100%;
+        background: #ffffff;
+        opacity: 1;
+        transition: all 0.2s;
+
+        li {
+            list-style: none;
+
+            &:hover {
+                background: #f7ffff;
+
+                a {
+                    color: map.get($theme-colors, "main") !important;
+                }
+            }
+
+            a {
+                text-decoration: none;
+                background-color: transparent;
+                font-size: 16px;
+                color: map.get($theme-colors, "normal-text");
+                line-height: 39px;
+                display: block;
+                padding-left: 40px;
+
+                &:hover { 
+                    color: map.get($theme-colors, "description") !important;
+                }
+            }
+        }
+
+        &.hidden {
+            opacity: 0;
+        }
+    }
+}
+
+.hero__search {
+    padding-left: 15px;
+    margin-bottom: 30px;
+
+    .hero__search__form {
+        width: 610px;
+        height: 50px;
+        float: left;
+
+        .hero__search__form__group {
+            display: flex;
+        }
+
+        input {
+            width: 70%;
+            border: none;
+            height: 48px;
+            font-size: 16px;
+            color: #b2b2b2;
+            padding-left: 20px;
+            border: 1px solid #ebebeb;
+
+            :focus {
+                outline: none;
+                border: none;
+            }
+        }
+
+        button {
+            font-size: 14px;
+            color: #ffffff;
+            font-weight: 800;
+            text-transform: uppercase;
+            display: inline-block;
+            padding: 16px 30px 17px;
+            background: map.get($theme-colors, "main");
+            border: none;
+            height: 100%;
+        }
+    }
+}
+
+.hero__search__phone {
+    display: flex;
+    align-items: center;
+
+    .hero__search__phone__icon {
+        font-size: 25px;
+        color: map.get($theme-colors, "main");
+        padding: 10px;
+        background: #f5f5f5;
+        line-height: 50px;
+        text-align: center;
+        border-radius: 50%;
+        float: left;
+        margin-right: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .hero__search__phone__text {
+        display: inline-block;
+
+        p {
+            color: map.get($theme-colors, "normal-text");
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        span {
+            font-size: 14px;
+            color: #6f6f6f;
+        }
+    }
+}
+
+.hero__item {
+    margin-left: 15px;
+    background-image: url($bannerImg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 410px;
+    display: flex;
+    align-items: center;
+    padding-left: 75px;
+
+    .hero__text {
+        span {
+            font-size: 14px;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 4px;
+            color: map.get($theme-colors, "main");
+        }
+
+        h2 {
+            font-size: 45px;
+            color: map.get($theme-colors, "bold-text");
+            line-height: 52px;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+
+        p {
+            font-size: 16px;
+            color: #6f6f6f;
+            font-weight: 400;
+            line-height: 26px;
+            margin: 0 0 15px 0;
+        }
+
+        a {
+            display: inline-block;
+            font-size: 14px;
+            padding: 10px 28px 10px;
+            color: #ffffff;
+            text-transform: uppercase;
+            font-weight: 700;
+            background: map.get($theme-colors, "main");
+            letter-spacing: 2px;
+            text-decoration: none;
+        }
+    }
+}
+
+/* Medium Device */
+@include Responsive($MEDIUM_DEVICE) {
+    .hero__search__form {
+        width: 565px !important;
+    }
+
+    .container__categories__slider {
+        width: 990px !important;
+    }
+}
+
+/* Tablet Device */
+@include Responsive($TABLET_DEVICE) {
+    @include header.header-small-device;
+}
+
+/* Wide Mobile */
+@include Responsive($WIDE_MOBILE) {
+    @include header.header-small-device;
+
+    .header__logo {
+        width: max-content;
+        cursor: pointer !important;
+    }
+
+    .hero__item {
+        height: 300px;
+        padding-left: 25px;
+        min-width: 540px;
+    }
+
+    .hero__search {
+        display: grid;
+        row-gap: 30px;
+
+        .hero__search__form__group {
+            input {
+                width: 73%;
+            }
+        }
+    }
+}
+
+/* Small Device */
+@include Responsive($SMALL_DEVICES) {
+    .hero__search {
+        .hero__search__form {
+            width: 380px !important;
+
+            .hero__search__form__group button {
+                width: 135px;
+            }
+        }
+    }
+
+    .hero__item {
+        min-width: 355px;
+        height: 190px;
+
+        .hero__text {
+            span {
+                font-size: 10px;
+                font-weight: 700;
+            }
+
+            h2 {
+                font-size: 20px;
+                line-height: 20px;
+                font-weight: 700;
+            }
+
+            p {
+                font-size: 12px;
+            }
+
+            a {
+                font-size: 10px;
+                padding: 8px 15px 8px;
+                color: #ffffff;
+                text-transform: uppercase;
+                font-weight: 700;
+                background: map.get($theme-colors, "main");
+                letter-spacing: 2px;
+                text-decoration: none;
+            }
+        }
+    }
+}

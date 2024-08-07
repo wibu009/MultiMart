@@ -1,0 +1,77 @@
+
+@use "sass:map";
+@import "style/pages/all";
+
+.featured__item {
+    margin-bottom: 50px;
+
+    &:hover {
+        .featured__item__pic__hover {
+            top: 80% !important;
+        }
+    }
+
+    .featured__item__pic {
+        height: 270px;
+        position: relative;
+        overflow: hidden;
+        background-position: center center;
+
+        .featured__item__pic__hover {
+            position: absolute;
+            left: 0;
+            top: 120%;
+            width: 100%;
+            text-align: center;
+            transition: all, 0.5s;
+
+            li {
+                list-style: none;
+                display: inline-block;
+                margin-right: 10px;
+
+                &:hover {
+                    svg {
+                        background: #7fad39;
+                        border-color: #7fad39;
+                        color: #ffffff;
+                        transform: rotate(360deg) !important;
+                    }
+                }
+
+                svg {
+                    padding: 10px;
+                    height: 20px;
+                    width: 20px;
+                    border: 1px solid #ebebeb;
+                    background: #ffffff;
+                    border-radius: 50%;
+                    color: #565555;
+                    transition: all, 0.3s;
+                }
+            }
+        }
+    }
+}
+
+.featured__item__text {
+    text-align: center;
+
+    h6 {
+        margin-top: 10px;
+        font-size: 16px;
+        font-weight: 400;
+
+        a {
+            color: map.get($theme-colors, "normal-text");
+            text-decoration: none;
+        }
+    }
+
+    h5 {
+        color: map.get($theme-colors, "normal-text");
+        font-weight: 700;
+        margin-top: 10px;
+        font-size: 18px;
+    }
+}

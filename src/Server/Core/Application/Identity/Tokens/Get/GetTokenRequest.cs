@@ -4,6 +4,7 @@ namespace MultiMart.Application.Identity.Tokens.Get;
 
 public class GetTokenRequest : IRequest<TokenResponse>
 {
+    [JsonIgnore]
     public string? Token { get; set; } = default!;
     public string? UserNameOrEmail { get; set; } = default!;
     public string? Password { get; set; } = default!;

@@ -20,14 +20,26 @@ public class UsersController : VersionNeutralApiController
     [HttpPost("search")]
     [RequiresPermission(ApplicationAction.View, ApplicationResource.Users)]
     [SwaggerOperation("Search for users.", "")]
-    public Task<PaginationResponse<UserDetailsDto>> SearchAsync(SearchUserRequest request, CancellationToken cancellationToken)
-        => Mediator.Send(request, cancellationToken);
+    public async Task<PaginationResponse<UserDetailsDto>> SearchAsync(SearchUserRequest request, CancellationToken cancellationToken)
+        => await Mediator.Send(request, cancellationToken);
+
+    [HttpPost("search-customer")]
+    [RequiresPermission(ApplicationAction.View, ApplicationResource.Users)]
+    [SwaggerOperation("Search for customers.", "")]
+    public async Task<PaginationResponse<CustomerDetailsDto>> SearchCustomerAsync(SearchCustomerRequest request, CancellationToken cancellationToken)
+        => await Mediator.Send(request, cancellationToken);
 
     [HttpGet("{id}")]
     [RequiresPermission(ApplicationAction.View, ApplicationResource.Users)]
     [SwaggerOperation("Get a user's details.", "")]
-    public Task<UserDetailsDto> GetByIdAsync(string id, CancellationToken cancellationToken)
-        => Mediator.Send(new GetUserRequest(id), cancellationToken);
+    public async Task<UserDetailsDto> GetByIdAsync(string id, CancellationToken cancellationToken)
+        => await Mediator.Send(new GetUserRequest(id), cancellationToken);
+
+    [HttpGet("{id}/customer")]
+    [RequiresPermission(ApplicationAction.View, ApplicationResource.Users)]
+    [SwaggerOperation("Get a customer's details.", "")]
+    public async Task<CustomerDetailsDto> GetCustomerByIdAsync(string id, CancellationToken cancellationToken)
+        => await Mediator.Send(new GetCustomerRequest(id), cancellationToken);
 
     [HttpGet("{id}/roles")]
     [RequiresPermission(ApplicationAction.View, ApplicationResource.UserRoles)]
@@ -46,6 +58,26 @@ public class UsersController : VersionNeutralApiController
     [RequiresPermission(ApplicationAction.Create, ApplicationResource.Users)]
     [SwaggerOperation("Creates a new user.", "")]
     public async Task<string> CreateAsync(CreateUserRequest request)
+    {
+        request.SetPropertyValue(nameof(request.Origin), GetOriginFromRequest());
+        return request switch
+        {
+            CreateCustomerRequest customerRequest => await Mediator.Send(customerRequest),
+            CreateEmployeeRequest employeeRequest => await Mediator.Send(employeeRequest),
+            _ => await Mediator.Send(request)
+        };
+    }
+
+    [HttpPost("create-customer")]
+    [RequiresPermission(ApplicationAction.Create, ApplicationResource.Users)]
+    [SwaggerOperation("Creates a new customer.", "")]
+    public async Task<string> CreateCustomerAsync(CreateCustomerRequest request)
+        => await Mediator.Send(request.SetPropertyValue(nameof(request.Origin), GetOriginFromRequest()));
+
+    [HttpPost("create-employee")]
+    [RequiresPermission(ApplicationAction.Create, ApplicationResource.Users)]
+    [SwaggerOperation("Creates a new employee.", "")]
+    public async Task<string> CreateEmployeeAsync(CreateEmployeeRequest request)
         => await Mediator.Send(request.SetPropertyValue(nameof(request.Origin), GetOriginFromRequest()));
 
     [HttpPost("self-register")]

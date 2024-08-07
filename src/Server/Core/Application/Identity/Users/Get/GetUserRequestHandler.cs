@@ -1,11 +1,37 @@
 ﻿namespace MultiMart.Application.Identity.Users.Get;
 
-public class GetUserRequestHandler : IRequestHandler<GetUserRequest, UserDetailsDto>
+public class GetUserRequestHandler<TRequest, TUserDetailsDto> : IRequestHandler<TRequest, TUserDetailsDto>
+    where TRequest : GetUserRequest<TUserDetailsDto>
+    where TUserDetailsDto : UserDetailsDto
 {
     private readonly IUserService _userService;
 
-    public GetUserRequestHandler(IUserService userService) => _userService = userService;
+    protected GetUserRequestHandler(IUserService userService) => _userService = userService;
 
-    public Task<UserDetailsDto> Handle(GetUserRequest request, CancellationToken cancellationToken)
-        => _userService.GetAsync(request.Id, cancellationToken);
+    public Task<TUserDetailsDto> Handle(TRequest request, CancellationToken cancellationToken)
+        => _userService.GetAsync<TUserDetailsDto>(request.Id, cancellationToken);
+}
+
+public class GetUserRequestHandler : GetUserRequestHandler<GetUserRequest, UserDetailsDto>
+{
+    public GetUserRequestHandler(IUserService userService)
+        : base(userService)
+    {
+    }
+}
+
+public class GetCustomerRequestHandler : GetUserRequestHandler<GetCustomerRequest, CustomerDetailsDto>
+{
+    public GetCustomerRequestHandler(IUserService userService)
+        : base(userService)
+    {
+    }
+}
+
+public class GetEmployeeRequestHandler : GetUserRequestHandler<GetEmployeeRequest, EmployeeDetailsDto>
+{
+    public GetEmployeeRequestHandler(IUserService userService)
+        : base(userService)
+    {
+    }
 }

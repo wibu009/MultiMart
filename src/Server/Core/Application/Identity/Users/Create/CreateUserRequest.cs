@@ -20,6 +20,7 @@ public class CreateUserRequest : IRequest<string>
 
 public class CreateCustomerRequest : CreateUserRequest
 {
+    public int LoyaltyPoints { get; set; }
 }
 
 public class CreateEmployeeRequest : CreateUserRequest

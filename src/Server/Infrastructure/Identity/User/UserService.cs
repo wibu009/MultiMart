@@ -100,12 +100,13 @@ internal partial class UserService : IUserService
         return new PaginationResponse<UserDetailsDto>(users, count, request.PageNumber, request.PageSize);
     }
 
-    public async Task<PaginationResponse<TUserDto>> SearchAsync<TUserDto>(
-        SearchUserRequest request,
+    public async Task<PaginationResponse<TUserDto>> SearchAsync<TUserDto, TSearchUserRequest>(
+        TSearchUserRequest request,
         CancellationToken cancellationToken)
         where TUserDto : UserDetailsDto
+        where TSearchUserRequest : PaginationFilter
     {
-        IQueryable<ApplicationUser> query = _db.Users;
+        var query = _userManager.Users;
 
         if (typeof(TUserDto) == typeof(CustomerDetailsDto))
         {
@@ -163,8 +164,45 @@ internal partial class UserService : IUserService
                 .ToListAsync(cancellationToken))
             .Adapt<List<UserDetailsDto>>();
 
-    public Task<int> GetCountAsync(CancellationToken cancellationToken) =>
+    public async Task<List<TUserDto>> GetListAsync<TUserDto>(CancellationToken cancellationToken)
+        where TUserDto : UserDetailsDto
+    {
+        var query = _userManager.Users;
+
+        if (typeof(TUserDto) == typeof(CustomerDetailsDto))
+        {
+            query = query.OfType<Customer>();
+        }
+        else if (typeof(TUserDto) == typeof(EmployeeDetailsDto))
+        {
+            query = query.OfType<Employee>();
+        }
+
+        return (await query
+                .AsNoTracking()
+                .ToListAsync(cancellationToken))
+            .Adapt<List<TUserDto>>();
+    }
+
+    public Task<int> CountAsync(CancellationToken cancellationToken) =>
         _userManager.Users.AsNoTracking().CountAsync(cancellationToken);
+
+    public async Task<int> CountAsync<TUserDto>(CancellationToken cancellationToken)
+        where TUserDto : UserDetailsDto
+    {
+        var query = _userManager.Users;
+
+        if (typeof(TUserDto) == typeof(CustomerDetailsDto))
+        {
+            query = query.OfType<Customer>();
+        }
+        else if (typeof(TUserDto) == typeof(EmployeeDetailsDto))
+        {
+            query = query.OfType<Employee>();
+        }
+
+        return await query.AsNoTracking().CountAsync(cancellationToken);
+    }
 
     public async Task<UserDetailsDto> GetAsync(string userId, CancellationToken cancellationToken)
     {
@@ -176,6 +214,30 @@ internal partial class UserService : IUserService
         _ = user ?? throw new NotFoundException(_t["User Not Found."]);
 
         return user.Adapt<UserDetailsDto>();
+    }
+
+    public async Task<TUserDto> GetAsync<TUserDto>(string userId, CancellationToken cancellationToken)
+        where TUserDto : UserDetailsDto
+    {
+        var query = _userManager.Users;
+
+        if (typeof(TUserDto) == typeof(CustomerDetailsDto))
+        {
+            query = query.OfType<Customer>();
+        }
+        else if (typeof(TUserDto) == typeof(EmployeeDetailsDto))
+        {
+            query = query.OfType<Employee>();
+        }
+
+        var user = await query
+            .AsNoTracking()
+            .Where(u => u.Id == userId)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        _ = user ?? throw new NotFoundException(_t["User Not Found."]);
+
+        return user.Adapt<TUserDto>();
     }
 
     public async Task ToggleStatusAsync(bool activateUser, string userId, CancellationToken cancellationToken)
@@ -381,6 +443,57 @@ internal partial class UserService : IUserService
         return string.Join(Environment.NewLine, messages);
     }
 
+    public async Task<string> CreateAsync<TCreateUserRequest>(
+        TCreateUserRequest request,
+        CancellationToken cancellationToken)
+        where TCreateUserRequest : CreateUserRequest
+    {
+        dynamic user = request switch
+        {
+            CreateCustomerRequest => request.Adapt<Customer>(),
+            CreateEmployeeRequest => request.Adapt<Employee>(),
+            _ => request.Adapt<ApplicationUser>()
+        };
+
+        dynamic result = await _userManager.CreateAsync(user, request.Password);
+        if (!result.Succeeded)
+        {
+            throw new InternalServerException(_t["Validation Errors Occurred."], result.GetErrors(_t));
+        }
+
+        string role = user switch
+        {
+            Customer => ApplicationRoles.Basic,
+            Employee => ApplicationRoles.Admin,
+            _ => ApplicationRoles.Basic // Default role, if any
+        };
+
+        await _userManager.AddToRoleAsync(user, role);
+
+        var messages = new List<string> { string.Format(_t["User {0} Registered."], user.UserName) };
+
+        if (_securitySettings.RequireConfirmedAccount && !string.IsNullOrEmpty(user.Email))
+        {
+            string emailVerificationUri = await GetEmailVerificationUriAsync(user, request.Origin!);
+            var emailModel = new UserEmailTemplateModel
+            {
+                Email = user.Email,
+                UserName = user.UserName!,
+                Url = emailVerificationUri
+            };
+            var mailRequest = new MailRequest(
+                new List<string> { user.Email },
+                _t["Confirm Registration"],
+                _templateService.GenerateEmailTemplate("email-confirmation", emailModel));
+            _jobService.Enqueue(() => _mailService.SendAsync(mailRequest, cancellationToken));
+            messages.Add(_t[$"Please check {user.Email} to verify your account!"]);
+        }
+
+        await _events.PublishAsync(new ApplicationUserCreatedEvent(user.Id));
+
+        return string.Join(Environment.NewLine, messages);
+    }
+
     public async Task UpdateAsync(UpdateUserRequest request, CancellationToken cancellationToken = default)
     {
         var user = await _userManager.FindByIdAsync(request.Id);
@@ -424,55 +537,62 @@ internal partial class UserService : IUserService
         }
     }
 
-    public async Task<string> CreateAsync<TCreateUserRequest>(
-        TCreateUserRequest request,
-        CancellationToken cancellationToken)
-        where TCreateUserRequest : CreateUserRequest
+    public async Task UpdateAsync<TUpdateUserRequest>(
+        TUpdateUserRequest request,
+        CancellationToken cancellationToken = default)
+        where TUpdateUserRequest : UpdateUserRequest
     {
-        ApplicationUser user = request switch
-        {
-            CreateCustomerRequest => request.Adapt<Customer>(),
-            CreateEmployeeRequest => request.Adapt<Employee>(),
-            _ => throw new InternalServerException(_t["Invalid User Type."])
-        };
+        var query = _userManager.Users;
 
-        var result = await _userManager.CreateAsync(user, request.Password);
+        if (typeof(TUpdateUserRequest) == typeof(UpdateCustomerRequest))
+        {
+            query = query.OfType<Customer>();
+        }
+        else if (typeof(TUpdateUserRequest) == typeof(UpdateEmployeeRequest))
+        {
+            query = query.OfType<Employee>();
+        }
+
+        var user = await query
+            .Where(u => u.Id == request.Id)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        _ = user ?? throw new NotFoundException(_t["User Not Found."]);
+
+        string currentImage = user.Avatar ?? string.Empty;
+        if (request.Image != null || request.DeleteCurrentImage)
+        {
+            user.Avatar = await _localFileStorage.UploadAsync<ApplicationUser>(request.Image, FileType.Image, cancellationToken);
+            if (request.DeleteCurrentImage && !string.IsNullOrEmpty(currentImage))
+            {
+                string root = Directory.GetCurrentDirectory();
+                await _localFileStorage.RemoveAsync(Path.Combine(root, currentImage), cancellationToken);
+            }
+        }
+
+        user = request.Adapt(user);
+
+        string? currentPhoneNumber = await _userManager.GetPhoneNumberAsync(user);
+        if (request.PhoneNumber != currentPhoneNumber)
+        {
+            await _userManager.SetPhoneNumberAsync(user, request.PhoneNumber);
+        }
+
+        string? currentEmail = await _userManager.GetEmailAsync(user);
+        if (request.Email != currentEmail)
+        {
+            await _userManager.SetEmailAsync(user, request.Email);
+        }
+
+        var result = await _userManager.UpdateAsync(user);
         if (!result.Succeeded)
         {
-            throw new InternalServerException(_t["Validation Errors Occurred."], result.GetErrors(_t));
+            throw new InternalServerException(_t["Update profile failed"], result.GetErrors(_t));
         }
 
-        string role = user switch
-        {
-            Customer => ApplicationRoles.Basic,
-            Employee => ApplicationRoles.Admin,
-            _ => ApplicationRoles.Basic // Default role, if any
-        };
+        await _signInManager.RefreshSignInAsync(user);
 
-        await _userManager.AddToRoleAsync(user, role);
-
-        var messages = new List<string> { string.Format(_t["User {0} Registered."], user.UserName) };
-
-        if (_securitySettings.RequireConfirmedAccount && !string.IsNullOrEmpty(user.Email))
-        {
-            string emailVerificationUri = await GetEmailVerificationUriAsync(user, request.Origin!);
-            var emailModel = new UserEmailTemplateModel
-            {
-                Email = user.Email,
-                UserName = user.UserName!,
-                Url = emailVerificationUri
-            };
-            var mailRequest = new MailRequest(
-                new List<string> { user.Email },
-                _t["Confirm Registration"],
-                _templateService.GenerateEmailTemplate("email-confirmation", emailModel));
-            _jobService.Enqueue(() => _mailService.SendAsync(mailRequest, cancellationToken));
-            messages.Add(_t[$"Please check {user.Email} to verify your account!"]);
-        }
-
-        await _events.PublishAsync(new ApplicationUserCreatedEvent(user.Id));
-
-        return string.Join(Environment.NewLine, messages);
+        await _events.PublishAsync(new ApplicationUserUpdatedEvent(user.Id));
     }
 
     #endregion

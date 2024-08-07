@@ -24,7 +24,7 @@ public class GetStatsRequestHandler : IRequestHandler<GetStatsRequest, StatsDto>
     {
         var stats = new StatsDto
         {
-            UserCount = await _userService.GetCountAsync(cancellationToken),
+            UserCount = await _userService.CountAsync(cancellationToken),
             RoleCount = await _roleService.GetCountAsync(cancellationToken)
         };
 

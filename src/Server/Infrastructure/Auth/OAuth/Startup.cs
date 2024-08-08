@@ -1,12 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using MultiMart.Infrastructure.Auth.OAuth2.Facebook;
-using MultiMart.Infrastructure.Auth.OAuth2.Google;
+using MultiMart.Infrastructure.Auth.OAuth.Facebook;
+using MultiMart.Infrastructure.Auth.OAuth.Google;
 
-namespace MultiMart.Infrastructure.Auth.OAuth2;
+namespace MultiMart.Infrastructure.Auth.OAuth;
 
 public static class Startup
 {
-    public static void AddOAuth2(this IServiceCollection services)
+    public static void AddOAuth(this IServiceCollection services)
     {
         services.AddOptions<GoogleSettings>()
             .BindConfiguration($"SecuritySettings:{nameof(GoogleSettings)}")
@@ -17,7 +17,5 @@ public static class Startup
             .BindConfiguration($"SecuritySettings:{nameof(FacebookSettings)}")
             .ValidateDataAnnotations()
             .ValidateOnStart();
-
-        services.AddScoped<OAuth2Service>();
     }
 }

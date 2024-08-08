@@ -1,4 +1,4 @@
-﻿namespace MultiMart.Infrastructure.Auth.OAuth2.Facebook;
+﻿namespace MultiMart.Infrastructure.Auth.OAuth.Facebook;
 
 public class Userinfo
 {

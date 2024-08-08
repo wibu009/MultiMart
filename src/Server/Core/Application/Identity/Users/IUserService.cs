@@ -6,7 +6,7 @@ using MultiMart.Application.Identity.Users.Update;
 
 namespace MultiMart.Application.Identity.Users;
 
-public interface IUserService : ITransientService
+public interface IUserService : IScopedService
 {
     Task<PaginationResponse<UserDetailsDto>> SearchAsync(SearchUserRequest request, CancellationToken cancellationToken);
 

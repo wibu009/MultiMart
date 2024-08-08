@@ -1,7 +1,4 @@
-﻿using System.Text;
-using Newtonsoft.Json;
-
-namespace MultiMart.Infrastructure.Auth.OAuth2;
+﻿namespace MultiMart.Infrastructure.Auth;
 
 public class StateData<T>
 {

@@ -1,4 +1,4 @@
-﻿namespace MultiMart.Infrastructure.Auth.OAuth2.Google;
+﻿namespace MultiMart.Infrastructure.Auth.OAuth.Google;
 
 public class GoogleSettings
 {

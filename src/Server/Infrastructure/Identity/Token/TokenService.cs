@@ -14,7 +14,6 @@ using MultiMart.Application.Identity.Tokens;
 using MultiMart.Application.Identity.Tokens.Get;
 using MultiMart.Infrastructure.Auth;
 using MultiMart.Infrastructure.Auth.Jwt;
-using MultiMart.Infrastructure.Auth.OAuth2;
 using MultiMart.Infrastructure.Common.Extensions;
 using MultiMart.Infrastructure.Identity.User;
 using MultiMart.Infrastructure.Multitenancy;

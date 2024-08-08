@@ -1,13 +1,13 @@
 ﻿using Facebook;
 
-namespace MultiMart.Infrastructure.Auth.OAuth2.Facebook;
+namespace MultiMart.Infrastructure.Auth.OAuth.Facebook;
 
-public class FacebookOAuth2Service
+public class FacebookOAuthService
 {
     private readonly FacebookSettings _facebookSettings;
     private readonly string _redirectUri;
 
-    public FacebookOAuth2Service(FacebookSettings facebookSettings, string redirectUri)
+    public FacebookOAuthService(FacebookSettings facebookSettings, string redirectUri)
     {
         _facebookSettings = facebookSettings;
         _redirectUri = redirectUri;

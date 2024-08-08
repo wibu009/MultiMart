@@ -2,7 +2,7 @@ using MultiMart.Application.Common.Interfaces;
 
 namespace MultiMart.Application.Identity.Roles;
 
-public interface IRoleService : ITransientService
+public interface IRoleService : IScopedService
 {
     Task<List<RoleDto>> GetListAsync(CancellationToken cancellationToken);
     Task<int> GetCountAsync(CancellationToken cancellationToken);

@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MultiMart.Application.Common.Interfaces;
 using MultiMart.Infrastructure.Auth.AzureAd;
 using MultiMart.Infrastructure.Auth.Jwt;
-using MultiMart.Infrastructure.Auth.OAuth2;
+using MultiMart.Infrastructure.Auth.OAuth;
 using MultiMart.Infrastructure.Auth.Permissions;
 using MultiMart.Infrastructure.Identity;
 
@@ -19,7 +19,7 @@ internal static class Startup
             .AddCurrentUser()
             .AddPermissions()
             .AddIdentity()
-            .AddOAuth2();
+            .AddOAuth();
         services.Configure<SecuritySettings>(config.GetSection(nameof(SecuritySettings)));
         return config["SecuritySettings:Provider"]!.Equals("AzureAd", StringComparison.OrdinalIgnoreCase)
             ? services.AddAzureAdAuth(config)

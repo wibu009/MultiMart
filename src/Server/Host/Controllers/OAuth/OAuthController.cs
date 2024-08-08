@@ -1,20 +1,20 @@
-﻿using MultiMart.Infrastructure.Auth.OAuth2;
+﻿using MultiMart.Infrastructure.Auth.OAuth;
 using MultiMart.Infrastructure.OpenApi;
 
-namespace MultiMart.Host.Controllers.OAuth2;
+namespace MultiMart.Host.Controllers.OAuth;
 
-public class OAuth2Controller : VersionNeutralApiController
+public class OAuthController : VersionNeutralApiController
 {
-    private readonly OAuth2Service _oauth2Service;
+    private readonly OAuthService _oauthService;
 
-    public OAuth2Controller(OAuth2Service oauth2Service) => _oauth2Service = oauth2Service;
+    public OAuthController(OAuthService oauthService) => _oauthService = oauthService;
 
     [HttpGet("{provider}")]
     [AllowAnonymous]
     [TenantIdHeader]
     [SwaggerOperation("External authentication", "Supports Google and Facebook.")]
     public async Task<IActionResult> ExternalLogin([FromRoute] string provider)
-        => RedirectIfNotSwagger(await _oauth2Service.ExternalAuthAsync(provider));
+        => RedirectIfNotSwagger(await _oauthService.ExternalAuthAsync(provider));
 
     [HttpGet("callback/{provider}")]
     [AllowAnonymous]
@@ -24,5 +24,5 @@ public class OAuth2Controller : VersionNeutralApiController
         [FromQuery] string code,
         [FromQuery] string? error = "",
         [FromQuery] string? state = "")
-        => RedirectIfNotSwagger(await _oauth2Service.ExternalAuthCallbackAsync(provider, code, error, state));
+        => RedirectIfNotSwagger(await _oauthService.ExternalAuthCallbackAsync(provider, code, error, state));
 }

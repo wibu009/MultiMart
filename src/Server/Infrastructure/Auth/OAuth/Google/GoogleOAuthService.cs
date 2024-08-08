@@ -4,14 +4,14 @@ using Google.Apis.Oauth2.v2;
 using Google.Apis.Oauth2.v2.Data;
 using Google.Apis.Services;
 
-namespace MultiMart.Infrastructure.Auth.OAuth2.Google;
+namespace MultiMart.Infrastructure.Auth.OAuth.Google;
 
-public class GoogleOAuth2Service
+public class GoogleOAuthService
 {
     private readonly GoogleSettings _googleSettings;
     private readonly string _redirectUri;
 
-    public GoogleOAuth2Service(GoogleSettings googleSettings, string redirectUri)
+    public GoogleOAuthService(GoogleSettings googleSettings, string redirectUri)
     {
         _googleSettings = googleSettings;
         _redirectUri = redirectUri;

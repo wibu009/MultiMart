@@ -23,6 +23,10 @@
         </PackageReference>
     </ItemGroup>
     <ItemGroup>
+      <Folder Include="Auth\Login\" />
+      <Folder Include="Auth\RefreshToken\" />
+      <Folder Include="Auth\Register\" />
+      <Folder Include="Auth\RevokeToken\" />
       <Folder Include="Catalog\V1\Address\" />
       <Folder Include="Catalog\V1\Characteristics\Author\" />
       <Folder Include="Catalog\V1\Characteristics\Genre\" />

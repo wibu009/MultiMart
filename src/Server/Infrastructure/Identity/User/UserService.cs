@@ -19,6 +19,8 @@ using MultiMart.Application.Common.Models;
 using MultiMart.Application.Common.Specification;
 using MultiMart.Application.Identity.Users;
 using MultiMart.Application.Identity.Users.Create;
+using MultiMart.Application.Identity.Users.Create.Customer;
+using MultiMart.Application.Identity.Users.Create.Employee;
 using MultiMart.Application.Identity.Users.Search;
 using MultiMart.Application.Identity.Users.Update;
 using MultiMart.Domain.Common.Enums;
@@ -404,43 +406,6 @@ internal partial class UserService : IUserService
         }
 
         return user;
-    }
-
-    public async Task<string> CreateAsync(CreateUserRequest request, CancellationToken cancellationToken = default)
-    {
-        var user = request.Adapt<ApplicationUser>();
-
-        var result = await _userManager.CreateAsync(user, request.Password);
-        if (!result.Succeeded)
-        {
-            throw new InternalServerException(_t["Validation Errors Occurred."], result.GetErrors(_t));
-        }
-
-        await _userManager.AddToRoleAsync(user, ApplicationRoles.Basic);
-
-        var messages = new List<string> { string.Format(_t["User {0} Registered."], user.UserName) };
-
-        if (_securitySettings.RequireConfirmedAccount && !string.IsNullOrEmpty(user.Email))
-        {
-            // send verification email
-            string emailVerificationUri = await GetEmailVerificationUriAsync(user, request.Origin!);
-            var emailModel = new UserEmailTemplateModel
-            {
-                Email = user.Email,
-                UserName = user.UserName!,
-                Url = emailVerificationUri
-            };
-            var mailRequest = new MailRequest(
-                new List<string> { user.Email },
-                _t["Confirm Registration"],
-                _templateService.GenerateEmailTemplate("email-confirmation", emailModel));
-            _jobService.Enqueue(() => _mailService.SendAsync(mailRequest, cancellationToken));
-            messages.Add(_t[$"Please check {user.Email} to verify your account!"]);
-        }
-
-        await _events.PublishAsync(new ApplicationUserCreatedEvent(user.Id));
-
-        return string.Join(Environment.NewLine, messages);
     }
 
     public async Task<string> CreateAsync<TCreateUserRequest>(

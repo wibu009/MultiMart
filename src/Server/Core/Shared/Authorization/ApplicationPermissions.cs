@@ -22,6 +22,8 @@ public static class ApplicationResource
     public const string Dashboard = nameof(Dashboard);
     public const string Hangfire = nameof(Hangfire);
     public const string Users = nameof(Users);
+    public const string Customers = nameof(Customers);
+    public const string Employees = nameof(Employees);
     public const string UserRoles = nameof(UserRoles);
     public const string Roles = nameof(Roles);
     public const string RoleClaims = nameof(RoleClaims);
@@ -63,6 +65,24 @@ public static class ApplicationPermissions
         new(ApplicationAction.Update, ApplicationResource.Users),
         new(ApplicationAction.Delete, ApplicationResource.Users),
         new(ApplicationAction.Export, ApplicationResource.Users),
+        #endregion
+
+        #region Customers
+        new(ApplicationAction.View, ApplicationResource.Customers),
+        new(ApplicationAction.Search, ApplicationResource.Customers),
+        new(ApplicationAction.Create, ApplicationResource.Customers),
+        new(ApplicationAction.Update, ApplicationResource.Customers),
+        new(ApplicationAction.Delete, ApplicationResource.Customers),
+        new(ApplicationAction.Export, ApplicationResource.Customers),
+        #endregion
+
+        #region Employees
+        new(ApplicationAction.View, ApplicationResource.Employees),
+        new(ApplicationAction.Search, ApplicationResource.Employees),
+        new(ApplicationAction.Create, ApplicationResource.Employees),
+        new(ApplicationAction.Update, ApplicationResource.Employees),
+        new(ApplicationAction.Delete, ApplicationResource.Employees),
+        new(ApplicationAction.Export, ApplicationResource.Employees),
         #endregion
 
         #region UserRoles

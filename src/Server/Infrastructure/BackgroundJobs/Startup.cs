@@ -29,7 +29,7 @@ internal static class Startup
         if (storageSettings is null) throw new Exception("Hangfire Storage Provider is not configured.");
         if (string.IsNullOrEmpty(storageSettings.DBProvider)) throw new Exception("Hangfire Storage Provider is not configured.");
         if (string.IsNullOrEmpty(storageSettings.ConnectionString)) throw new Exception("Hangfire Storage Provider ConnectionString is not configured.");
-        Logger.Information($"Hangfire: Current Storage Provider : {storageSettings.DBProvider}");
+        Logger.Information($"Hangfire: Default Storage Provider: {storageSettings.DBProvider}");
         Logger.Information("For more Hangfire storage, visit https://www.hangfire.io/extensions.html");
 
         services.AddSingleton<JobActivator, ApplicationJobActivator>();

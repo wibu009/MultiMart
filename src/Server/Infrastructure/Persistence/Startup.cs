@@ -35,7 +35,7 @@ internal static class Startup
                     Logger.Warning("Database ConnectionString is not configured.");
                 }
 
-
+                Logger.Information("Database: Default Database Provider: {DBProvider}", options.DBProvider);
             })
             .ValidateDataAnnotations()
             .ValidateOnStart();

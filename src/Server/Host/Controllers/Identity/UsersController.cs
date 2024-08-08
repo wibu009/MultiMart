@@ -3,6 +3,8 @@ using MultiMart.Application.Identity.Users;
 using MultiMart.Application.Identity.Users.ConfirmEmail;
 using MultiMart.Application.Identity.Users.ConfirmPhoneNumber;
 using MultiMart.Application.Identity.Users.Create;
+using MultiMart.Application.Identity.Users.Create.Customer;
+using MultiMart.Application.Identity.Users.Create.Employee;
 using MultiMart.Application.Identity.Users.ForgotPassword;
 using MultiMart.Application.Identity.Users.Get;
 using MultiMart.Application.Identity.Users.GetUserRole;
@@ -54,31 +56,17 @@ public class UsersController : VersionNeutralApiController
     public async Task<string> AssignRolesAsync(string id, SetUserRolesRequest request, CancellationToken cancellationToken)
         => await Mediator.Send(request.SetPropertyValue(nameof(request.UserId), id), cancellationToken);
 
-    [HttpPost]
+    [HttpPost("customer")]
     [RequiresPermission(ApplicationAction.Create, ApplicationResource.Users)]
-    [SwaggerOperation("Creates a new user.", "")]
-    public async Task<string> CreateAsync(CreateUserRequest request)
-    {
-        request.SetPropertyValue(nameof(request.Origin), GetOriginFromRequest());
-        return request switch
-        {
-            CreateCustomerRequest customerRequest => await Mediator.Send(customerRequest),
-            CreateEmployeeRequest employeeRequest => await Mediator.Send(employeeRequest),
-            _ => await Mediator.Send(request)
-        };
-    }
-
-    [HttpPost("create-customer")]
-    [RequiresPermission(ApplicationAction.Create, ApplicationResource.Users)]
-    [SwaggerOperation("Creates a new customer.", "")]
+    [SwaggerOperation("Create a customer.", "")]
     public async Task<string> CreateCustomerAsync(CreateCustomerRequest request)
-        => await Mediator.Send(request.SetPropertyValue(nameof(request.Origin), GetOriginFromRequest()));
+        => await Mediator.Send(request);
 
-    [HttpPost("create-employee")]
+    [HttpPost("employee")]
     [RequiresPermission(ApplicationAction.Create, ApplicationResource.Users)]
-    [SwaggerOperation("Creates a new employee.", "")]
+    [SwaggerOperation("Create an employee.", "")]
     public async Task<string> CreateEmployeeAsync(CreateEmployeeRequest request)
-        => await Mediator.Send(request.SetPropertyValue(nameof(request.Origin), GetOriginFromRequest()));
+        => await Mediator.Send(request);
 
     [HttpPost("self-register")]
     [TenantIdHeader]

@@ -44,29 +44,3 @@ public class CreateUserRequestValidator<TCreateUserRequest> : CustomValidator<TC
             .Equal(p => p.Password);
     }
 }
-
-public class CreateCustomerRequestValidator : CreateUserRequestValidator<CreateCustomerRequest>
-{
-    public CreateCustomerRequestValidator(IUserService userService, IStringLocalizer<CreateCustomerRequest> T)
-        : base(userService, T)
-    {
-        RuleFor(p => p.LoyaltyPoints).Cascade(CascadeMode.Stop)
-            .GreaterThanOrEqualTo(0);
-    }
-}
-
-public class CreateEmployeeRequestValidator : CreateUserRequestValidator<CreateEmployeeRequest>
-{
-    public CreateEmployeeRequestValidator(IUserService userService, IStringLocalizer<CreateEmployeeRequest> T)
-        : base(userService, T)
-    {
-        RuleFor(p => p.Position).Cascade(CascadeMode.Stop)
-            .NotEmpty();
-
-        RuleFor(p => p.Department).Cascade(CascadeMode.Stop)
-            .NotEmpty();
-
-        RuleFor(p => p.HireDate).Cascade(CascadeMode.Stop)
-            .NotEmpty();
-    }
-}

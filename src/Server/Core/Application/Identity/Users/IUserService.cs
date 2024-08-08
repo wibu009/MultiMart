@@ -32,7 +32,6 @@ public interface IUserService : ITransientService
     Task InvalidatePermissionCacheAsync(string userId, CancellationToken cancellationToken);
     Task ToggleStatusAsync(bool activateUser, string userId, CancellationToken cancellationToken);
     Task<string> GetOrCreateFromPrincipalAsync(ClaimsPrincipal principal);
-    Task<string> CreateAsync(CreateUserRequest request, CancellationToken cancellationToken);
     Task<string> CreateAsync<TCreateUserRequest>(TCreateUserRequest request, CancellationToken cancellationToken)
         where TCreateUserRequest : CreateUserRequest;
     Task UpdateAsync(UpdateUserRequest request, CancellationToken cancellationToken);

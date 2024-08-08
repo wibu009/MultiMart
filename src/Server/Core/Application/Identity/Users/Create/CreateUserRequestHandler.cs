@@ -26,19 +26,3 @@ public class CreateUserRequestHandler : CreateUserRequestHandler<CreateUserReque
     {
     }
 }
-
-public class CreateCustomerRequestHandler : CreateUserRequestHandler<CreateCustomerRequest>
-{
-    public CreateCustomerRequestHandler(IUserService userService, IStringLocalizer<CreateCustomerRequestHandler> t)
-        : base(userService, t)
-    {
-    }
-}
-
-public class CreateEmployeeRequestHandler : CreateUserRequestHandler<CreateEmployeeRequest>
-{
-    public CreateEmployeeRequestHandler(IUserService userService, IStringLocalizer<CreateEmployeeRequestHandler> t)
-        : base(userService, t)
-    {
-    }
-}

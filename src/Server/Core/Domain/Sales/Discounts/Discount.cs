@@ -9,7 +9,7 @@ public class Discount : AuditableEntity, IAggregateRoot
     public string? Description { get; set; }
     public string? Code { get; set; }
     public decimal? Value { get; set; }
-    public DiscountType? Type { get; set; }
+    public CalculationType? Type { get; set; }
     public DateTime? StartDate { get; set; }
     public DateTime? EndDate { get; set; }
     public int? UsageLimit { get; set; }

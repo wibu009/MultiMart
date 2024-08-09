@@ -9,6 +9,7 @@ public class Product : AuditableEntity, IAggregateRoot
     public string Name { get; set; } = default!;
     public string? Description { get; set; }
     public decimal? Price { get; set; }
+    public string? Currency { get; set; }
     public int? Quantity { get; set; }
     public string? MeasurementUnit { get; set; }
     public string? SKU { get; set; }

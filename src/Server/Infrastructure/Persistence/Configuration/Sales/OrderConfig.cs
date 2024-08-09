@@ -18,8 +18,6 @@ public class OrderConfig : IEntityTypeConfiguration<Order>
             .HasMaxLength(4000);
         builder.Property(o => o.ReturnId)
             .IsRequired(false);
-        builder.Property(o => o.DeliveryId)
-            .IsRequired(false);
         builder.Property(o => o.CustomerId)
             .IsRequired(false);
 
@@ -27,10 +25,6 @@ public class OrderConfig : IEntityTypeConfiguration<Order>
         builder.HasOne(o => o.Return)
             .WithOne(r => r.Order)
             .HasForeignKey<Order>(o => o.ReturnId)
-            .OnDelete(DeleteBehavior.SetNull);
-        builder.HasOne(o => o.Delivery)
-            .WithOne(s => s.Order)
-            .HasForeignKey<Order>(o => o.DeliveryId)
             .OnDelete(DeleteBehavior.SetNull);
     }
 }

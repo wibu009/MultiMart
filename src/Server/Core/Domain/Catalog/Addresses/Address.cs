@@ -11,5 +11,4 @@ public class Address : AuditableEntity, IAggregateRoot
     public string State { get; set; } = default!;
     public string PostalCode { get; set; } = default!;
     public string Country { get; set; } = default!;
-    public AddressType Type { get; set; }
 }

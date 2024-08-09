@@ -12,7 +12,7 @@ public class OrderItemConfig : IEntityTypeConfiguration<OrderItem>
 
         builder.Property(oi => oi.Quantity)
             .IsRequired();
-        builder.Property(oi => oi.BasePrice)
+        builder.Property(oi => oi.Price)
             .IsRequired();
         builder.Property(oi => oi.OrderId)
             .IsRequired(false);

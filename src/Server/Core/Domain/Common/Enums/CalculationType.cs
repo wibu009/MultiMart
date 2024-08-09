@@ -1,6 +1,6 @@
 ﻿namespace MultiMart.Domain.Common.Enums;
 
-public enum DiscountType
+public enum CalculationType
 {
     Fixed,
     Percentage

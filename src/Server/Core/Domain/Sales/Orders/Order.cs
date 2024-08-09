@@ -2,6 +2,7 @@
 using MultiMart.Domain.Common.Enums;
 using MultiMart.Domain.Sales.Deliveries;
 using MultiMart.Domain.Sales.Returns;
+using MultiMart.Domain.Sales.Shipping;
 
 namespace MultiMart.Domain.Sales.Orders;
 
@@ -17,8 +18,10 @@ public class Order : AuditableEntity, IAggregateRoot
     public string? CustomerId { get; set; }
     public DefaultIdType? ReturnId { get; set; }
     public Return Return { get; set; } = new();
-    public DefaultIdType? DeliveryId { get; set; }
-    public Delivery Delivery { get; set; } = new();
+    public DefaultIdType? ShippingMethodId { get; set; }
+    public ShippingMethod ShippingMethod { get; set; } = new();
+    public DefaultIdType? ShippingAddressId { get; set; }
+    public ShippingAddress ShippingAddress { get; set; } = new();
     public List<OrderItem> Items { get; set; } = new();
     public List<OrderDiscount> Discounts { get; set; } = new();
 }
